@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 
 
 @SpringBootApplication
-class OsoriAdminApplication
+class CaveApplication
 
 fun main(args: Array<String>) {
-    SpringApplication.run(OsoriAdminApplication::class.java, *args)
+    SpringApplication.run(CaveApplication::class.java, *args)
 }
