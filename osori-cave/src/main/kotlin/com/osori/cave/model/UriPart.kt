@@ -8,6 +8,8 @@ import javax.persistence.CascadeType.PERSIST
 import javax.persistence.CascadeType.REFRESH
 import javax.persistence.Entity
 import javax.persistence.FetchType.LAZY
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
@@ -16,21 +18,27 @@ import javax.persistence.Table
 @Entity
 @Table(name = "URI_PART")
 class UriPart(var name:String,
-              var resource:String,
-              var depthType:DepthType,
-              var methodType:RequestMethod) {
+                   var resource:String,
+                   var depthType:DepthType,
+                   var methodType:RequestMethod) {
 
+    @Id
+    @GeneratedValue
     var id:Long? = null
         private set
     var status = true
 
-    @ManyToOne @JoinColumn(name = "parentId")
+    @ManyToOne
+    @JoinColumn(name = "parentId")
     var parentUriPart: UriPart? = null
 
     @Where(clause = "status = true")
     @OneToMany(mappedBy = "parentUriPart", fetch = LAZY, cascade = arrayOf(PERSIST,MERGE,REFRESH,DETACH))
     var uriParts: MutableList<UriPart> = arrayListOf()
 
+    @Where(clause = "status = true")
+    @OneToMany(mappedBy = "uriPart", fetch = LAZY, cascade = arrayOf(PERSIST,MERGE,REFRESH,DETACH))
+    var permissionUriPartMappings:MutableList<PermissionUriPartMapping> = arrayListOf()
 
     enum class DepthType {
         MENU,FUNC,FIELD

@@ -7,6 +7,8 @@ import javax.persistence.CascadeType.PERSIST
 import javax.persistence.CascadeType.REFRESH
 import javax.persistence.Entity
 import javax.persistence.FetchType.LAZY
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
 import javax.persistence.OneToMany
 import javax.persistence.Table
 
@@ -15,24 +17,20 @@ import javax.persistence.Table
 @Table(name = "PERMISSION")
 class Permission(var name:String){
 
+    @Id
+    @GeneratedValue
     var id:Long? = null
         private set
     var status = true
 
     @Where(clause = "status = true")
-    @OneToMany(mappedBy = "uriPart", fetch = LAZY, cascade = arrayOf(PERSIST, MERGE, REFRESH, DETACH))
-    var uriParts:MutableList<UriPart> = arrayListOf()
+    @OneToMany(mappedBy = "permission", fetch = LAZY, cascade = arrayOf(PERSIST, MERGE, REFRESH, DETACH))
+    var permissionUriPartMappings:MutableList<PermissionUriPartMapping> = arrayListOf()
         private set
 
     @Where(clause = "status = true")
-    @OneToMany(mappedBy = "permissionGrant", fetch = LAZY, cascade = arrayOf(PERSIST, MERGE, REFRESH, DETACH))
-    var permissionGrants:MutableList<PermissionGrant> = arrayListOf()
+    @OneToMany(mappedBy = "permission", fetch = LAZY, cascade = arrayOf(PERSIST, MERGE, REFRESH, DETACH))
+    var userPermissionGrants:MutableList<UserPermissionGrant> = arrayListOf()
         private set
 
-    fun addBy(uriPart: UriPart){
-        if(uriParts.contains(uriPart).not())
-            uriParts.add(uriPart)
-
-        uriPart
-    }
 }
