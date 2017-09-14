@@ -9,7 +9,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "PERMISSION_URI_PART_MAPPING")
-class PermissionUriPartMapping(permission: Permission, uripart:UriPart) {
+class PermissionUriPartMapping {
     @Id
     @GeneratedValue
     var id:Long? = null
@@ -18,8 +18,11 @@ class PermissionUriPartMapping(permission: Permission, uripart:UriPart) {
 
     @ManyToOne
     @JoinColumn(name = "permissionId", nullable = false)
-    var permission = permission
+    var permission:Permission? = null
+
     @ManyToOne
     @JoinColumn(name = "uriPartId", nullable = false)
-    var uriPart = uripart
+    var uriPart:UriPart? = null
+
+
 }

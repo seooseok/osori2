@@ -33,4 +33,14 @@ class Permission(var name:String){
     var userPermissionGrants:MutableList<UserPermissionGrant> = arrayListOf()
         private set
 
+    fun addBy(user: User) {
+        val users = this.getUsers()
+        if(users.contains(user).not())
+            UserPermissionGrant(user, this)
+    }
+
+    fun getUsers(): List<User> {
+        return userPermissionGrants.map { g -> g.user }
+    }
+
 }

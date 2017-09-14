@@ -10,7 +10,16 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "USER_PERMISSION_GRANT")
-class UserPermissionGrant(user:User, permission: Permission) {
+class UserPermissionGrant {
+    constructor(user:User, permission: Permission){
+        this.user = user
+        if(user.getPermissions().contains(permission).not())
+            user.userPermissionGrants.add(this)
+
+        this.permission = permission
+        if(permission.getUsers().contains(user).not())
+            permission.userPermissionGrants.add(this)
+    }
     @Id
     @GeneratedValue
     var id:Long? = null
@@ -19,13 +28,15 @@ class UserPermissionGrant(user:User, permission: Permission) {
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
-    var user:User = user
+    var user:User
         private set
 
     @ManyToOne
     @JoinColumn(name = "permissionId", nullable = false)
-    var permission = permission
+    var permission:Permission
         private set
+
+
 }
 
 
