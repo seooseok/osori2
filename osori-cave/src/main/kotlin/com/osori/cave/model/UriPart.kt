@@ -43,5 +43,17 @@ class UriPart(var name:String,
     enum class DepthType {
         MENU,FUNC,FIELD
     }
+
+    fun setBy(parentUriPart: UriPart){
+        this.parentUriPart = this.parentUriPart
+        if(parentUriPart.uriParts.contains(this).not())
+            parentUriPart.addBy(this)
+    }
+
+    fun addBy(uriPart: UriPart){
+        this.uriParts.add(uriPart)
+        if(this.equals(uriPart.parentUriPart).not())
+            uriPart.setBy(this)
+    }
 }
 
