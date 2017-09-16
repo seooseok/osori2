@@ -9,5 +9,6 @@ data class MenuNode(var name:String,
                     var depthType: UriPart.DepthType,
                     var methodType: RequestMethod){
     var id:Long? = null
+    var parentId:Long? = null
     var fullUri:String? = null
 }

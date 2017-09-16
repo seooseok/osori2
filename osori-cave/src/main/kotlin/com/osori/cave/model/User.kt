@@ -44,7 +44,18 @@ class User (var loginId:String,
         }
     }
 
+    fun addBy(uriPart: UriPart){
+        val uriParts = this.getUriParts()
+        if(uriParts.contains(uriPart).not()){
+            UserUriPartGrant(this,uriPart)
+        }
+    }
+
     fun getPermissions():List<Permission> {
         return userPermissionGrants.map { g -> g.permission }
+    }
+
+    fun getUriParts():List<UriPart> {
+        return userUriPartGrants.map { u -> u.uriPart }
     }
 }

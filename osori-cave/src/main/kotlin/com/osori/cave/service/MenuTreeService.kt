@@ -1,6 +1,7 @@
 package com.osori.cave.service
 
 import com.osori.cave.model.UriPart
+import com.osori.cave.model.User
 import com.osori.cave.repository.UriPartRepository
 import com.osori.cave.resource.MenuNode
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,17 +15,30 @@ class MenuTreeService
         val uriPart = repository.findOne(nodeId)
 
         return uriPart.toResource()
-                .apply {
-                    fullUri = uriPart.parentUriPart?.let { p -> p.resource + uriPart.resource }
-                }
+    }
+
+    fun findNodes():List<MenuNode>{
+        val uriParts = repository.findByStatusTrue()
+        return uriParts.map { u -> u.toResource()}
+    }
+
+    fun findNodes(user:User):List<MenuNode> {
+        return user.getUriParts().map { u -> u.toResource() }
     }
 
 
     private fun UriPart.toResource(): MenuNode {
-        return MenuNode(this.name,this.resource,this.depthType,this.methodType)
-                .apply {
-                    id = this.id
-                }
+        val menuNode = MenuNode(this.name,this.resource,this.depthType,this.methodType)
+        menuNode.id = this.id
+        menuNode.fullUri = getFullUri(this)
+        return menuNode
+    }
+
+    private fun getFullUri(uriPart: UriPart):String? {
+        return when {
+            uriPart.parentUriPart == null -> uriPart.resource
+            else -> getFullUri(uriPart.parentUriPart!!) + uriPart.resource
+        }
     }
 
 }

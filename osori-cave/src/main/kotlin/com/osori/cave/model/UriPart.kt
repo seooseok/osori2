@@ -7,6 +7,8 @@ import javax.persistence.CascadeType.MERGE
 import javax.persistence.CascadeType.PERSIST
 import javax.persistence.CascadeType.REFRESH
 import javax.persistence.Entity
+import javax.persistence.EnumType.STRING
+import javax.persistence.Enumerated
 import javax.persistence.FetchType.LAZY
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -18,9 +20,9 @@ import javax.persistence.Table
 @Entity
 @Table(name = "URI_PART")
 class UriPart(var name:String,
-                   var resource:String,
-                   var depthType:DepthType,
-                   var methodType:RequestMethod) {
+              var resource:String,
+              @Enumerated(STRING) var depthType:DepthType,
+              @Enumerated(STRING) var methodType:RequestMethod) {
 
     @Id
     @GeneratedValue
@@ -40,11 +42,12 @@ class UriPart(var name:String,
     @OneToMany(mappedBy = "uriPart", fetch = LAZY, cascade = arrayOf(PERSIST,MERGE,REFRESH,DETACH))
     var permissionUriPartMappings:MutableList<PermissionUriPartMapping> = arrayListOf()
 
+
     enum class DepthType {
         MENU,FUNC,FIELD
     }
 
-    fun setBy(parentUriPart: UriPart){
+    fun setByParent(parentUriPart: UriPart){
         this.parentUriPart = this.parentUriPart
         if(parentUriPart.uriParts.contains(this).not())
             parentUriPart.addBy(this)
@@ -52,8 +55,8 @@ class UriPart(var name:String,
 
     fun addBy(uriPart: UriPart){
         this.uriParts.add(uriPart)
-        if(this.equals(uriPart.parentUriPart).not())
-            uriPart.setBy(this)
+        if(this != uriPart.parentUriPart)
+            uriPart.setByParent(this)
     }
 }
 

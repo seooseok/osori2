@@ -14,19 +14,30 @@ class UriPartManager constructor(var repository: UriPartRepository) {
     }
 
     constructor(repository: UriPartRepository, menuNode:MenuNode): this(repository) {
-        this.uriPart = menuNode.toModel()
+        val uriPart = UriPart(menuNode.name,menuNode.resource,menuNode.depthType,menuNode.methodType)
+        if (menuNode.parentId != null) {
+            val parentUriPart = repository.findOne(menuNode.parentId)
+            uriPart.setByParent(parentUriPart)
+        }
+        this.uriPart = uriPart
     }
 
-    fun save(){
-        repository.save(this.uriPart)
+    fun save(): Long{
+        return repository.save(this.uriPart).id?: throw IllegalStateException("uri part can't save")
     }
 
     fun moveTo(parentNodeId:Long){
         val parentUriPart = repository.findOne(parentNodeId)
-        uriPart.setBy(parentUriPart)
+        uriPart.setByParent(parentUriPart)
     }
 
-    fun remove(){
+    fun orphanRemove(){
+        if(uriPart.parentUriPart == null)
+            throw IllegalStateException("root can't remove.")
+
+        if(uriPart.uriParts.size > 0)
+            uriPart.uriParts.map { child -> child.status = false }
+
         uriPart.status = false
         this.save()
     }
