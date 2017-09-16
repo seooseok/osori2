@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface UriPartRepository : JpaRepository<UriPart, Long> {
     fun findByStatusTrue():List<UriPart>
+    fun findByParentIdIsNull(): UriPart
 }

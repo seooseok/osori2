@@ -26,12 +26,13 @@ class UriPartManager constructor(var repository: UriPartRepository) {
         return repository.save(this.uriPart).id?: throw IllegalStateException("uri part can't save")
     }
 
-    fun moveTo(parentNodeId:Long){
+    fun moveTo(parentNodeId:Long): UriPartManager{
         val parentUriPart = repository.findOne(parentNodeId)
         uriPart.setByParent(parentUriPart)
+        return this
     }
 
-    fun orphanRemove(){
+    fun orphanRemove(): UriPartManager{
         if(uriPart.parentUriPart == null)
             throw IllegalStateException("root can't remove.")
 
@@ -39,7 +40,7 @@ class UriPartManager constructor(var repository: UriPartRepository) {
             uriPart.uriParts.map { child -> child.status = false }
 
         uriPart.status = false
-        this.save()
+        return this
     }
 
 

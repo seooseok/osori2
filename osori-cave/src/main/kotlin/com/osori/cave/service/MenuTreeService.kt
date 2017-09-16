@@ -13,7 +13,6 @@ class MenuTreeService
 
     fun findNode(nodeId:Long): MenuNode{
         val uriPart = repository.findOne(nodeId)
-
         return uriPart.toResource()
     }
 
@@ -24,6 +23,19 @@ class MenuTreeService
 
     fun findNodes(user:User):List<MenuNode> {
         return user.getUriParts().map { u -> u.toResource() }
+    }
+
+    fun moveNode(nodeId: Long, parentNodeId:Long){
+        UriPartManager(repository,nodeId)
+                .moveTo(parentNodeId)
+                .save()
+    }
+
+    fun resetTree(){
+        val rootId = repository.findByParentIdIsNull().id?: throw IllegalStateException("root is empty")
+        UriPartManager(repository, rootId)
+                .orphanRemove()
+                .save()
     }
 
 
