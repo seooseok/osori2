@@ -11,6 +11,15 @@ import org.springframework.stereotype.Service
 class MenuTreeService
 @Autowired constructor(private val repository: UriPartRepository) {
 
+    fun create(menuNode: MenuNode) {
+        val uriPart = UriPart(menuNode.name,menuNode.resource,menuNode.depthType,menuNode.methodType)
+        if (menuNode.parentId != null) {
+            val parentUriPart = repository.findOne(menuNode.parentId)
+            uriPart.setByParent(parentUriPart)
+        }
+        save(uriPart)
+    }
+
     fun findNode(nodeId:Long): MenuNode{
         val uriPart = repository.findOne(nodeId)
         return uriPart.toResource()
@@ -26,24 +35,52 @@ class MenuTreeService
     }
 
     fun moveNode(nodeId: Long, parentNodeId:Long){
-        UriPartManager(repository,nodeId)
-                .changeParent(parentNodeId)
-                .save()
+        val uriPart = repository.findOne(nodeId)
+        val parentUriPart = repository.findOne(parentNodeId)
+        uriPart.setByParent(parentUriPart)
+        save(uriPart)
+    }
+
+    fun modifyNode(menuNode: MenuNode){
+        val uriPart = repository.findOne(menuNode.id).apply {
+            name = menuNode.name
+            resource = menuNode.resource
+            methodType = menuNode.methodType
+            depthType = menuNode.depthType
+        }
+        save(uriPart)
+    }
+
+    fun removeNode(nodeId: Long){
+        val uriPart = repository.findOne(nodeId)
+        if(uriPart.parentUriPart == null)
+            throw IllegalStateException("${nodeId} is root node. root node. can't remove")
+        uriPart.status = false
+        save(uriPart)
     }
 
     fun resetTree(){
-        val rootId = repository.findByParentUriPartIsNull().id?: throw IllegalStateException("root is empty")
-        UriPartManager(repository, rootId)
-                .orphanRemove()
-                .save()
+        val rootUriPart = repository.findByParentUriPartIsNull()
+        rootUriPart.uriParts.map { u -> orphanRemove(u) }
+        save(rootUriPart)
     }
 
+    private fun save(uriPart: UriPart){
+        repository.save(uriPart)
+    }
 
     private fun UriPart.toResource(): MenuNode {
         val menuNode = MenuNode(this.name,this.resource,this.depthType,this.methodType)
         menuNode.id = this.id
         menuNode.fullUri = getFullUri(this)
         return menuNode
+    }
+
+    private fun orphanRemove(uriPart: UriPart){
+        uriPart.status = false
+        if(uriPart.uriParts.isEmpty().not()){
+            uriPart.uriParts.map { u -> orphanRemove(u) }
+        }
     }
 
     private fun getFullUri(uriPart: UriPart):String? {
