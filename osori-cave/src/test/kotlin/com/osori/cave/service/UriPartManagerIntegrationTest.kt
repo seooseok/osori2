@@ -34,32 +34,22 @@ internal class UriPartManagerIntegrationTest : IntegrationTestSupporter() {
     @Test
     fun moveTo() {
         //Given
-        val rootNode = MenuNode("root","/cave",UriPart.DepthType.MENU,RequestMethod.GET)
-        val rootNodeId = UriPartManager(repository,rootNode).save()
+        val rootUriPart = UriPart("root","/cave",UriPart.DepthType.MENU,RequestMethod.GET)
+        val menu1UriPart = UriPart(  "menu1","/menu1/{menu1}",UriPart.DepthType.MENU,RequestMethod.GET)
+        val menu2UriPart = UriPart(  "menu2","/menu2/{menu2}",UriPart.DepthType.MENU,RequestMethod.GET)
+        val funcUriPart = UriPart(  "func","/func/{func}",UriPart.DepthType.FUNC,RequestMethod.GET)
+        menu1UriPart.addBy(funcUriPart)
+        rootUriPart.addBy(menu1UriPart)
+        rootUriPart.addBy(menu2UriPart)
 
-        val menuNode1 = MenuNode("menu1","/menu1/{menu1}",UriPart.DepthType.MENU,RequestMethod.GET).apply {
-            parentId = rootNodeId
-        }
-        val menuNode1Id = UriPartManager(repository,menuNode1).save()
-
-        val menuNode2 = MenuNode("menu2","/menu2/{menu2}",UriPart.DepthType.MENU,RequestMethod.GET).apply {
-            parentId = rootNodeId
-        }
-        val menuNode2Id = UriPartManager(repository,menuNode2).save()
-
-        val funcNode = MenuNode("func","/func/{func}",UriPart.DepthType.FUNC,RequestMethod.GET).apply {
-            parentId = menuNode1Id
-        }
-        val funcNodeId = UriPartManager(repository,funcNode).save()
-
-        val menu1OfUriPart = repository.findOne(menuNode1Id)
-        menu1OfUriPart.uriParts.find { u -> u.id ==  funcNodeId}?: throw IllegalStateException("error")
+        repository.save(rootUriPart)
 
         //When
-        UriPartManager(repository,funcNodeId).moveTo(menuNode2Id)
+        val manager = UriPartManager(repository,funcUriPart.id!!)
 
-
-
+        manager.changeParent(menu2UriPart.id!!).save()
+        //Then
+        repository.findOne(funcUriPart.id).parentUriPart!!.id shouldBe menu2UriPart.id
     }
 
 }

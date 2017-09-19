@@ -27,12 +27,12 @@ class MenuTreeService
 
     fun moveNode(nodeId: Long, parentNodeId:Long){
         UriPartManager(repository,nodeId)
-                .moveTo(parentNodeId)
+                .changeParent(parentNodeId)
                 .save()
     }
 
     fun resetTree(){
-        val rootId = repository.findByParentIdIsNull().id?: throw IllegalStateException("root is empty")
+        val rootId = repository.findByParentUriPartIsNull().id?: throw IllegalStateException("root is empty")
         UriPartManager(repository, rootId)
                 .orphanRemove()
                 .save()

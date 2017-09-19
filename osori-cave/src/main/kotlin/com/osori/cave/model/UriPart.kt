@@ -48,7 +48,7 @@ class UriPart(var name:String,
     }
 
     fun setByParent(parentUriPart: UriPart){
-        this.parentUriPart = this.parentUriPart
+        this.parentUriPart = parentUriPart
         if(parentUriPart.uriParts.contains(this).not())
             parentUriPart.addBy(this)
     }
