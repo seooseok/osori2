@@ -35,8 +35,6 @@ class UserPermissionGrant {
     @JoinColumn(name = "permissionId", nullable = false)
     var permission:Permission
         private set
-
-
 }
 
 

@@ -73,6 +73,8 @@ class MenuTreeService
         val menuNode = MenuNode(this.name,this.resource,this.depthType,this.methodType)
         menuNode.id = this.id
         menuNode.fullUri = getFullUri(this)
+        if(this.parentUriPart != null)
+            menuNode.parentId = this.parentUriPart!!.id
         return menuNode
     }
 

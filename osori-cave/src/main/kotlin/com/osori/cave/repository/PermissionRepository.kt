@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface PermissionRepository : JpaRepository<Permission,Long>{
+    fun findByStatusIsTrue(): List<Permission>
 }

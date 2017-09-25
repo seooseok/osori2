@@ -39,6 +39,29 @@ class Permission(var name:String){
             UserPermissionGrant(user, this)
     }
 
+    fun addBy(uriPart: UriPart){
+        val uriParts = this.getUriParts()
+        if(uriParts.contains(uriPart).not()){
+            PermissionUriPartMapping(this,uriPart)
+        }
+    }
+
+    fun removeBy(uriPart: UriPart){
+        val mapping = permissionUriPartMappings.find { it.uriPart == uriPart }
+        if(mapping != null)
+            mapping.status = false
+    }
+
+    fun removeBy(user:User) {
+        val mapping = userPermissionGrants.find { it.user == user }
+        if(mapping != null)
+            mapping.status = false
+    }
+
+    fun getUriParts(): List<UriPart> {
+        return permissionUriPartMappings.map { p -> p.uriPart }
+    }
+
     fun getUsers(): List<User> {
         return userPermissionGrants.map { g -> g.user }
     }

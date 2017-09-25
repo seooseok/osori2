@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository
 interface UriPartRepository : JpaRepository<UriPart, Long> {
     fun findByStatusTrue():List<UriPart>
     fun findByParentUriPartIsNull(): UriPart
+    fun findByIdIn(idGroup:List<Long>): List<UriPart>
 }

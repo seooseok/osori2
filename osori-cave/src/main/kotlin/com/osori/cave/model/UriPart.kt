@@ -58,5 +58,9 @@ class UriPart(var name:String,
         if(this != uriPart.parentUriPart)
             uriPart.setByParent(this)
     }
+
+    fun getPermission(): List<Permission> {
+        return permissionUriPartMappings.map { p -> p.permission }
+    }
 }
 
