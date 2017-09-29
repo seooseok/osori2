@@ -17,7 +17,7 @@ class PermissionService
                        private val uriPartRepository: UriPartRepository){
 
     fun create(name:String, menuNodeIdGroup:List<Long>){
-        val uriParts = uriPartRepository.findByIdIn(menuNodeIdGroup)
+        val uriParts = uriPartRepository.findByIdInAndStatusTrue(menuNodeIdGroup)
         val permission = Permission(name)
         uriParts.forEach { permission.addBy(it) }
     }
@@ -41,6 +41,17 @@ class PermissionService
                 .map { it.status = false }
     }
 
+    fun remove(permissionId: Long){
+        val permission = findByPermission(permissionId)
+        permission.status = false
+        permission.userPermissionGrants.forEach { it.status = false }
+    }
+
+    fun recover(permissionId: Long){
+        val permission = findByPermission(permissionId)
+        permission.status = true
+    }
+
     fun findAll(): List<PermissionResource> {
         val permissions = permissionRepository.findByStatusIsTrue()
         return permissions.map(Permission::toResource)
@@ -55,7 +66,7 @@ class PermissionService
     }
 
     private fun findByUriParts(menuNodeIdGroup:List<Long>): List<UriPart> {
-        return uriPartRepository.findByIdIn(menuNodeIdGroup)
+        return uriPartRepository.findByIdInAndStatusTrue(menuNodeIdGroup)
     }
 
 
