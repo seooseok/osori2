@@ -1,5 +1,8 @@
-package com.osori.cave.model
+package com.osori.cave.permission.infrastructure
 
+import com.osori.cave.nodetree.infrastructure.UriPart
+import com.osori.cave.user.infrastructure.User
+import com.osori.cave.user.infrastructure.UserPermissionGrant
 import org.hibernate.annotations.Where
 import javax.persistence.CascadeType.DETACH
 import javax.persistence.CascadeType.MERGE
@@ -42,7 +45,7 @@ class Permission(var name:String){
     fun addBy(uriPart: UriPart){
         val uriParts = this.getUriParts()
         if(uriParts.contains(uriPart).not()){
-            PermissionUriPartMapping(this,uriPart)
+            PermissionUriPartMapping(this, uriPart)
         }
     }
 
@@ -52,7 +55,7 @@ class Permission(var name:String){
             mapping.status = false
     }
 
-    fun removeBy(user:User) {
+    fun removeBy(user: User) {
         val mapping = userPermissionGrants.find { it.user == user }
         if(mapping != null)
             mapping.status = false

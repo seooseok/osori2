@@ -1,5 +1,7 @@
-package com.osori.cave.model
+package com.osori.cave.user.infrastructure
 
+import com.osori.cave.nodetree.infrastructure.UriPart
+import com.osori.cave.permission.infrastructure.Permission
 import org.hibernate.annotations.Where
 import javax.persistence.CascadeType.DETACH
 import javax.persistence.CascadeType.MERGE
@@ -15,12 +17,13 @@ import javax.persistence.Table
 @Entity
 @Table(name = "USER")
 class User (var loginId:String,
-            var name:String){
+            var name:String?){
 
     @Id
     @GeneratedValue
     var id:Long? = null
         private set
+
     internal var status = Status.WAIT
 
     @Where(clause = "status = true")
@@ -47,8 +50,20 @@ class User (var loginId:String,
     fun addBy(uriPart: UriPart){
         val uriParts = this.getUriParts()
         if(uriParts.contains(uriPart).not()){
-            UserUriPartGrant(this,uriPart)
+            UserUriPartGrant(this, uriPart)
         }
+    }
+
+    fun remove(permission: Permission){
+        val permissionGrant = this.userPermissionGrants.find { it.permission.id == permission.id }
+        if(permissionGrant != null)
+            permissionGrant.status = false
+    }
+
+    fun remove(uriPart: UriPart){
+        val uriPartGrant = this.userUriPartGrants.find { it.uriPart.id == uriPart.id }
+        if(uriPartGrant != null)
+            uriPartGrant.status = false
     }
 
     fun getPermissions():List<Permission> {

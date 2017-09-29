@@ -2,7 +2,8 @@ package com.osori.cave.service
 
 import com.osori.cave.IntegrationTestSupporter
 import com.osori.cave.generator.UriPartGenerator
-import com.osori.cave.repository.UriPartRepository
+import com.osori.cave.nodetree.MenuTreeService
+import com.osori.cave.nodetree.infrastructure.UriPartRepository
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldEqual
 import org.junit.jupiter.api.Test
@@ -13,7 +14,7 @@ internal class MenuTreeServiceIntegrationTest: IntegrationTestSupporter() {
     private lateinit var repository: UriPartRepository
 
     @Autowired
-    private lateinit var menuTreeService:MenuTreeService
+    private lateinit var menuTreeService: MenuTreeService
 
 
     @Test

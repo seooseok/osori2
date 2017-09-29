@@ -1,5 +1,6 @@
-package com.osori.cave.model
+package com.osori.cave.permission.infrastructure
 
+import com.osori.cave.nodetree.infrastructure.UriPart
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -27,11 +28,11 @@ class PermissionUriPartMapping {
 
     @ManyToOne
     @JoinColumn(name = "permissionId", nullable = false)
-    var permission:Permission
+    var permission: Permission
         private set
 
     @ManyToOne
     @JoinColumn(name = "uriPartId", nullable = false)
-    var uriPart:UriPart
+    var uriPart: UriPart
         private set
 }

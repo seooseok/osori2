@@ -2,18 +2,20 @@ package com.osori.cave.service
 
 import com.osori.cave.IntegrationTestSupporter
 import com.osori.cave.generator.UriPartGenerator
-import com.osori.cave.repository.UriPartRepository
+import com.osori.cave.nodetree.MenuTreeService
+import com.osori.cave.nodetree.infrastructure.UriPartRepository
+import com.osori.cave.permission.PermissionService
 import io.kotlintest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 
 internal class PermissionServiceIntegrationTest : IntegrationTestSupporter() {
     @Autowired
-    private lateinit var uriPartRepository:UriPartRepository
+    private lateinit var uriPartRepository: UriPartRepository
     @Autowired
-    private lateinit var permissionService:PermissionService
+    private lateinit var permissionService: PermissionService
     @Autowired
-    private lateinit var menuTreeService:MenuTreeService
+    private lateinit var menuTreeService: MenuTreeService
 
     @Test
     fun create() {
@@ -41,9 +43,15 @@ internal class PermissionServiceIntegrationTest : IntegrationTestSupporter() {
         uriPartRepository.save(UriPartGenerator().createTree(2))
         val nodes = menuTreeService.findNodes()
 
-        //When
         permissionService.create(name, listOf(nodes[0].id!!))
 
+        //When
+        val permission = permissionService.findAll()[0]
+        permissionService.modify(permission.id!!,"test name")
+
+        //Than
+        val modifiedPermission = permissionService.findAll()[0]
+        modifiedPermission.name shouldBe "test name"
     }
 
     @Test

@@ -1,12 +1,11 @@
-package com.osori.cave.repository
+package com.osori.cave.nodetree.infrastructure
 
-import com.osori.cave.model.UriPart
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
 interface UriPartRepository : JpaRepository<UriPart, Long> {
     fun findByStatusTrue():List<UriPart>
-    fun findByParentUriPartIsNull(): UriPart
+    fun findByParentUriPartIsNull(): UriPart?
     fun findByIdIn(idGroup:List<Long>): List<UriPart>
 }

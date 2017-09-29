@@ -1,6 +1,6 @@
 package com.osori.cave.generator
 
-import com.osori.cave.model.UriPart
+import com.osori.cave.nodetree.infrastructure.UriPart
 import org.springframework.web.bind.annotation.RequestMethod
 import java.util.Random
 
@@ -8,7 +8,7 @@ import java.util.Random
 class UriPartGenerator {
     private val random = Random(System.currentTimeMillis())
 
-    fun createTree(childSize:Int):UriPart {
+    fun createTree(childSize:Int): UriPart {
         val root = createUriPart()
         createChildDepth(root,childSize)
 
@@ -22,13 +22,13 @@ class UriPartGenerator {
         }
     }
 
-    fun createUriPart(): UriPart{
+    fun createUriPart(): UriPart {
         val name = listOf("추가","수정","삭제","조회").random()
         val resource = listOf("/menu/{menu}","/func/{func}","/category/{category}","/box/{box}").random()
         val methodType = RequestMethod.valueOf(listOf("GET","POST","PUT","DELETE").random())
         val depthType = UriPart.DepthType.valueOf(listOf("MENU","FUNC","FIELD").random())
 
-        return UriPart(name,resource,depthType,methodType)
+        return UriPart(name, resource, depthType, methodType)
     }
 
     private fun List<String>.random(): String {

@@ -1,6 +1,5 @@
-package com.osori.cave.repository
+package com.osori.cave.permission.infrastructure
 
-import com.osori.cave.model.Permission
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

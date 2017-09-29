@@ -1,5 +1,7 @@
-package com.osori.cave.model
+package com.osori.cave.nodetree.infrastructure
 
+import com.osori.cave.permission.infrastructure.Permission
+import com.osori.cave.permission.infrastructure.PermissionUriPartMapping
 import org.hibernate.annotations.Where
 import org.springframework.web.bind.annotation.RequestMethod
 import javax.persistence.CascadeType.DETACH
@@ -21,13 +23,16 @@ import javax.persistence.Table
 @Table(name = "URI_PART")
 class UriPart(var name:String,
               var resource:String,
-              @Enumerated(STRING) var depthType:DepthType,
+              @Enumerated(STRING) var depthType: DepthType,
               @Enumerated(STRING) var methodType:RequestMethod) {
 
     @Id
     @GeneratedValue
     var id:Long? = null
         private set
+
+    var num:Int = 0
+
     var status = true
 
     @ManyToOne

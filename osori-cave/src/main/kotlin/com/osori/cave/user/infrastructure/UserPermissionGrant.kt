@@ -1,5 +1,6 @@
-package com.osori.cave.model
+package com.osori.cave.user.infrastructure
 
+import com.osori.cave.permission.infrastructure.Permission
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -11,7 +12,7 @@ import javax.persistence.Table
 @Entity
 @Table(name = "USER_PERMISSION_GRANT")
 class UserPermissionGrant {
-    constructor(user:User, permission: Permission){
+    constructor(user: User, permission: Permission){
         this.user = user
         if(user.getPermissions().contains(permission).not())
             user.userPermissionGrants.add(this)
@@ -28,12 +29,12 @@ class UserPermissionGrant {
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
-    var user:User
+    var user: User
         private set
 
     @ManyToOne
     @JoinColumn(name = "permissionId", nullable = false)
-    var permission:Permission
+    var permission: Permission
         private set
 }
 

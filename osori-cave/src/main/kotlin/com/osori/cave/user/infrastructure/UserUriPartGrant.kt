@@ -1,5 +1,6 @@
-package com.osori.cave.model
+package com.osori.cave.user.infrastructure
 
+import com.osori.cave.nodetree.infrastructure.UriPart
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -10,7 +11,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "URI_PART_GRANT")
-class UserUriPartGrant(user: User, uriPart:UriPart) {
+class UserUriPartGrant(user: User, uriPart: UriPart) {
     @Id
     @GeneratedValue
     var id:Long? = null
@@ -20,7 +21,7 @@ class UserUriPartGrant(user: User, uriPart:UriPart) {
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
-    var user:User = user
+    var user: User = user
         private set
 
     @ManyToOne
