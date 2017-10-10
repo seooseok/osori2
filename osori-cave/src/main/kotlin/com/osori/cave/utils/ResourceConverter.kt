@@ -4,6 +4,8 @@ import com.osori.cave.nodetree.controller.MenuNodeResource
 import com.osori.cave.nodetree.infrastructure.UriPart
 import com.osori.cave.permission.controller.PermissionResource
 import com.osori.cave.permission.infrastructure.Permission
+import com.osori.cave.user.controller.UserResource
+import com.osori.cave.user.infrastructure.User
 
 
 fun UriPart.toResource(): MenuNodeResource {
@@ -26,9 +28,23 @@ private fun getFullUri(uriPart: UriPart):String? {
 fun Permission.toResource(): PermissionResource {
     val resource = PermissionResource(this.name)
     resource.id = this.id
-    if(!this.getUriParts().isEmpty()){
-        resource.menuNodes = this.getUriParts().map { u -> u.toResource() }
+    if(this.getUriParts().isNotEmpty()){
+        resource.menuNodes = this.getUriParts().map(UriPart::toResource)
     }
 
     return resource
 }
+
+fun User.toResource(): UserResource {
+    val user = UserResource(this.loginId)
+    user.id = this.id
+    user.name = this.name
+    if(this.getPermissions().isNotEmpty()){
+        user.permissionGrants = this.getPermissions().map (Permission::toResource)
+    }
+    if(this.getUriParts().isNotEmpty()){
+        user.personalGrants = this.getUriParts().map (UriPart::toResource)
+    }
+    return user
+}
+
