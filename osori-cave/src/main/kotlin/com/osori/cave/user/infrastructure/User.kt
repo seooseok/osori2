@@ -24,6 +24,8 @@ class User (var loginId:String,
     var id:Long? = null
         private set
 
+    var information:ByteArray? = null
+
     internal var status = Status.WAIT
 
     @Where(clause = "status = true")
@@ -73,4 +75,6 @@ class User (var loginId:String,
     fun getUriParts():List<UriPart> {
         return userUriPartGrants.map { u -> u.uriPart }
     }
+
+
 }

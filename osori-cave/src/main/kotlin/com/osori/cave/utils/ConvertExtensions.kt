@@ -4,6 +4,7 @@ import com.osori.cave.nodetree.controller.MenuNodeResource
 import com.osori.cave.nodetree.infrastructure.UriPart
 import com.osori.cave.permission.controller.PermissionResource
 import com.osori.cave.permission.infrastructure.Permission
+import com.osori.cave.user.PersonalInformation
 import com.osori.cave.user.controller.UserResource
 import com.osori.cave.user.infrastructure.User
 
@@ -35,7 +36,7 @@ fun Permission.toResource(): PermissionResource {
     return resource
 }
 
-fun User.toResource(): UserResource {
+fun User.toResource(personalInformation: PersonalInformation? = null): UserResource {
     val user = UserResource(this.loginId)
     user.id = this.id
     user.name = this.name
@@ -45,6 +46,14 @@ fun User.toResource(): UserResource {
     if(this.getUriParts().isNotEmpty()){
         user.personalGrants = this.getUriParts().map (UriPart::toResource)
     }
+    personalInformation?.let {
+        user.email = it.email
+        user.phone = it.phone
+        user.department = it.department
+        user.position = it.position
+    }
+
     return user
 }
+
 

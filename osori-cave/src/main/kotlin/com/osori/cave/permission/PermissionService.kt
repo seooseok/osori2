@@ -13,13 +13,15 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 @Service
 class PermissionService
-@Autowired constructor(private val permissionRepository: PermissionRepository,
-                       private val uriPartRepository: UriPartRepository){
+@Autowired constructor( val permissionRepository: PermissionRepository,
+                        val uriPartRepository: UriPartRepository){
 
     fun create(name:String, menuNodeIdGroup:List<Long>){
         val uriParts = uriPartRepository.findByIdInAndStatusTrue(menuNodeIdGroup)
         val permission = Permission(name)
         uriParts.forEach { permission.addBy(it) }
+
+        save(permission)
     }
 
     fun modify(permissionId:Long, name: String){
@@ -31,6 +33,7 @@ class PermissionService
         val permission = findByPermission(permissionId)
         val uriParts = findByUriParts(menuNodeIdGroup)
         uriParts.forEach { permission.addBy(it) }
+        save(permission)
     }
 
     fun removeMenuNodes(permissionId:Long, menuNodeIdGroup:List<Long>){
@@ -61,6 +64,8 @@ class PermissionService
         return findByPermission(permissionId).toResource()
     }
 
+    private fun save(permission:Permission) = permissionRepository.save(permission)
+
     private fun findByPermission(permissionId:Long): Permission {
         return permissionRepository.findOne(permissionId)?: throw IllegalStateException("not found permission($permissionId)")
     }
@@ -68,6 +73,4 @@ class PermissionService
     private fun findByUriParts(menuNodeIdGroup:List<Long>): List<UriPart> {
         return uriPartRepository.findByIdInAndStatusTrue(menuNodeIdGroup)
     }
-
-
 }

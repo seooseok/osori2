@@ -1,22 +1,39 @@
 package com.osori.cave.user
 
 import com.osori.cave.IntegrationTestSupporter
-import com.osori.cave.user.infrastructure.UserRepository
+import io.kotlintest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 
 internal class UserServiceIntegrationTest: IntegrationTestSupporter() {
+
     @Autowired
-    private lateinit var repository:UserRepository
+    private lateinit var userService:UserService
 
     @Test
-    fun create() {
-       val id = repository.findAll()
-
+    fun createAndFindTest() {
+        //Given
+        val loginId = "5dolstory"
+        //When
+        userService.create(loginId = loginId, name = "서오석")
+        //Then
+        val userResource = userService.findOne(loginId)
+        userResource.loginId shouldBe loginId
     }
 
     @Test
-    fun modify() {
+    fun createWithPersonalInformationAndFindTest(){
+        //Given
+        val loginId = "5dolstory"
+        val email = "elijah17@gmail.com"
+        val information = PersonalInformation(email,"010-1234-1234")
+        //When
+        userService.create(loginId, "서오석",information)
+        //Then
+        val userResource = userService.findOne(loginId)
+        userResource.loginId shouldBe loginId
+        userResource.email shouldBe email
+
     }
 
 }

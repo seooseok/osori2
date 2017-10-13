@@ -13,12 +13,12 @@ class PermissionGrantHandle
 @Autowired constructor (private val permissionRepository:PermissionRepository) : GrantHandle {
 
     override fun addGrants(user: User, targetIds: List<Long>) {
-        val permissions = permissionRepository.findByIdInAndStatusIsTrue()
+        val permissions = permissionRepository.findByIdInAndStatusTrue(targetIds)
         permissions.forEach(user::addBy)
     }
 
     override fun removeGrants(user: User, targetIds: List<Long>) {
-        val permissions = permissionRepository.findByIdInAndStatusIsTrue()
+        val permissions = permissionRepository.findByIdInAndStatusTrue(targetIds)
         permissions.forEach(user::remove)
     }
 
