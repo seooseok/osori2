@@ -22,12 +22,27 @@ class UserService
     private lateinit var cryptoKey:String
 
 
-    fun create(loginId:String, name:String?,information: PersonalInformation? = null){
+    fun create(loginId:String, name:String? = null,information: PersonalInformation? = null){
         val user = User(loginId,name)
         if(information != null && information.isEmpty().not()){
             user.information = Crypto(cryptoKey).enc(information.toJson())
         }
         save(user)
+    }
+
+    fun createNotExistLoginId(loginId: String){
+        val user = repository.findByLoginId(loginId)
+        if(user == null){
+            create(loginId)
+        }
+    }
+
+    fun modify(id:Long, name: String?, information: PersonalInformation?){
+        val user = repository.findOne(id)
+        name?.let { user.name = name }
+        if(information != null && information.isEmpty().not()){
+            user.information = Crypto(cryptoKey).enc(information.toJson())
+        }
     }
 
     fun findOne(loginId: String): UserResource{
@@ -47,7 +62,11 @@ class UserService
     }
 
     private fun findByLoginId(loginId: String): User {
-        return repository.findByLoginId(loginId)?: throw IllegalArgumentException("not found user")
+        return repository.findByLoginId(loginId)?: throw IllegalArgumentException("not found user by loginId ($loginId)")
+    }
+
+    private fun findOne(id:Long): User {
+        return repository.findOne(id)?: throw IllegalArgumentException("not found user")
     }
 
     private fun save(user: User) = repository.save(user)

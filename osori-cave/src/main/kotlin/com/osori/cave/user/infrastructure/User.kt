@@ -26,7 +26,7 @@ class User (var loginId:String,
 
     var information:ByteArray? = null
 
-    internal var status = Status.WAIT
+    var status = Status.WAIT
 
     @Where(clause = "status = true")
     @OneToMany(mappedBy = "user", fetch = LAZY, cascade = arrayOf(PERSIST, MERGE, REFRESH, DETACH))
@@ -38,9 +38,7 @@ class User (var loginId:String,
     var userUriPartGrants:MutableList<UserUriPartGrant> = arrayListOf()
         private set
 
-    internal enum class Status {
-        ALLOW, REJECT, WAIT, EXPIRE
-    }
+
 
     fun addBy(permission: Permission){
         val permissions = this.getPermissions()
@@ -76,5 +74,9 @@ class User (var loginId:String,
         return userUriPartGrants.map { u -> u.uriPart }
     }
 
-
+    enum class Status {
+        ALLOW, REJECT, WAIT, EXPIRE
+    }
 }
+
+

@@ -33,7 +33,26 @@ internal class UserServiceIntegrationTest: IntegrationTestSupporter() {
         val userResource = userService.findOne(loginId)
         userResource.loginId shouldBe loginId
         userResource.email shouldBe email
+    }
 
+    @Test
+    fun modifyTest(){
+        //Given
+        val loginId = "5dolstory"
+        val email = "elijah17@daum.net"
+        val information = PersonalInformation("elijah17@gmail.com","010-1234-1234")
+        //When
+        userService.create(loginId, "서오석",information)
+        val userResource = userService.findOne(loginId)
+
+        userService.modify(userResource.id!!,"서오석", PersonalInformation(email))
+
+        //Then
+        val modifiedUserResource = userService.findOne(loginId)
+
+        modifiedUserResource.loginId shouldBe loginId
+        modifiedUserResource.email shouldBe email
+        modifiedUserResource.phone shouldBe null
     }
 
 }
