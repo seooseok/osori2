@@ -1,6 +1,6 @@
 package com.osori.cave.permission.controller
 
-import com.osori.cave.nodetree.controller.MenuNodeResource
+import com.osori.cave.navigation.controller.MenuNodeResource
 
 
 data class PermissionResource(var name:String) {

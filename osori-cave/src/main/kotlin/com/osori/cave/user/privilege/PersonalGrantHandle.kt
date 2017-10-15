@@ -1,7 +1,8 @@
 package com.osori.cave.user.privilege
 
-import com.osori.cave.nodetree.infrastructure.UriPart
-import com.osori.cave.nodetree.infrastructure.UriPartRepository
+import com.osori.cave.navigation.infrastructure.UriPart
+import com.osori.cave.navigation.infrastructure.UriPartRepository
+import com.osori.cave.navigation.infrastructure.UriPartType.SERVICE
 import com.osori.cave.user.infrastructure.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -12,12 +13,12 @@ import org.springframework.transaction.annotation.Transactional
 class PersonalGrantHandle
 @Autowired constructor(private val uriPartRepository: UriPartRepository) : GrantHandle {
     override fun addGrants(user: User, uriPartIds: List<Long>) {
-        val uriParts = uriPartRepository.findByIdInAndStatusTrue(uriPartIds)
+        val uriParts = this.findByUriParts(uriPartIds)
         uriParts.forEach (user::addBy)
     }
 
     override fun removeGrants(user: User, uriPartIds: List<Long>) {
-        val uriParts = uriPartRepository.findByIdInAndStatusTrue(uriPartIds)
+        val uriParts = this.findByUriParts(uriPartIds)
         uriParts.forEach (user::remove)
     }
 
@@ -40,5 +41,8 @@ class PersonalGrantHandle
         return uriPartRepository.findOne(uriPartId)?: throw IllegalArgumentException("not found uri part ($uriPartId)")
     }
 
+    private fun findByUriParts(menuNodeIdGroup:List<Long>): List<UriPart> {
+        return uriPartRepository.findByTypeAndIdInAndStatusTrue(SERVICE, menuNodeIdGroup)
+    }
 
 }

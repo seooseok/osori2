@@ -1,6 +1,6 @@
 package com.osori.cave.user.infrastructure
 
-import com.osori.cave.nodetree.infrastructure.UriPart
+import com.osori.cave.navigation.infrastructure.UriPart
 import com.osori.cave.permission.infrastructure.Permission
 import org.hibernate.annotations.Where
 import javax.persistence.CascadeType.DETACH

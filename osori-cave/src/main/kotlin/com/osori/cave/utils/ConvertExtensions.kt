@@ -1,7 +1,7 @@
 package com.osori.cave.utils
 
-import com.osori.cave.nodetree.controller.MenuNodeResource
-import com.osori.cave.nodetree.infrastructure.UriPart
+import com.osori.cave.navigation.controller.MenuNodeResource
+import com.osori.cave.navigation.infrastructure.UriPart
 import com.osori.cave.permission.controller.PermissionResource
 import com.osori.cave.permission.infrastructure.Permission
 import com.osori.cave.user.PersonalInformation
@@ -12,7 +12,10 @@ import com.osori.cave.user.infrastructure.User
 fun UriPart.toResource(): MenuNodeResource {
     val menuNode = MenuNodeResource(this.name, this.resource, this.depthType, this.methodType)
     menuNode.id = this.id
-    menuNode.num = this.num
+    menuNode.sorting = this.sorting
+    menuNode.viewId = this.viewId
+    menuNode.parentViewId = this.viewParentId
+
     menuNode.fullUri = getFullUri(this)
     if(this.parentUriPart != null)
         menuNode.parentId = this.parentUriPart!!.id

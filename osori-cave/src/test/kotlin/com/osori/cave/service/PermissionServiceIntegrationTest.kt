@@ -2,8 +2,8 @@ package com.osori.cave.service
 
 import com.osori.cave.IntegrationTestSupporter
 import com.osori.cave.generator.UriPartGenerator
-import com.osori.cave.nodetree.MenuTreeService
-import com.osori.cave.nodetree.infrastructure.UriPartRepository
+import com.osori.cave.navigation.MenuTreeService
+import com.osori.cave.navigation.infrastructure.UriPartRepository
 import com.osori.cave.permission.PermissionService
 import io.kotlintest.matchers.shouldBe
 import org.junit.jupiter.api.Test

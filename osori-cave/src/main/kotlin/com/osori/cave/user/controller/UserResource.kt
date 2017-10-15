@@ -1,6 +1,6 @@
 package com.osori.cave.user.controller
 
-import com.osori.cave.nodetree.controller.MenuNodeResource
+import com.osori.cave.navigation.controller.MenuNodeResource
 import com.osori.cave.permission.controller.PermissionResource
 
 

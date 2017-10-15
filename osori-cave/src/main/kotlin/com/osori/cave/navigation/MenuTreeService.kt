@@ -1,8 +1,9 @@
-package com.osori.cave.nodetree
+package com.osori.cave.navigation
 
-import com.osori.cave.nodetree.controller.MenuNodeResource
-import com.osori.cave.nodetree.infrastructure.UriPart
-import com.osori.cave.nodetree.infrastructure.UriPartRepository
+import com.osori.cave.navigation.controller.MenuNodeResource
+import com.osori.cave.navigation.infrastructure.UriPart
+import com.osori.cave.navigation.infrastructure.UriPartRepository
+import com.osori.cave.navigation.infrastructure.UriPartType
 import com.osori.cave.user.infrastructure.User
 import com.osori.cave.utils.toResource
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,7 +17,7 @@ class MenuTreeService
 
     fun create(menuNodeResource: MenuNodeResource) {
         val uriPart = UriPart(menuNodeResource.name, menuNodeResource.resource, menuNodeResource.depthType, menuNodeResource.methodType).apply {
-            num = menuNodeResource.num
+            sorting = menuNodeResource.sorting
         }
 
         if (menuNodeResource.parentId != null) {
@@ -32,7 +33,7 @@ class MenuTreeService
     }
 
     fun findNodes():List<MenuNodeResource>{
-        val uriParts = repository.findByStatusTrue()
+        val uriParts = findAll()
         return uriParts.map { u -> u.toResource()}
     }
 
@@ -52,7 +53,9 @@ class MenuTreeService
             resource = menuNodeResource.resource
             methodType = menuNodeResource.methodType
             depthType = menuNodeResource.depthType
-            num = menuNodeResource.num
+            sorting = menuNodeResource.sorting
+            viewId = menuNodeResource.viewId
+            viewParentId = menuNodeResource.parentViewId
         }
     }
 
@@ -64,8 +67,8 @@ class MenuTreeService
     }
 
     fun resetTree(){
-        val rootUriPart = repository.findByParentUriPartIsNull()?: throw IllegalStateException("can't reset tree")
-        rootUriPart.uriParts.map { u -> orphanRemove(u) }
+        val root = findRoot()
+        root?.let { it.uriParts.map { u -> orphanRemove(u) } }
     }
 
     private fun save(uriPart: UriPart) = repository.save(uriPart)
@@ -75,6 +78,14 @@ class MenuTreeService
         if(uriPart.uriParts.isEmpty().not()){
             uriPart.uriParts.map { u -> orphanRemove(u) }
         }
+    }
+
+    private fun findAll():List<UriPart>{
+        return repository.findByTypeAndStatusTrue(UriPartType.SERVICE)
+    }
+
+    private fun findRoot():UriPart? {
+        return repository.findByTypeAndParentUriPartIsNull(UriPartType.SERVICE)?: throw IllegalStateException("can't reset tree")
     }
 
 }

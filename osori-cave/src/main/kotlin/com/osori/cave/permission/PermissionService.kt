@@ -1,7 +1,8 @@
 package com.osori.cave.permission
 
-import com.osori.cave.nodetree.infrastructure.UriPart
-import com.osori.cave.nodetree.infrastructure.UriPartRepository
+import com.osori.cave.navigation.infrastructure.UriPart
+import com.osori.cave.navigation.infrastructure.UriPartRepository
+import com.osori.cave.navigation.infrastructure.UriPartType.SERVICE
 import com.osori.cave.permission.controller.PermissionResource
 import com.osori.cave.permission.infrastructure.Permission
 import com.osori.cave.permission.infrastructure.PermissionRepository
@@ -17,7 +18,7 @@ class PermissionService
                         val uriPartRepository: UriPartRepository){
 
     fun create(name:String, menuNodeIdGroup:List<Long>){
-        val uriParts = uriPartRepository.findByIdInAndStatusTrue(menuNodeIdGroup)
+        val uriParts = this.findByUriParts(menuNodeIdGroup)
         val permission = Permission(name)
         uriParts.forEach { permission.addBy(it) }
 
@@ -71,6 +72,7 @@ class PermissionService
     }
 
     private fun findByUriParts(menuNodeIdGroup:List<Long>): List<UriPart> {
-        return uriPartRepository.findByIdInAndStatusTrue(menuNodeIdGroup)
+        return uriPartRepository.findByTypeAndIdInAndStatusTrue(SERVICE, menuNodeIdGroup)
     }
+
 }

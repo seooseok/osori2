@@ -1,4 +1,4 @@
-package com.osori.cave.nodetree.infrastructure
+package com.osori.cave.navigation.infrastructure
 
 import com.osori.cave.permission.infrastructure.Permission
 import com.osori.cave.permission.infrastructure.PermissionUriPartMapping
@@ -31,7 +31,12 @@ class UriPart(var name:String,
     var id:Long? = null
         private set
 
-    var num:Int = 0
+    var sorting:Int = 0
+
+    var viewId:Long? = null
+    var viewParentId:Long? = null
+
+    var type: UriPartType = UriPartType.SERVICE
 
     var status = true
 
@@ -68,4 +73,10 @@ class UriPart(var name:String,
         return permissionUriPartMappings.map { p -> p.permission }
     }
 }
+
+enum class UriPartType {
+    CAVE,SERVICE
+}
+
+
 

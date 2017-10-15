@@ -1,6 +1,6 @@
 package com.osori.cave.permission.infrastructure
 
-import com.osori.cave.nodetree.infrastructure.UriPart
+import com.osori.cave.navigation.infrastructure.UriPart
 import com.osori.cave.user.infrastructure.User
 import com.osori.cave.user.infrastructure.UserPermissionGrant
 import org.hibernate.annotations.Where

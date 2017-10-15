@@ -1,6 +1,6 @@
 package com.osori.cave.permission.infrastructure
 
-import com.osori.cave.nodetree.infrastructure.UriPart
+import com.osori.cave.navigation.infrastructure.UriPart
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id

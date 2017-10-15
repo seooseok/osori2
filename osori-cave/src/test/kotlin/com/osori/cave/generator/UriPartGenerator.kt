@@ -1,6 +1,6 @@
 package com.osori.cave.generator
 
-import com.osori.cave.nodetree.infrastructure.UriPart
+import com.osori.cave.navigation.infrastructure.UriPart
 import org.springframework.web.bind.annotation.RequestMethod
 import java.util.Random
 
