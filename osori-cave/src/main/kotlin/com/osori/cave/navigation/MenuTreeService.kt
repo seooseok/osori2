@@ -15,15 +15,18 @@ import org.springframework.transaction.annotation.Transactional
 class MenuTreeService
 @Autowired constructor(private val repository: UriPartRepository) {
 
-    fun create(menuNodeResource: MenuNodeResource) {
-        val uriPart = UriPart(menuNodeResource.name, menuNodeResource.resource, menuNodeResource.depthType, menuNodeResource.methodType).apply {
-            sorting = menuNodeResource.sorting
+    fun create(menuNode: MenuNodeResource) {
+        val uriPart = UriPart(menuNode.name, menuNode.resource, menuNode.depthType, menuNode.methodType).apply {
+            sorting = menuNode.sorting
+            viewId = menuNode.viewId
+            viewParentId = menuNode.viewParentId
         }
 
-        if (menuNodeResource.parentId != null) {
-            val parentUriPart = repository.findOne(menuNodeResource.parentId)
+        menuNode.parentId?.let {
+            val parentUriPart = repository.findOne(menuNode.parentId)
             uriPart.setByParent(parentUriPart)
         }
+
         save(uriPart)
     }
 
@@ -41,12 +44,6 @@ class MenuTreeService
         return user.getUriParts().map { u -> u.toResource() }
     }
 
-    fun moveNode(nodeId: Long, parentNodeId:Long){
-        val uriPart = repository.findOne(nodeId)
-        val parentUriPart = repository.findOne(parentNodeId)
-        uriPart.setByParent(parentUriPart)
-    }
-
     fun modifyNode(menuNodeResource: MenuNodeResource){
         val uriPart = repository.findOne(menuNodeResource.id).apply {
             name = menuNodeResource.name
@@ -55,7 +52,12 @@ class MenuTreeService
             depthType = menuNodeResource.depthType
             sorting = menuNodeResource.sorting
             viewId = menuNodeResource.viewId
-            viewParentId = menuNodeResource.parentViewId
+            viewParentId = menuNodeResource.viewParentId
+        }
+
+        menuNodeResource.parentId?.let {
+            val parentUriPart = repository.findOne(it)
+            uriPart.setByParent(parentUriPart)
         }
     }
 
@@ -86,6 +88,13 @@ class MenuTreeService
 
     private fun findRoot():UriPart? {
         return repository.findByTypeAndParentUriPartIsNull(UriPartType.SERVICE)?: throw IllegalStateException("can't reset tree")
+    }
+
+    @Deprecated("쓸 일이 없네.")
+    fun moveNode(nodeId: Long, parentNodeId:Long){
+        val uriPart = repository.findOne(nodeId)
+        val parentUriPart = repository.findOne(parentNodeId)
+        uriPart.setByParent(parentUriPart)
     }
 
 }

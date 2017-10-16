@@ -1,40 +1,30 @@
 package com.osori.cave.generator
 
 import com.osori.cave.navigation.infrastructure.UriPart
-import org.springframework.web.bind.annotation.RequestMethod
-import java.util.Random
+import com.osori.cave.navigation.infrastructure.UriPart.DepthType.FUNC
+import com.osori.cave.navigation.infrastructure.UriPart.DepthType.MENU
+import org.springframework.web.bind.annotation.RequestMethod.DELETE
+import org.springframework.web.bind.annotation.RequestMethod.GET
+import org.springframework.web.bind.annotation.RequestMethod.POST
+import org.springframework.web.bind.annotation.RequestMethod.PUT
 
 
 class UriPartGenerator {
-    private val random = Random(System.currentTimeMillis())
 
-    fun createTree(childSize:Int): UriPart {
-        val root = createUriPart()
-        createChildDepth(root,childSize)
+    fun createTree(): UriPart {
+        val root = UriPart("대쉬보드","/", MENU, GET)
+        root.addBy(UriPart("사용자 전체 조회","/users",MENU,GET))
 
-        root.uriParts.map { u -> createChildDepth(u,childSize) }
+        root.addBy(UriPart("사용자 조회","/user/{id}",MENU,GET))
+        root.addBy(UriPart("사용자 정보 수정", "/user/{id}",MENU,PUT))
+        root.addBy(UriPart("사용자 만료", "/user/{id}",MENU,DELETE))
+
+        val menuTree = UriPart("트리 조회", "/tree",MENU,GET)
+        menuTree.addBy(UriPart("네비게이션 추가", "/node", FUNC,POST))
+        menuTree.addBy(UriPart("네비게이션 수정","/node/{id}",FUNC,PUT))
+        menuTree.addBy(UriPart("네비게이션 삭제","/node/{id}",FUNC,DELETE))
+        root.addBy(menuTree)
+
         return root
-    }
-
-    fun createChildDepth(uriPart: UriPart, size:Int){
-        for(i in 1..size){
-            uriPart.addBy(createUriPart())
-        }
-    }
-
-    fun createUriPart(): UriPart {
-        val name = listOf("추가","수정","삭제","조회").random()
-        val resource = listOf("/menu/{menu}","/func/{func}","/category/{category}","/box/{box}").random()
-        val methodType = RequestMethod.valueOf(listOf("GET","POST","PUT","DELETE").random())
-        val depthType = UriPart.DepthType.valueOf(listOf("MENU","FUNC","FIELD").random())
-
-        return UriPart(name, resource, depthType, methodType)
-    }
-
-    private fun List<String>.random(): String {
-        if (this.isEmpty())
-            return ""
-
-        return this[(Math.random() * this.size).toInt()]
     }
 }

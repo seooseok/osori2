@@ -20,7 +20,7 @@ internal class MenuTreeServiceIntegrationTest: IntegrationTestSupporter() {
     @Test
     fun `메뉴 트리 Full URI 생성 테스트`(){
         //Given
-        val rootUriPart = UriPartGenerator().createTree(3)
+        val rootUriPart = UriPartGenerator().createTree()
         repository.save(rootUriPart)
 
         //When
@@ -33,7 +33,7 @@ internal class MenuTreeServiceIntegrationTest: IntegrationTestSupporter() {
     @Test
     fun resetTree() {
         //Given
-        val rootUriPart = UriPartGenerator().createTree(3)
+        val rootUriPart = UriPartGenerator().createTree()
         repository.save(rootUriPart)
         //When
         menuTreeService.resetTree()
@@ -45,7 +45,7 @@ internal class MenuTreeServiceIntegrationTest: IntegrationTestSupporter() {
     @Test
     fun moveNode() {
         //Given
-        val rootUriPart = UriPartGenerator().createTree(3)
+        val rootUriPart = UriPartGenerator().createTree()
         repository.save(rootUriPart)
         //When
         val part = rootUriPart.uriParts[0].uriParts[0]
@@ -61,7 +61,7 @@ internal class MenuTreeServiceIntegrationTest: IntegrationTestSupporter() {
     @Test
     fun removeNode() {
         //Given
-        val rootUriPart = UriPartGenerator().createTree(5)
+        val rootUriPart = UriPartGenerator().createTree()
         repository.save(rootUriPart)
         //When
         val parts = repository.findAll()
@@ -72,12 +72,6 @@ internal class MenuTreeServiceIntegrationTest: IntegrationTestSupporter() {
         val nodeSize = menuTreeService.findNodes().size
 
         (partsSize - 1) shouldEqual nodeSize
-    }
-
-    @Test
-    fun createNode() {
-        val uriPart = UriPartGenerator().createUriPart()
-        repository.save(uriPart)
     }
 
 }

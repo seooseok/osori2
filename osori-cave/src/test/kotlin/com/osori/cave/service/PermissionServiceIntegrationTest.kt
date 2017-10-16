@@ -21,7 +21,7 @@ internal class PermissionServiceIntegrationTest : IntegrationTestSupporter() {
     fun create() {
         //Given
         val name = "sample permission"
-        uriPartRepository.save(UriPartGenerator().createTree(2))
+        uriPartRepository.save(UriPartGenerator().createTree())
         val nodes = menuTreeService.findNodes()
 
         //When
@@ -40,7 +40,7 @@ internal class PermissionServiceIntegrationTest : IntegrationTestSupporter() {
         //Given
         val name = "sample permission"
 
-        uriPartRepository.save(UriPartGenerator().createTree(2))
+        uriPartRepository.save(UriPartGenerator().createTree())
         val nodes = menuTreeService.findNodes()
 
         permissionService.create(name, listOf(nodes[0].id!!))

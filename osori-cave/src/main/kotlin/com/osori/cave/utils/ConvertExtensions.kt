@@ -14,7 +14,7 @@ fun UriPart.toResource(): MenuNodeResource {
     menuNode.id = this.id
     menuNode.sorting = this.sorting
     menuNode.viewId = this.viewId
-    menuNode.parentViewId = this.viewParentId
+    menuNode.viewParentId = this.viewParentId
 
     menuNode.fullUri = getFullUri(this)
     if(this.parentUriPart != null)
