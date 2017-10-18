@@ -17,12 +17,12 @@ fun UriPart.toResource(): MenuNodeResource {
     menuNode.viewParentId = this.viewParentId
 
     menuNode.fullUri = getFullUri(this)
-    if(this.parentUriPart != null)
+    if (this.parentUriPart != null)
         menuNode.parentId = this.parentUriPart!!.id
     return menuNode
 }
 
-private fun getFullUri(uriPart: UriPart):String? {
+private fun getFullUri(uriPart: UriPart): String? {
     return when {
         uriPart.parentUriPart == null -> uriPart.resource
         else -> getFullUri(uriPart.parentUriPart!!) + uriPart.resource
@@ -32,7 +32,7 @@ private fun getFullUri(uriPart: UriPart):String? {
 fun Permission.toResource(): PermissionResource {
     val resource = PermissionResource(this.name)
     resource.id = this.id
-    if(this.getUriParts().isNotEmpty()){
+    if (this.getUriParts().isNotEmpty()) {
         resource.menuNodes = this.getUriParts().map(UriPart::toResource)
     }
 
@@ -43,11 +43,11 @@ fun User.toResource(personalInformation: PersonalInformation? = null): UserResou
     val user = UserResource(this.loginId)
     user.id = this.id
     user.name = this.name
-    if(this.getPermissions().isNotEmpty()){
-        user.permissionGrants = this.getPermissions().map (Permission::toResource)
+    if (this.getPermissions().isNotEmpty()) {
+        user.permissionGrants = this.getPermissions().map(Permission::toResource)
     }
-    if(this.getUriParts().isNotEmpty()){
-        user.personalGrants = this.getUriParts().map (UriPart::toResource)
+    if (this.getUriParts().isNotEmpty()) {
+        user.personalGrants = this.getUriParts().map(UriPart::toResource)
     }
     personalInformation?.let {
         user.email = it.email

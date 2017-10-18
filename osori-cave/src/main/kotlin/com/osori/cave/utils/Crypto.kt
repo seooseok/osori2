@@ -18,7 +18,7 @@ class Crypto(private val key: String) {
 
     private val iv = "6c5577c69ceabcce".toByteArray()
 
-    fun enc(plaintext: String):ByteArray {
+    fun enc(plaintext: String): ByteArray {
         val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
         val keySpec = SecretKeySpec(key.toByteArray(), "AES")
 
@@ -29,7 +29,7 @@ class Crypto(private val key: String) {
         return cipher.doFinal(plaintext.toByteArray(Charsets.UTF_8))
     }
 
-    fun dec(cipherText: ByteArray):String {
+    fun dec(cipherText: ByteArray): String {
         val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
         val keySpec = SecretKeySpec(key.toByteArray(), "AES")
         val ivSpec = IvParameterSpec(iv)

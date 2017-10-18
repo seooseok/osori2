@@ -9,7 +9,7 @@ import io.kotlintest.matchers.shouldEqual
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 
-internal class MenuTreeServiceIntegrationTest: IntegrationTestSupporter() {
+internal class MenuTreeServiceIntegrationTest : IntegrationTestSupporter() {
     @Autowired
     private lateinit var repository: UriPartRepository
 
@@ -18,7 +18,7 @@ internal class MenuTreeServiceIntegrationTest: IntegrationTestSupporter() {
 
 
     @Test
-    fun `메뉴 트리 Full URI 생성 테스트`(){
+    fun `메뉴 트리 Full URI 생성 테스트`() {
         //Given
         val rootUriPart = UriPartGenerator().createTree()
         repository.save(rootUriPart)
@@ -38,7 +38,7 @@ internal class MenuTreeServiceIntegrationTest: IntegrationTestSupporter() {
         //When
         menuTreeService.resetTree()
 
-        menuTreeService.findNodes().size shouldBe  1
+        menuTreeService.findNodes().size shouldBe 1
 
     }
 
@@ -67,7 +67,7 @@ internal class MenuTreeServiceIntegrationTest: IntegrationTestSupporter() {
         val parts = repository.findAll()
         val partsSize = parts.size
         //Then
-        menuTreeService.removeNode(parts[partsSize -1].id!!)
+        menuTreeService.removeNode(parts[partsSize - 1].id!!)
 
         val nodeSize = menuTreeService.findNodes().size
 

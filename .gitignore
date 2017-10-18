@@ -75,3 +75,5 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 /osori-cave/gradle/wrapper/*
 /osori-sample/gradle/wrapper/*
+
+/osori-cave-ui/node_modules/**

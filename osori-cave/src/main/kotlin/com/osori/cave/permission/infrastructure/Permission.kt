@@ -18,46 +18,46 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "PERMISSION")
-class Permission(var name:String){
+class Permission(var name: String) {
 
     @Id
     @GeneratedValue
-    var id:Long? = null
+    var id: Long? = null
         private set
     var status = true
 
     @Where(clause = "status = true")
     @OneToMany(mappedBy = "permission", fetch = LAZY, cascade = arrayOf(PERSIST, MERGE, REFRESH, DETACH))
-    var permissionUriPartMappings:MutableList<PermissionUriPartMapping> = arrayListOf()
+    var permissionUriPartMappings: MutableList<PermissionUriPartMapping> = arrayListOf()
         private set
 
     @Where(clause = "status = true")
     @OneToMany(mappedBy = "permission", fetch = LAZY, cascade = arrayOf(PERSIST, MERGE, REFRESH, DETACH))
-    var userPermissionGrants:MutableList<UserPermissionGrant> = arrayListOf()
+    var userPermissionGrants: MutableList<UserPermissionGrant> = arrayListOf()
         private set
 
     fun addBy(user: User) {
         val users = this.getUsers()
-        if(users.contains(user).not())
+        if (users.contains(user).not())
             UserPermissionGrant(user, this)
     }
 
-    fun addBy(uriPart: UriPart){
+    fun addBy(uriPart: UriPart) {
         val uriParts = this.getUriParts()
-        if(uriParts.contains(uriPart).not()){
+        if (uriParts.contains(uriPart).not()) {
             PermissionUriPartMapping(this, uriPart)
         }
     }
 
-    fun removeBy(uriPart: UriPart){
+    fun removeBy(uriPart: UriPart) {
         val mapping = permissionUriPartMappings.find { it.uriPart == uriPart }
-        if(mapping != null)
+        if (mapping != null)
             mapping.status = false
     }
 
     fun removeBy(user: User) {
         val mapping = userPermissionGrants.find { it.user == user }
-        if(mapping != null)
+        if (mapping != null)
             mapping.status = false
     }
 
@@ -68,7 +68,6 @@ class Permission(var name:String){
     fun getUsers(): List<User> {
         return userPermissionGrants.map { g -> g.user }
     }
-
 
 
 }

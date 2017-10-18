@@ -30,21 +30,21 @@ class MenuTreeService
         save(uriPart)
     }
 
-    fun findNode(nodeId:Long): MenuNodeResource {
+    fun findNode(nodeId: Long): MenuNodeResource {
         val uriPart = repository.findOne(nodeId)
         return uriPart.toResource()
     }
 
-    fun findNodes():List<MenuNodeResource>{
+    fun findNodes(): List<MenuNodeResource> {
         val uriParts = findAll()
-        return uriParts.map { u -> u.toResource()}
+        return uriParts.map { u -> u.toResource() }
     }
 
-    fun findNodes(user: User):List<MenuNodeResource> {
+    fun findNodes(user: User): List<MenuNodeResource> {
         return user.getUriParts().map { u -> u.toResource() }
     }
 
-    fun modifyNode(menuNodeResource: MenuNodeResource){
+    fun modifyNode(menuNodeResource: MenuNodeResource) {
         val uriPart = repository.findOne(menuNodeResource.id).apply {
             name = menuNodeResource.name
             resource = menuNodeResource.resource
@@ -61,37 +61,37 @@ class MenuTreeService
         }
     }
 
-    fun removeNode(nodeId: Long){
+    fun removeNode(nodeId: Long) {
         val uriPart = repository.findOne(nodeId)
-        if(uriPart.parentUriPart == null)
+        if (uriPart.parentUriPart == null)
             throw IllegalStateException("${nodeId} is root node. root node. can't remove")
         uriPart.status = false
     }
 
-    fun resetTree(){
+    fun resetTree() {
         val root = findRoot()
         root?.let { it.uriParts.map { u -> orphanRemove(u) } }
     }
 
     private fun save(uriPart: UriPart) = repository.save(uriPart)
 
-    private fun orphanRemove(uriPart: UriPart){
+    private fun orphanRemove(uriPart: UriPart) {
         uriPart.status = false
-        if(uriPart.uriParts.isEmpty().not()){
+        if (uriPart.uriParts.isEmpty().not()) {
             uriPart.uriParts.map { u -> orphanRemove(u) }
         }
     }
 
-    private fun findAll():List<UriPart>{
+    private fun findAll(): List<UriPart> {
         return repository.findByTypeAndStatusTrue(UriPartType.SERVICE)
     }
 
-    private fun findRoot():UriPart? {
-        return repository.findByTypeAndParentUriPartIsNull(UriPartType.SERVICE)?: throw IllegalStateException("can't reset tree")
+    private fun findRoot(): UriPart? {
+        return repository.findByTypeAndParentUriPartIsNull(UriPartType.SERVICE) ?: throw IllegalStateException("can't reset tree")
     }
 
     @Deprecated("쓸 일이 없네.")
-    fun moveNode(nodeId: Long, parentNodeId:Long){
+    fun moveNode(nodeId: Long, parentNodeId: Long) {
         val uriPart = repository.findOne(nodeId)
         val parentUriPart = repository.findOne(parentNodeId)
         uriPart.setByParent(parentUriPart)
