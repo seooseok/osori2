@@ -11,18 +11,19 @@ import javax.persistence.Table
 @Entity
 @Table(name = "PERMISSION_URI_PART_MAPPING")
 class PermissionUriPartMapping {
-    constructor(permission: Permission, uriPart: UriPart){
+    constructor(permission: Permission, uriPart: UriPart) {
         this.permission = permission
-        if(permission.getUriParts().contains(uriPart).not())
+        if (permission.getUriParts().contains(uriPart).not())
             permission.permissionUriPartMappings.add(this)
 
         this.uriPart = uriPart
-        if(uriPart.getPermission().contains(permission).not())
+        if (uriPart.getPermission().contains(permission).not())
             uriPart.permissionUriPartMappings.add(this)
     }
+
     @Id
     @GeneratedValue
-    var id:Long? = null
+    var id: Long? = null
         private set
     var status = true
 

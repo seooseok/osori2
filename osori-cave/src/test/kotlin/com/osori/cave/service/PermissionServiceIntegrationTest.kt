@@ -47,7 +47,7 @@ internal class PermissionServiceIntegrationTest : IntegrationTestSupporter() {
 
         //When
         val permission = permissionService.findAll()[0]
-        permissionService.modify(permission.id!!,"test name")
+        permissionService.modify(permission.id!!, "test name")
 
         //Than
         val modifiedPermission = permissionService.findAll()[0]

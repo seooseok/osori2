@@ -14,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 @Service
 class PermissionService
-@Autowired constructor( val permissionRepository: PermissionRepository,
-                        val uriPartRepository: UriPartRepository){
+@Autowired constructor(val permissionRepository: PermissionRepository,
+                       val uriPartRepository: UriPartRepository) {
 
-    fun create(name:String, menuNodeIdGroup:List<Long>){
+    fun create(name: String, menuNodeIdGroup: List<Long>) {
         val uriParts = this.findByUriParts(menuNodeIdGroup)
         val permission = Permission(name)
         uriParts.forEach { permission.addBy(it) }
@@ -25,19 +25,19 @@ class PermissionService
         save(permission)
     }
 
-    fun modify(permissionId:Long, name: String){
+    fun modify(permissionId: Long, name: String) {
         val permission = findByPermission(permissionId)
         permission.name = name
     }
 
-    fun addMenuNodes(permissionId:Long, menuNodeIdGroup:List<Long>){
+    fun addMenuNodes(permissionId: Long, menuNodeIdGroup: List<Long>) {
         val permission = findByPermission(permissionId)
         val uriParts = findByUriParts(menuNodeIdGroup)
         uriParts.forEach { permission.addBy(it) }
         save(permission)
     }
 
-    fun removeMenuNodes(permissionId:Long, menuNodeIdGroup:List<Long>){
+    fun removeMenuNodes(permissionId: Long, menuNodeIdGroup: List<Long>) {
         val permission = findByPermission(permissionId)
         val uriParts = findByUriParts(menuNodeIdGroup)
         permission.permissionUriPartMappings
@@ -45,13 +45,13 @@ class PermissionService
                 .map { it.status = false }
     }
 
-    fun remove(permissionId: Long){
+    fun remove(permissionId: Long) {
         val permission = findByPermission(permissionId)
         permission.status = false
         permission.userPermissionGrants.forEach { it.status = false }
     }
 
-    fun recover(permissionId: Long){
+    fun recover(permissionId: Long) {
         val permission = findByPermission(permissionId)
         permission.status = true
     }
@@ -65,13 +65,13 @@ class PermissionService
         return findByPermission(permissionId).toResource()
     }
 
-    private fun save(permission:Permission) = permissionRepository.save(permission)
+    private fun save(permission: Permission) = permissionRepository.save(permission)
 
-    private fun findByPermission(permissionId:Long): Permission {
-        return permissionRepository.findOne(permissionId)?: throw IllegalStateException("not found permission($permissionId)")
+    private fun findByPermission(permissionId: Long): Permission {
+        return permissionRepository.findOne(permissionId) ?: throw IllegalStateException("not found permission($permissionId)")
     }
 
-    private fun findByUriParts(menuNodeIdGroup:List<Long>): List<UriPart> {
+    private fun findByUriParts(menuNodeIdGroup: List<Long>): List<UriPart> {
         return uriPartRepository.findByTypeAndIdInAndStatusTrue(SERVICE, menuNodeIdGroup)
     }
 

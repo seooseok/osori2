@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 @Service
 class PermissionGrantHandle
-@Autowired constructor (private val permissionRepository:PermissionRepository) : GrantHandle {
+@Autowired constructor(private val permissionRepository: PermissionRepository) : GrantHandle {
 
     override fun addGrants(user: User, targetIds: List<Long>) {
         val permissions = permissionRepository.findByIdInAndStatusTrue(targetIds)
@@ -23,21 +23,21 @@ class PermissionGrantHandle
     }
 
 
-    override fun addGrant(user: User, permissionId:Long){
+    override fun addGrant(user: User, permissionId: Long) {
         val permission = findPermission(permissionId)
         user.addBy(permission)
     }
 
-    override fun removeGrant(user: User,permissionId: Long){
+    override fun removeGrant(user: User, permissionId: Long) {
         val permission = findPermission(permissionId)
         user.remove(permission)
     }
 
-    override fun resetGrant(user: User){
+    override fun resetGrant(user: User) {
         user.getPermissions().forEach(user::remove)
     }
 
     private fun findPermission(permissionId: Long): Permission {
-        return permissionRepository.findOne(permissionId)?: throw IllegalArgumentException("not found permission($permissionId)")
+        return permissionRepository.findOne(permissionId) ?: throw IllegalArgumentException("not found permission($permissionId)")
     }
 }

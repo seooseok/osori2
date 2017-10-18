@@ -12,18 +12,19 @@ import javax.persistence.Table
 @Entity
 @Table(name = "USER_PERMISSION_GRANT")
 class UserPermissionGrant {
-    constructor(user: User, permission: Permission){
+    constructor(user: User, permission: Permission) {
         this.user = user
-        if(user.getPermissions().contains(permission).not())
+        if (user.getPermissions().contains(permission).not())
             user.userPermissionGrants.add(this)
 
         this.permission = permission
-        if(permission.getUsers().contains(user).not())
+        if (permission.getUsers().contains(user).not())
             permission.userPermissionGrants.add(this)
     }
+
     @Id
     @GeneratedValue
-    var id:Long? = null
+    var id: Long? = null
         private set
     var status = true
 

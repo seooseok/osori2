@@ -16,36 +16,36 @@ import java.lang.IllegalArgumentException
 @Transactional
 @Service
 class UserService
-@Autowired constructor(private val repository: UserRepository){
+@Autowired constructor(private val repository: UserRepository) {
 
     @Value(value = "\${cave.crypto.key}")
-    private lateinit var cryptoKey:String
+    private lateinit var cryptoKey: String
 
 
-    fun create(loginId:String, name:String? = null,information: PersonalInformation? = null){
-        val user = User(loginId,name)
-        if(information != null && information.isEmpty().not()){
+    fun create(loginId: String, name: String? = null, information: PersonalInformation? = null) {
+        val user = User(loginId, name)
+        if (information != null && information.isEmpty().not()) {
             user.information = Crypto(cryptoKey).enc(information.toJson())
         }
         save(user)
     }
 
-    fun createNotExistLoginId(loginId: String){
+    fun createNotExistLoginId(loginId: String) {
         val user = repository.findByLoginId(loginId)
-        if(user == null){
+        if (user == null) {
             create(loginId)
         }
     }
 
-    fun modify(id:Long, name: String?, information: PersonalInformation?){
+    fun modify(id: Long, name: String?, information: PersonalInformation?) {
         val user = repository.findOne(id)
         name?.let { user.name = name }
-        if(information != null && information.isEmpty().not()){
+        if (information != null && information.isEmpty().not()) {
             user.information = Crypto(cryptoKey).enc(information.toJson())
         }
     }
 
-    fun findOne(loginId: String): UserResource{
+    fun findOne(loginId: String): UserResource {
         val user = this.findByLoginId(loginId)
 
         val information = this.getPersonalInformation(user)
@@ -62,11 +62,11 @@ class UserService
     }
 
     private fun findByLoginId(loginId: String): User {
-        return repository.findByLoginId(loginId)?: throw IllegalArgumentException("not found user by loginId ($loginId)")
+        return repository.findByLoginId(loginId) ?: throw IllegalArgumentException("not found user by loginId ($loginId)")
     }
 
-    private fun findOne(id:Long): User {
-        return repository.findOne(id)?: throw IllegalArgumentException("not found user")
+    private fun findOne(id: Long): User {
+        return repository.findOne(id) ?: throw IllegalArgumentException("not found user")
     }
 
     private fun save(user: User) = repository.save(user)

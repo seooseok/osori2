@@ -14,12 +14,12 @@ class PersonalGrantHandle
 @Autowired constructor(private val uriPartRepository: UriPartRepository) : GrantHandle {
     override fun addGrants(user: User, uriPartIds: List<Long>) {
         val uriParts = this.findByUriParts(uriPartIds)
-        uriParts.forEach (user::addBy)
+        uriParts.forEach(user::addBy)
     }
 
     override fun removeGrants(user: User, uriPartIds: List<Long>) {
         val uriParts = this.findByUriParts(uriPartIds)
-        uriParts.forEach (user::remove)
+        uriParts.forEach(user::remove)
     }
 
     override fun addGrant(user: User, uriPartId: Long) {
@@ -37,11 +37,11 @@ class PersonalGrantHandle
     }
 
 
-    private fun findByUriPart(uriPartId:Long): UriPart{
-        return uriPartRepository.findOne(uriPartId)?: throw IllegalArgumentException("not found uri part ($uriPartId)")
+    private fun findByUriPart(uriPartId: Long): UriPart {
+        return uriPartRepository.findOne(uriPartId) ?: throw IllegalArgumentException("not found uri part ($uriPartId)")
     }
 
-    private fun findByUriParts(menuNodeIdGroup:List<Long>): List<UriPart> {
+    private fun findByUriParts(menuNodeIdGroup: List<Long>): List<UriPart> {
         return uriPartRepository.findByTypeAndIdInAndStatusTrue(SERVICE, menuNodeIdGroup)
     }
 

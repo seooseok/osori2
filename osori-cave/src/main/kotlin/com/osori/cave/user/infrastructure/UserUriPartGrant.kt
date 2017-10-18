@@ -14,7 +14,7 @@ import javax.persistence.Table
 class UserUriPartGrant(user: User, uriPart: UriPart) {
     @Id
     @GeneratedValue
-    var id:Long? = null
+    var id: Long? = null
         private set
 
     var status = true

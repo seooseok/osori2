@@ -21,20 +21,20 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "URI_PART")
-class UriPart(var name:String,
-              var resource:String,
+class UriPart(var name: String,
+              var resource: String,
               @Enumerated(STRING) var depthType: DepthType,
-              @Enumerated(STRING) var methodType:RequestMethod) {
+              @Enumerated(STRING) var methodType: RequestMethod) {
 
     @Id
     @GeneratedValue
-    var id:Long? = null
+    var id: Long? = null
         private set
 
-    var sorting:Int = 0
+    var sorting: Int = 0
 
-    var viewId:Long? = null
-    var viewParentId:Long? = null
+    var viewId: Long? = null
+    var viewParentId: Long? = null
 
     var type: UriPartType = UriPartType.SERVICE
 
@@ -45,27 +45,27 @@ class UriPart(var name:String,
     var parentUriPart: UriPart? = null
 
     @Where(clause = "status = true")
-    @OneToMany(mappedBy = "parentUriPart", fetch = LAZY, cascade = arrayOf(PERSIST,MERGE,REFRESH,DETACH))
+    @OneToMany(mappedBy = "parentUriPart", fetch = LAZY, cascade = arrayOf(PERSIST, MERGE, REFRESH, DETACH))
     var uriParts: MutableList<UriPart> = arrayListOf()
 
     @Where(clause = "status = true")
-    @OneToMany(mappedBy = "uriPart", fetch = LAZY, cascade = arrayOf(PERSIST,MERGE,REFRESH,DETACH))
-    var permissionUriPartMappings:MutableList<PermissionUriPartMapping> = arrayListOf()
+    @OneToMany(mappedBy = "uriPart", fetch = LAZY, cascade = arrayOf(PERSIST, MERGE, REFRESH, DETACH))
+    var permissionUriPartMappings: MutableList<PermissionUriPartMapping> = arrayListOf()
 
 
     enum class DepthType {
-        MENU,FUNC,FIELD
+        MENU, FUNC, FIELD
     }
 
-    fun setByParent(parentUriPart: UriPart){
+    fun setByParent(parentUriPart: UriPart) {
         this.parentUriPart = parentUriPart
-        if(parentUriPart.uriParts.contains(this).not())
+        if (parentUriPart.uriParts.contains(this).not())
             parentUriPart.addBy(this)
     }
 
-    fun addBy(uriPart: UriPart){
+    fun addBy(uriPart: UriPart) {
         this.uriParts.add(uriPart)
-        if(this != uriPart.parentUriPart)
+        if (this != uriPart.parentUriPart)
             uriPart.setByParent(this)
     }
 
@@ -75,7 +75,7 @@ class UriPart(var name:String,
 }
 
 enum class UriPartType {
-    CAVE,SERVICE
+    CAVE, SERVICE
 }
 
 

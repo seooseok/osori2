@@ -15,18 +15,18 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMethod.GET
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-internal class TreeControllerTest: IntegrationTestSupporter(){
+internal class TreeControllerTest : IntegrationTestSupporter() {
     @Autowired
-    private lateinit var repository:UriPartRepository
+    private lateinit var repository: UriPartRepository
     @Autowired
-    private lateinit var menuTreeService:MenuTreeService
+    private lateinit var menuTreeService: MenuTreeService
     @Autowired
-    private lateinit var treeController:TreeController
+    private lateinit var treeController: TreeController
 
-    private lateinit var resources:MutableList<MenuNodeResource>
+    private lateinit var resources: MutableList<MenuNodeResource>
 
     @BeforeAll
-    fun beforeAll(){
+    fun beforeAll() {
         val rootUriPart = UriPartGenerator().createTree()
         repository.save(rootUriPart)
         resources = menuTreeService.findNodes().toMutableList()
@@ -42,7 +42,7 @@ internal class TreeControllerTest: IntegrationTestSupporter(){
     fun createNewLeafNode() {
         val copyResources = resources.toMutableList()
         //Given
-        copyResources.add(MenuNodeResource("관리자 메뉴","/admin", MENU, GET).apply {
+        copyResources.add(MenuNodeResource("관리자 메뉴", "/admin", MENU, GET).apply {
             this.parentId = 1
 
             this.viewId = 50
@@ -61,7 +61,7 @@ internal class TreeControllerTest: IntegrationTestSupporter(){
     }
 
     @Test
-    fun moveLeafNode(){
+    fun moveLeafNode() {
         //Given
         val copyResources = resources.toMutableList()
         val parentNode = copyResources[copyResources.size - 1]
