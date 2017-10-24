@@ -7,25 +7,41 @@ const MainLayout = ({component: Component, ...rest}) => {
         <Route
             {...rest}
             render={matchProps =>
-                <div className="navbar-bottom">
-                    <TopNav/>
-                    {/* Page container */}
-                    <div className="page-container">
-                        {/* Page content */}
-                        <div className="page-content">
-                            {/* Main sidebar */}
-                            <div className="sidebar sidebar-main sidebar-default">
-                                <MainNav/>
-                            </div>
-                            {/* /main sidebar */}
+                <div className="hold-transition skin-blue sidebar-collapse sidebar-mini">
+                    <div className="wrapper">
+                        {/*Top Navigation*/}
+                        <header className="main-header">
+                            <TopNav/>
+                        </header>
 
-                            {/* Main content */}
-                            <div className="content-wrapper">
-                                <Component {...matchProps} />
-                            </div>
+                        {/*Left Side Main Navigation*/}
+                        <aside className="main-sidebar">
+                            <section className="sidebar">
+                                <MainNav/>
+                            </section>
+                        </aside>
+
+                        {/* Main content */}
+                        <div className="content-wrapper">
+                            <Component {...matchProps} />
                         </div>
+
+                        {/* Footer */}
+                        <footer className="main-footer">
+                            <div className="pull-right hidden-xs">
+                                <b>Version</b> 1.0.0
+                            </div>
+                            <strong>Copyright &copy; 2016-2017 <a
+                                href="https://github.com/seooseok">5dolstory</a>.</strong> All rights
+                            reserved.
+                        </footer>
+                        <aside className="control-sidebar control-sidebar-dark">
+                            {/* Control Sidebar */}
+                        </aside>
+                        <div className="control-sidebar-bg"></div>
                     </div>
-                </div>}
+                </div>
+            }
         />
     )
 }

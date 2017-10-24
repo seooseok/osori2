@@ -1,5 +1,4 @@
 import React from 'react'
-import {RouterHistory} from 'react-router-dom'
 
 import './home.css'
 
