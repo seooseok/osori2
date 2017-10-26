@@ -1,17 +1,29 @@
 import React from 'react'
 import {Route} from 'react-router-dom'
 import {MainNav, TopNav} from './'
+import ContentNav from "./ContentNav";
 
 const MainLayout = ({component: Component, ...rest}) => {
     return (
         <Route
             {...rest}
             render={matchProps =>
-                <div className="hold-transition skin-blue sidebar-collapse sidebar-mini">
+                <div className="hold-transition skin-blue sidebar-mini">
                     <div className="wrapper">
                         {/*Top Navigation*/}
                         <header className="main-header">
-                            <TopNav/>
+                            <div>
+                                {/* Logo */}
+                                <div>
+                                    <a href="/" className="logo">
+                                        <span className="logo-mini"><b>O</b>sori</span>
+                                        <span className="logo-lg"><b>Osori</b>Cave</span>
+                                    </a>
+                                </div>
+
+                                {/* Header navigation bar */}
+                                <TopNav/>
+                            </div>
                         </header>
 
                         {/*Left Side Main Navigation*/}
@@ -23,6 +35,7 @@ const MainLayout = ({component: Component, ...rest}) => {
 
                         {/* Main content */}
                         <div className="content-wrapper">
+                            <ContentNav/>
                             <Component {...matchProps} />
                         </div>
 
