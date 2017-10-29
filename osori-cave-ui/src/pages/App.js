@@ -1,17 +1,19 @@
 import React, {Component} from 'react'
+import {Route, Switch} from 'react-router-dom'
+
+import {Home} from './home'
+import {MainLayout} from './components'
 
 import './App.css';
-import Header from "./components/Header";
+
 
 class App extends Component {
     render() {
         return (
-            <div className="App">
-                <Header/>
-                <p className="App-intro">
-                    To get started, edit <code>src/App.js</code> and save to reload.
-                </p>
-            </div>
+            <Switch>
+                <MainLayout exact path="/" component={Home}/>
+                <Route render={() => <div style={{padding: '50px'}}>404: Page Not Found</div>}/>
+            </Switch>
         );
     }
 }
