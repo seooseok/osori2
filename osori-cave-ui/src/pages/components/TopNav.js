@@ -3,7 +3,8 @@ import React from 'react'
 class TopNav extends React.Component {
 
     pushMenu() {
-        var body = document.body
+        var body = document.getElementById('root').childNodes[0]
+
         if (body.clientWidth > 768) {
             if (body.className.indexOf('sidebar-collapse') === -1) {
                 body.className += ' sidebar-collapse';
