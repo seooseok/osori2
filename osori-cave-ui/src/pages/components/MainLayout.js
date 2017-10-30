@@ -1,7 +1,6 @@
 import React from 'react'
 import {Route} from 'react-router-dom'
 import {MainNav, TopNav} from './'
-import ContentNav from "./ContentNav";
 
 const MainLayout = ({component: Component, ...rest}) => {
     return (
@@ -35,7 +34,6 @@ const MainLayout = ({component: Component, ...rest}) => {
 
                         {/* Main content */}
                         <div className="content-wrapper">
-                            <ContentNav/>
                             <Component {...matchProps} />
                         </div>
 
