@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 
 
 class MainNav extends Component {
@@ -19,10 +20,11 @@ class MainNav extends Component {
 
                 {/* Sidebar Menu*/}
                 <ul className="sidebar-menu" data-widget="tree">
-                    <li className="header">User</li>
-                    <li><a href="#"><i className="fa fa-users"></i> <span>User Manage</span></a></li>
-                    <li><a href="#"><i className="fa fa-users"></i> <span>Privilege</span></a></li>
+                    <li className="header">Users</li>
+                    <li><Link to="/account"><i className="fa fa-user"></i><span>Account</span></Link></li>
+                    <li><Link to="/privilege"><i className="fa fa-wrench"></i><span>Privilege</span></Link></li>
                     <li className="header">Permission</li>
+
                     <li className="header">Navigation</li>
                     <li><a href="https://adminlte.io/docs"><i className="fa fa-book"></i> <span>Documentation</span></a>
                     </li>
