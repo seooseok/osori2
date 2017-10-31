@@ -10,7 +10,7 @@ class SimpleSelect extends React.Component {
             <div className="form-group">
                 <div className="col-sm-8">
                     <select className="form-control" defaultValue={selected} onChange={onChange}>
-                        {options.map((option, i) => {
+                        {options.map((option) => {
                             return (
                                 <option key={option.value} value={option.value}>{option.name}</option>
                             );

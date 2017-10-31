@@ -1,4 +1,6 @@
 import Account from './Account'
-import AccountSearchComponent from './AccountSearchComponent'
+import AccountSearch from './AccountSearch'
+import AccountList from './AccountList'
+import AccountDetail from './AccountDetail'
 
-export {Account, AccountSearchComponent}
+export {Account, AccountSearch, AccountList, AccountDetail}

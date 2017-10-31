@@ -25,7 +25,7 @@ class IconInputRangeDate extends React.Component {
         this.setState({
             startDate: picker.startDate,
             endDate: picker.endDate
-        })
+        });
 
         this.props.onChange(this.state.startDate.format('YYYY-MM-DD'), this.state.endDate.format('YYYY-MM-DD'))
     }
@@ -34,7 +34,7 @@ class IconInputRangeDate extends React.Component {
         return (
             <div className="input-group">
                 <div className="input-group-addon">
-                    <i className="fa fa-calendar"></i>
+                    <i className="fa fa-calendar"/>
                 </div>
                 <DateRangePicker startDate={this.state.startDate} endDate={this.state.endDate}
                                  ranges={this.state.ranges} onEvent={this.handleEvent.bind(this)}>
@@ -50,4 +50,4 @@ export default IconInputRangeDate
 IconInputRangeDate.defaultProps = {
     startDate: Moment().subtract(29, 'days'),
     endDate: Moment()
-}
+};

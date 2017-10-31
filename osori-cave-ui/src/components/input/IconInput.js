@@ -11,9 +11,8 @@ class IconInput extends React.Component {
 
         return (
             <div className="input-group">
-                <span className="input-group-addon"><i className={'fa ' + icon}></i></span>
-                <input type={type} name={name} className="form-control"
-                       placeholder={holder} onChange={onChange}></input>
+                <span className="input-group-addon"><i className={'fa ' + icon}/></span>
+                <input type={type} name={name} className="form-control" placeholder={holder} onChange={onChange}/>
             </div>
         )
     }

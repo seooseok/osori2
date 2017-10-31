@@ -1,4 +1,5 @@
 import IconInput from './IconInput'
-import IconInputRangeDate from './IconInputRangeDate'
+import SimpleButton from './SimpleButton'
+import SimpleSelect from './SimpleSelect'
 
-export {IconInput, IconInputRangeDate}
+export {IconInput, SimpleButton, SimpleSelect}
