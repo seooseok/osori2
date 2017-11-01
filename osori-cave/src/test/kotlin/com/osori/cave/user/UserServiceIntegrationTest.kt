@@ -26,7 +26,7 @@ internal class UserServiceIntegrationTest : IntegrationTestSupporter() {
         //Given
         val loginId = "5dolstory"
         val email = "elijah17@gmail.com"
-        val information = PersonalInformation(email, "010-1234-1234")
+        val information = PersonalInformation(email = email, phone = "010-1234-1234")
         //When
         userService.create(loginId, "서오석", information)
         //Then
@@ -40,7 +40,7 @@ internal class UserServiceIntegrationTest : IntegrationTestSupporter() {
         //Given
         val loginId = "5dolstory"
         val email = "elijah17@daum.net"
-        val information = PersonalInformation("elijah17@gmail.com", "010-1234-1234")
+        val information = PersonalInformation(email = "elijah17@gmail.com", phone = "010-1234-1234")
         //When
         userService.create(loginId, "서오석", information)
         val userResource = userService.findOne(loginId)
