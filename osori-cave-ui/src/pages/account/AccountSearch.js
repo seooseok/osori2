@@ -1,5 +1,5 @@
 import React from 'react'
-import {IconInput, SimpleButton, SimpleSelect} from '../../components/input'
+import {Button, FormControl, FormGroup, InputGroup} from 'react-bootstrap'
 import {IconInputRangeDate} from '../../container/input'
 import Moment from 'moment'
 
@@ -7,28 +7,10 @@ class AccountSearchComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loginId: '',
-            name: '',
             startDate: Moment().subtract(29, 'days'),
-            endDate: Moment(),
-            status: ''
+            endDate: Moment()
         }
     }
-
-    handleInputID = (e) => {
-        this.setState({
-            loginId: e.target.value
-        });
-        console.debug('input loginId is ' + e.target.value)
-    };
-
-    handleInputName = (e) => {
-        this.setState({
-            name: e.target.value
-        });
-        console.debug('input name is ' + e.target.value)
-    };
-
 
     handleRangeEvent = (startDate, endDate) => {
         this.setState({
@@ -36,13 +18,6 @@ class AccountSearchComponent extends React.Component {
             endDate
         });
         console.debug('search range date is ' + startDate + ', ' + endDate)
-    };
-
-    handleStatus = (e) => {
-        this.setState({
-            status: e.target.value
-        });
-        console.debug('status is ' + e.target.value)
     };
 
     handleButton = (e) => {
@@ -53,42 +28,59 @@ class AccountSearchComponent extends React.Component {
         return (
             <div className="box box-info">
                 <div className="box-header with-border">
-                    <h3 className="box-title">Search for Users</h3>
+                    <h5 className="box-title">Search for Users</h5>
                 </div>
                 <div className="box-body">
-                    <div className="col-md-2">
-                        <IconInput icon="fa-laptop" name="loginId" holder="Login ID" onChange={this.handleInputID}/>
-                    </div>
-                    <div className="col-md-2">
-                        <IconInput icon="fa-user" name="name" holder="Name" onChange={this.handleInputName}/>
-                    </div>
-                    <div className="col-md-3">
-                        <IconInputRangeDate startDate={this.state.startDate} endDate={this.state.endDate}
-                                            onChange={this.handleRangeEvent}/>
-                    </div>
-                    <div className="col-md-3">
-                        <SimpleSelect onChange={this.handleStatus}/>
-                    </div>
-                    <div className="col-md-2">
-                        <div className="pull-right">
-                            <SimpleButton name="Search" style="primary" flat="true" onClick={this.handleButton}/>
+                    <FormGroup>
+                        <div className="col-md-2">
+                            <InputGroup>
+                                <InputGroup.Addon><i className="fa fa-laptop"/></InputGroup.Addon>
+                                <FormControl type="text" placeholder="Login ID"/>
+                            </InputGroup>
                         </div>
-                    </div>
+                        <div className="col-md-2">
+                            <InputGroup>
+                                <InputGroup.Addon><i className="fa fa-user-o"/></InputGroup.Addon>
+                                <FormControl type="text" placeholder="Name"/>
+                            </InputGroup>
+                        </div>
+                        <div className="col-md-3">
+                            <IconInputRangeDate startDate={this.state.startDate} endDate={this.state.endDate}
+                                                onChange={this.handleRangeEvent}/>
+                        </div>
+                        <div className="col-md-2">
+                            <FormControl componentClass="select"
+                                         defaultValue={this.props.accountStatusSelector.selected}>
+                                {this.props.accountStatusSelector.options.map((option) => {
+                                    return (
+                                        <option key={option.value} value={option.value}>{option.name}</option>
+                                    );
+                                })}
+                            </FormControl>
+                        </div>
+                        <div className="col-md-2 pull-right">
+                            <div className="pull-right">
+                                <Button onClick={this.handleButton} bsStyle="primary">Search</Button>
+                            </div>
+                        </div>
+                    </FormGroup>
                 </div>
             </div>
         )
     }
 }
 
-SimpleSelect.defaultProps = {
-    selected: 'All Status',
-    options: [
-        {name: 'All Status', value: ''},
-        {name: 'Allow', value: 'ALLOW'},
-        {name: 'Reject', value: 'REJECT'},
-        {name: 'Wait', value: 'WAIT'},
-        {name: 'Expire', value: 'EXPIRE'}
-    ]
+AccountSearchComponent.defaultProps = {
+    accountStatusSelector: {
+        selected: 'All Status',
+        options: [
+            {name: 'All Status', value: ''},
+            {name: 'Allow', value: 'ALLOW'},
+            {name: 'Reject', value: 'REJECT'},
+            {name: 'Wait', value: 'WAIT'},
+            {name: 'Expire', value: 'EXPIRE'}
+        ]
+    }
 };
 
 export default AccountSearchComponent

@@ -12,10 +12,10 @@ class Account extends React.Component {
                 <section className="content">
                     <AccountSearch/>
                     <div className="row">
-                        <div className="col-md-8">
+                        <div className="col-md-9">
                             <AccountList/>
                         </div>
-                        <div className={"col-md-4"}>
+                        <div className={"col-md-3"}>
                             <AccountDetail/>
                         </div>
                     </div>
