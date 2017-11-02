@@ -40,7 +40,7 @@ class AccountList extends React.Component {
             for (const prop in row) {
                 rowStr += prop + ': "' + row[prop] + '"';
             }
-            console.log(`is selected: ${isSelected}, ${rowStr}`);
+            console.debug(`is selected: ${isSelected}, ${rowStr}`);
         }
 
         return (
