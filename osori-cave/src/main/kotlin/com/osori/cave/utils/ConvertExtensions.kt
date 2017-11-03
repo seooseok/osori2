@@ -43,6 +43,8 @@ fun User.toResource(personalInformation: PersonalInformation? = null): UserResou
     val user = UserResource(this.loginId)
     user.id = this.id
     user.name = this.name
+    user.status = this.status.toString()
+    user.created = this.getCreated()
     if (this.getPermissions().isNotEmpty()) {
         user.permissionGrants = this.getPermissions().map(Permission::toResource)
     }

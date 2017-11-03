@@ -13,6 +13,9 @@ data class UserResource(var loginId: String) {
     var position: String? = null
     var department: String? = null
 
+    var created: String? = null
+    var status: String? = null
+
     var permissionGrants = listOf<PermissionResource>()
     var personalGrants = listOf<MenuNodeResource>()
 }
