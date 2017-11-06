@@ -56,8 +56,10 @@ dependencies {
 
 
     compile group: 'com.github.kittinunf.fuel', name: 'fuel', version: '1.9.0'
-    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: '2.9.0'
+    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: '2.9.2'
+
     compile 'com.github.hotchemi:khronos:0.9.0'//http://hotchemi.github.io/khronos/
+    compile group: 'au.com.console',name: 'kotlin-jpa-specification-dsl', version: '0.1.0' //https://github.com/consoleau/kotlin-jpa-specification-dsl
 
 
     compile group: 'org.hibernate', name: 'hibernate-envers'

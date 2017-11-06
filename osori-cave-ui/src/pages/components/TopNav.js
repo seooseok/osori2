@@ -2,20 +2,20 @@ import React from 'react'
 
 class TopNav extends React.Component {
 
-    pushMenu() {
-        var body = document.getElementById('root').childNodes[0]
+    static pushMenu() {
+        var holdTransition = document.getElementById('root').childNodes[0]
 
-        if (body.clientWidth > 768) {
-            if (body.className.indexOf('sidebar-collapse') === -1) {
-                body.className += ' sidebar-collapse';
+        if (holdTransition.clientWidth > 768) {
+            if (holdTransition.className.indexOf('sidebar-collapse') === -1) {
+                holdTransition.className += ' sidebar-collapse';
             } else {
-                body.className = body.className.replace(' sidebar-collapse', '');
+                holdTransition.className = holdTransition.className.replace(' sidebar-collapse', '');
             }
         } else {
-            if (body.className.indexOf('sidebar-open') === -1) {
-                body.className += ' sidebar-open';
+            if (holdTransition.className.indexOf('sidebar-open') === -1) {
+                holdTransition.className += ' sidebar-open';
             } else {
-                body.className = body.className.replace(' sidebar-open', '');
+                holdTransition.className = holdTransition.className.replace(' sidebar-open', '');
             }
         }
     }
@@ -26,7 +26,7 @@ class TopNav extends React.Component {
                 <nav className="navbar navbar-static-top">
                     {/* Sidebar toggle button */}
                     <a href="#" className="sidebar-toggle" data-toggle="offcanvas" role="button"
-                       onClick={this.pushMenu}>
+                       onClick={TopNav.pushMenu}>
                         <span className="sr-only">Toggle navigation</span>
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>

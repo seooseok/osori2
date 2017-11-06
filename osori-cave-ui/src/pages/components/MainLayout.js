@@ -1,7 +1,6 @@
 import React from 'react'
-import {Route} from 'react-router-dom'
+import {Link, Route} from 'react-router-dom'
 import {MainNav, TopNav} from './'
-import ContentNav from "./ContentNav";
 
 const MainLayout = ({component: Component, ...rest}) => {
     return (
@@ -15,10 +14,10 @@ const MainLayout = ({component: Component, ...rest}) => {
                             <div>
                                 {/* Logo */}
                                 <div>
-                                    <a href="/" className="logo">
+                                    <Link to="/" className="logo">
                                         <span className="logo-mini"><b>O</b>sori</span>
                                         <span className="logo-lg"><b>Osori</b>Cave</span>
-                                    </a>
+                                    </Link>
                                 </div>
 
                                 {/* Header navigation bar */}
@@ -35,7 +34,6 @@ const MainLayout = ({component: Component, ...rest}) => {
 
                         {/* Main content */}
                         <div className="content-wrapper">
-                            <ContentNav/>
                             <Component {...matchProps} />
                         </div>
 

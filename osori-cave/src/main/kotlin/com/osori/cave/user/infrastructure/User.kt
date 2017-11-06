@@ -1,8 +1,10 @@
 package com.osori.cave.user.infrastructure
 
+import com.osori.cave.audit.CUDAudit
 import com.osori.cave.navigation.infrastructure.UriPart
 import com.osori.cave.permission.infrastructure.Permission
 import org.hibernate.annotations.Where
+import java.time.format.DateTimeFormatter
 import javax.persistence.CascadeType.DETACH
 import javax.persistence.CascadeType.MERGE
 import javax.persistence.CascadeType.PERSIST
@@ -17,7 +19,7 @@ import javax.persistence.Table
 @Entity
 @Table(name = "USER")
 class User(var loginId: String,
-           var name: String?) {
+           var name: String?) : CUDAudit() {
 
     @Id
     @GeneratedValue
@@ -71,6 +73,10 @@ class User(var loginId: String,
 
     fun getUriParts(): List<UriPart> {
         return userUriPartGrants.map { u -> u.uriPart }
+    }
+
+    fun getCreated(): String? {
+        return super.created?.let { it.format(DateTimeFormatter.ISO_DATE) }
     }
 
     enum class Status {

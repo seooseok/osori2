@@ -6,17 +6,23 @@ class ContentNav extends React.Component {
             <div>
                 <section className="content-header">
                     <h1>
-                        Dashboard
-                        <small>Version 2.0</small>
+                        {this.props.name}
+                        <small>{this.props.description}</small>
                     </h1>
                     <ol className="breadcrumb">
-                        <li><a href="#"><i className="fa fa-dashboard"></i> Home</a></li>
-                        <li className="active">Dashboard</li>
+                        <li><a href="#"><i className="fa fa-television"></i> {this.props.category} </a></li>
+                        <li className="active">{this.props.name}</li>
                     </ol>
                 </section>
             </div>
         )
     }
 }
+
+ContentNav.defaultProps = {
+    description: ''
+}
+
+
 
 export default ContentNav
