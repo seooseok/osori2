@@ -58,6 +58,14 @@ class UserService
         return user.toResource(information)
     }
 
+    fun findOne(id: Long): UserResource {
+        val user = repository.findOne(id)
+
+        val information = this.getPersonalInformation(user)
+
+        return user.toResource(information)
+    }
+
     fun findUsers(userSearchCondition: UserSearchCondition): List<UserResource> {
         val users = this.search(userSearchCondition)
 
@@ -85,11 +93,12 @@ class UserService
 }
 
 
-data class UserSearchCondition(val startDate: LocalDate,
-                               val endDate: LocalDate,
-                               val loginId: String? = null,
-                               val name: String? = null,
-                               val status: User.Status? = null)
+data class UserSearchCondition(
+        val startDate: LocalDate,
+        val endDate: LocalDate,
+        val loginId: String? = null,
+        val name: String? = null,
+        val status: User.Status? = null)
 
 private fun UserSearchCondition.toSpecifications(): Specifications<User> {
     return and(name?.let { User::name.equal(it) },
