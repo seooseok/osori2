@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, FormControl, FormGroup, InputGroup} from 'react-bootstrap'
+import {Form, Text} from 'react-form';
 
 class AccountDetail extends React.Component {
     constructor(props) {
@@ -9,7 +9,7 @@ class AccountDetail extends React.Component {
     }
 
     handleProfile = () => {
-        let profile = this.props.profile
+        let profile = this.props.profile;
         if (profile === undefined) {
             profile = {
                 id: '',
@@ -24,6 +24,10 @@ class AccountDetail extends React.Component {
         this.state = {
             profile
         }
+    };
+
+    handleSubmit = (e) => {
+        console.debug(e)
     };
 
     render() {
@@ -41,44 +45,50 @@ class AccountDetail extends React.Component {
             )
         } else {
             profilePanel = (
-                <form>
-                    <FormGroup>
-                        <InputGroup>
-                            <InputGroup.Addon><i className="fa fa-user"/></InputGroup.Addon>
-                            <FormControl type="text" defaultValue={this.state.profile.name} placeholder="Enter name"/>
-                        </InputGroup>
-                        <br/>
-                        <InputGroup>
-                            <InputGroup.Addon><i className="fa fa-envelope"/></InputGroup.Addon>
-                            <FormControl type="text" defaultValue={this.state.profile.email} placeholder="Enter email"/>
-                        </InputGroup>
-                        <br/>
-                        <InputGroup>
-                            <InputGroup.Addon><i className="fa fa-phone"/></InputGroup.Addon>
-                            <FormControl type="text" defaultValue={this.state.profile.phone} placeholder="Enter phone"/>
-                        </InputGroup>
-                        <br/>
-                        <InputGroup>
-                            <InputGroup.Addon><i className="fa fa-building"/></InputGroup.Addon>
-                            <FormControl type="text" defaultValue={this.state.profile.department}
-                                         placeholder="Enter department"/>
-                        </InputGroup>
-                        <br/>
-                        <InputGroup>
-                            <InputGroup.Addon><i className="fa fa-comment"/></InputGroup.Addon>
-                            <FormControl type="text" defaultValue={this.state.profile.comment}
-                                         placeholder="Enter something else"/>
-                        </InputGroup>
-                        <br/>
-                    </FormGroup>
-                    <br/>
-                    <div className="pull-left">
-                        <Button bsStyle="success">Save</Button>
-                    </div>
-                    <div className="pull-right">
-                        <Button bsStyle="danger">Expire</Button>
-                    </div>
-                </form>
+                <Form onSubmit={this.handleSubmit}>
+                    {
+                        formApi => (
+                            <form onSubmit={formApi.submitForm} id="modifyProfile">
+                                <div className="form-group">
+                                    <div className="input-group">
+                                        <span className="input-group-addon"><i className="fa fa-user"/></span>
+                                        <Text className="form-control" field="name" placeholder="Enter Name"/>
+                                    </div>
+                                    <br/>
+                                    <div className="input-group">
+                                        <span className="input-group-addon"><i className="fa fa-envelope"/></span>
+                                        <Text className="form-control" field="email" placeholder="Enter email"/>
+                                    </div>
+                                    <br/>
+                                    <div className="input-group">
+                                        <span className="input-group-addon"><i className="fa fa-phone"/></span>
+                                        <Text className="form-control" field="phone" placeholder="Enter phone"/>
+                                    </div>
+                                    <br/>
+                                    <div className="input-group">
+                                        <span className="input-group-addon"><i className="fa fa-building"/></span>
+                                        <Text className="form-control" field="department"
+                                              placeholder="Enter department"/>
+                                    </div>
+                                    <br/>
+                                    <div className="input-group">
+                                        <span className="input-group-addon"><i className="fa fa-comment"/></span>
+                                        <Text className="form-control" field="comment"
+                                              placeholder="Enter something else"/>
+                                    </div>
+                                    <br/>
+                                </div>
+                                <br/>
+                                <div className="pull-left">
+                                    <button type="submit" className="btn btn-block btn-success">Search</button>
+                                </div>
+                                <div className="pull-right">
+                                    <button type="button" className="btn btn-block btn-danger">Expire</button>
+                                </div>
+                            </form>
+                        )
+                    }
+                </Form>
             )
         }
 

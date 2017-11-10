@@ -5,9 +5,6 @@ import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css'
 
 
 class AccountList extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         let data = this.props.data;
@@ -180,4 +177,4 @@ AccountList.defaultProps = {
             status: 'reject'
         }
     ]
-}
+};
