@@ -3,6 +3,7 @@ package com.osori.cave.user
 import au.com.console.jpaspecificationdsl.and
 import au.com.console.jpaspecificationdsl.between
 import au.com.console.jpaspecificationdsl.equal
+import au.com.console.jpaspecificationdsl.isNull
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.osori.cave.user.controller.UserResource
 import com.osori.cave.user.infrastructure.User
@@ -72,6 +73,11 @@ class UserService
         return users.map { it -> it.toResource() }
     }
 
+    fun expireUser(id: Long) {
+        val user = repository.findOne(id)
+        user.expire()
+        save(user)
+    }
 
     private fun search(userSearchCondition: UserSearchCondition): List<User> {
         return repository.findAll(userSearchCondition.toSpecifications())
@@ -104,6 +110,7 @@ private fun UserSearchCondition.toSpecifications(): Specifications<User> {
     return and(name?.let { User::name.equal(it) },
             loginId?.let { User::loginId.equal(it) },
             status?.let { User::status.equal(it) },
-            User::created.between(startDate, endDate))
+            User::created.between(startDate, endDate),
+            User::expired.isNull())
 }
 

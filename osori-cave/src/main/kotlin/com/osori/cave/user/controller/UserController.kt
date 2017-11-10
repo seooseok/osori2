@@ -10,6 +10,7 @@ import org.springframework.hateoas.Resource
 import org.springframework.hateoas.Resources
 import org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
 import org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -47,6 +48,14 @@ class UserController
     fun findOneWithDetail(@PathVariable id: Long): Resource<UserResource> {
         val resource = userService.findOne(id)
         return Resource(resource, linkTo(methodOn(this::class.java).findOneWithDetail(id)).withSelfRel())
+    }
+
+    @DeleteMapping("/user/{id}")
+    fun remove(@PathVariable id: Long): Resource<String> {
+        userService.expireUser(id)
+
+        return Resource("success", linkTo(methodOn(this::class.java)
+                .search(LocalDate.now().minusWeeks(1), LocalDate.now())).withRel("before"))
     }
 
 }

@@ -1,6 +1,6 @@
 package com.osori.cave.user.infrastructure
 
-import com.osori.cave.audit.CUDAudit
+import com.osori.cave.audit.AuditCUD
 import com.osori.cave.navigation.infrastructure.UriPart
 import com.osori.cave.permission.infrastructure.Permission
 import org.hibernate.annotations.Where
@@ -19,7 +19,7 @@ import javax.persistence.Table
 @Entity
 @Table(name = "USER")
 class User(var loginId: String,
-           var name: String?) : CUDAudit() {
+           var name: String?) : AuditCUD() {
 
     @Id
     @GeneratedValue

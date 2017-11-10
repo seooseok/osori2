@@ -21,7 +21,7 @@ abstract class Auditor {
 
 @MappedSuperclass
 @EntityListeners(value = AuditingEntityListener::class)
-abstract class CUAudit : Auditor() {
+abstract class AuditCU : Auditor() {
 
     @CreatedDate
     var created: LocalDate? = null
@@ -33,9 +33,10 @@ abstract class CUAudit : Auditor() {
 
 @MappedSuperclass
 @EntityListeners(value = AuditingEntityListener::class)
-abstract class CUDAudit : CUAudit() {
+abstract class AuditCUD : AuditCU() {
     @Audited
-    private var expired: LocalDate? = null     //만료일
+    var expired: LocalDate? = null     //만료일
+        private set
 
     fun expire() {
         this.expired = LocalDate.now()
