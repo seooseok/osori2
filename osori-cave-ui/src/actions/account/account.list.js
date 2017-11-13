@@ -1,12 +1,12 @@
-import {SEARCH_ACCOUNTS, SEARCHED_ACCOUNTS} from './actionTypes'
+import {ACCOUNTS_SEARCH, ACCOUNTS_SEARCHED} from './actionTypes'
 import api from '../../http/api'
 
 const request = () => ({
-    type: SEARCH_ACCOUNTS
+    type: ACCOUNTS_SEARCH
 });
 
 const receive = payload => ({
-    type: SEARCHED_ACCOUNTS,
+    type: ACCOUNTS_SEARCHED,
     payload
 });
 
