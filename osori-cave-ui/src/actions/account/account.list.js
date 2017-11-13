@@ -11,7 +11,7 @@ const receive = payload => ({
 });
 
 
-export const fetch = (params) => {
+export const findAll = (params) => {
     return (dispatch) => {
         dispatch(request());
         api.get(`/account/users`, {params: params})

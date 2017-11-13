@@ -1,7 +1,7 @@
 import React from 'react'
 import ContentNav from '../components/ContentNav'
 import {AccountDetail, AccountList, AccountSearch} from './'
-import {fetch} from '../../actions/account/account.list';
+import {findAll} from '../../actions/account/account.list';
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -13,14 +13,13 @@ class Account extends React.Component {
         this.state = {
             selectedAccount: undefined
         }
-
     }
 
     handleChangeSearchFilters = (condition) => {
         console.debug('search condition: %s', JSON.stringify(condition));
 
         this.setState(condition, () => {
-            this.props.fetch(this.state)
+            this.props.findAll(this.state)
         });
     };
 
@@ -54,6 +53,6 @@ class Account extends React.Component {
 }
 
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = (dispatch) => bindActionCreators({fetch}, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({findAll}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account)
