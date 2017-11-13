@@ -9,9 +9,9 @@ class AccountDetail extends React.Component {
     }
 
     handleProfile = () => {
-        let profile = this.props.profile;
-        if (profile === undefined) {
-            profile = {
+        let account = this.props.account;
+        if (account === undefined) {
+            account = {
                 id: '',
                 loginId: '',
                 name: '',
@@ -22,7 +22,7 @@ class AccountDetail extends React.Component {
             }
         }
         this.state = {
-            profile
+            account
         }
     };
 
@@ -31,20 +31,19 @@ class AccountDetail extends React.Component {
     };
 
     render() {
-        let profilePanel;
+        let accountPanel;
 
-        if (this.props.profile === undefined) {
-            profilePanel = (
+        if (this.props.account === undefined) {
+            accountPanel = (
                 <div>
                     <div className="callout callout-info">
                         <h4>Please select a row in the search results</h4>
                         <p>Shows the encrypted personal information of the account.</p>
                     </div>
-
                 </div>
             )
         } else {
-            profilePanel = (
+            accountPanel = (
                 <Form onSubmit={this.handleSubmit}>
                     {
                         formApi => (
@@ -95,10 +94,10 @@ class AccountDetail extends React.Component {
         return (
             <div className="box">
                 <div className="box-header with-border">
-                    <h5 className="box-title">{this.state.profile.loginId} Profile</h5>
+                    <h5 className="box-title">{this.state.account.loginId} Profile</h5>
                 </div>
                 <div className="box-body">
-                    {profilePanel}
+                    {accountPanel}
                 </div>
             </div>
         )

@@ -2,6 +2,7 @@ import React from 'react'
 import {IconInputRangeDate} from '../../container/input'
 import Moment from 'moment'
 import {Form, Select, Text} from 'react-form';
+import {connect} from 'react-redux'
 
 class AccountSearchComponent extends React.Component {
     constructor(props) {
@@ -12,8 +13,9 @@ class AccountSearchComponent extends React.Component {
         }
     }
 
-    handleSubmit = (e) => {
-        console.debug(e)
+    handleSubmit = (formData) => {
+        this.state = formData;
+        this.props.onChangeSearchFilters(this.state)
     };
 
     render() {
@@ -86,4 +88,6 @@ AccountSearchComponent.defaultProps = {
     }
 };
 
-export default AccountSearchComponent
+const mapStateToProps = (state) => ({});
+
+export default connect(mapStateToProps, null)(AccountSearchComponent)

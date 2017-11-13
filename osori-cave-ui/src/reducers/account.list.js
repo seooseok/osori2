@@ -1,10 +1,10 @@
 import {SEARCH_ACCOUNTS, SEARCHED_ACCOUNTS} from "../actions/account/actionTypes";
 
 const initial = {
-    data: []
+    payload: ''
 };
 
-function list(state = initial, action) {
+export default (state = initial, action) => {
     switch (action.type) {
         case SEARCH_ACCOUNTS:
             return {
@@ -13,11 +13,9 @@ function list(state = initial, action) {
         case SEARCHED_ACCOUNTS:
             return {
                 ...state,
-                data: action.payload
+                payload: action.payload
             };
         default:
             return state
     }
 }
-
-export default list;
