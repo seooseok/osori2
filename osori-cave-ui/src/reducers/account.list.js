@@ -1,7 +1,7 @@
 import {SEARCH_ACCOUNTS, SEARCHED_ACCOUNTS} from "../actions/account/actionTypes";
 
 const initial = {
-    payload: ''
+    payload: undefined
 };
 
 export default (state = initial, action) => {

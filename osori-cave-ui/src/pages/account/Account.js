@@ -8,18 +8,24 @@ import {connect} from 'react-redux'
 import './account.css'
 
 class Account extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            selected: {}
+        }
+    }
 
     handleChangeSearchFilters = (condition) => {
+        console.debug('search condition: %s', JSON.stringify(condition));
+
         this.setState(condition, () => {
             this.props.fetch(this.state)
         });
-        console.debug('search condition: %s', JSON.stringify(this.state));
-
     };
 
     handleClickAccount = (selectedAccount) => {
         console.debug('selected account: %s ', JSON.stringify(selectedAccount));
-    }
+    };
 
     render() {
         return (

@@ -9,21 +9,21 @@ class AccountList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            accounts: [],
             selected: {}
-        }
+        };
     }
 
     onRowSelect = (row, isSelected, e) => {
-        console.log(e)
-        this.state.selected = row
-        this.props.onClickAccount(this.state)
+        this.state.selected = row;
+        if (isSelected) {
+            this.props.onClickAccount(this.state.selected)
+        }
     };
 
     render() {
-        let accounts = [];
-
         if (this.props.payload !== undefined && this.props.payload !== '') {
-            accounts = this.props.payload.content;
+            this.state.accounts = this.props.payload.content;
         }
 
         const options = {
@@ -37,7 +37,7 @@ class AccountList extends React.Component {
                     text: '30', value: 30
                 },
                 {
-                    text: 'All', value: accounts.length
+                    text: 'All', value: this.state.accounts.length
                 }
             ]
         };
@@ -57,7 +57,7 @@ class AccountList extends React.Component {
                     <h5 className="box-title">Search Result</h5>
                 </div>
                 <div className="box-body">
-                    <BootstrapTable data={accounts} options={options} pagination selectRow={selectRowProp}>
+                    <BootstrapTable data={this.state.accounts} options={options} pagination selectRow={selectRowProp}>
                         <TableHeaderColumn dataField='id' isKey hidden>ID</TableHeaderColumn>
                         <TableHeaderColumn dataField='loginId' dataSort={true}>Login ID</TableHeaderColumn>
                         <TableHeaderColumn dataField='name' dataSort={true}>Name</TableHeaderColumn>
