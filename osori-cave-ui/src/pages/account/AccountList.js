@@ -74,7 +74,7 @@ let mapStateToProps = (state) => {
     return {
         payload: state.accountList.payload
     };
-}
+};
 
 export default connect(mapStateToProps, null)(AccountList)
 

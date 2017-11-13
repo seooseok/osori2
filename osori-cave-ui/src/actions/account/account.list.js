@@ -15,10 +15,7 @@ export const fetch = (params) => {
     return (dispatch) => {
         dispatch(request());
         api.get(`/account/users`, {params: params})
-            .then(resp => {
-                console.debug('search res:' + JSON.stringify(resp.data))
-                dispatch(resp => dispatch(receive(resp.data)))
-            })
+            .then(resp => dispatch(receive(resp.data)))
             .catch(err => {
                 console.log(err)
             })
