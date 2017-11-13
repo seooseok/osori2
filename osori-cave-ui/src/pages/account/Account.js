@@ -11,8 +11,9 @@ class Account extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selected: {}
+            selectedAccount: undefined
         }
+
     }
 
     handleChangeSearchFilters = (condition) => {
@@ -25,9 +26,13 @@ class Account extends React.Component {
 
     handleClickAccount = (selectedAccount) => {
         console.debug('selected account: %s ', JSON.stringify(selectedAccount));
+        this.setState({
+            selectedAccount
+        })
     };
 
     render() {
+
         return (
             <div>
                 <ContentNav category="Users" name="Account" description="Set personal information for the user"/>
@@ -38,7 +43,7 @@ class Account extends React.Component {
                             <AccountList onClickAccount={this.handleClickAccount}/>
                         </div>
                         <div className={"col-md-3"}>
-                            <AccountDetail/>
+                            <AccountDetail account={this.state.selectedAccount}/>
                         </div>
                     </div>
 

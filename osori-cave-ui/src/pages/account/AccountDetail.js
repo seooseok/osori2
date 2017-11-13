@@ -4,33 +4,17 @@ import {Form, Text} from 'react-form';
 class AccountDetail extends React.Component {
     constructor(props) {
         super(props);
-
-        this.handleProfile()
-    }
-
-    handleProfile = () => {
-        let account = this.props.account;
-        if (account === undefined) {
-            account = {
-                id: '',
-                loginId: '',
-                name: '',
-                email: '',
-                phone: '',
-                department: '',
-                comment: ''
-            }
-        }
         this.state = {
-            account
+            account: this.props.account
         }
-    };
+    }
 
     handleSubmit = (e) => {
         console.debug(e)
     };
 
     render() {
+
         let accountPanel;
 
         if (this.props.account === undefined) {
@@ -44,13 +28,18 @@ class AccountDetail extends React.Component {
             )
         } else {
             accountPanel = (
-                <Form onSubmit={this.handleSubmit}>
+                <Form onSubmit={this.handleSubmit} defaultValues={this.props.account}>
                     {
                         formApi => (
                             <form onSubmit={formApi.submitForm} id="modifyProfile">
                                 <div className="form-group">
                                     <div className="input-group">
-                                        <span className="input-group-addon"><i className="fa fa-user"/></span>
+                                        <span className="input-group-addon"><i className="fa fa-laptop"/></span>
+                                        <Text className="form-control" field="loginId" disabled/>
+                                    </div>
+                                    <br/>
+                                    <div className="input-group">
+                                        <span className="input-group-addon"><i className="fa fa-user-o"/></span>
                                         <Text className="form-control" field="name" placeholder="Enter Name"/>
                                     </div>
                                     <br/>
@@ -94,7 +83,7 @@ class AccountDetail extends React.Component {
         return (
             <div className="box">
                 <div className="box-header with-border">
-                    <h5 className="box-title">{this.state.account.loginId} Profile</h5>
+                    <h5 className="box-title"><i className="fa fa-fw fa-pencil-square-o"/> Account Profile</h5>
                 </div>
                 <div className="box-body">
                     {accountPanel}

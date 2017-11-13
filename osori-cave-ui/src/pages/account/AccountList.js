@@ -6,24 +6,18 @@ import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css'
 
 
 class AccountList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            accounts: [],
-            selected: {}
-        };
-    }
 
     onRowSelect = (row, isSelected, e) => {
-        this.state.selected = row;
         if (isSelected) {
-            this.props.onClickAccount(this.state.selected)
+            this.props.onClickAccount(row)
         }
     };
 
     render() {
-        if (this.props.payload !== undefined && this.props.payload !== '') {
-            this.state.accounts = this.props.payload.content;
+        let accounts = [];
+
+        if (this.props.payload !== undefined) {
+            accounts = this.props.payload.content;
         }
 
         const options = {
@@ -37,7 +31,7 @@ class AccountList extends React.Component {
                     text: '30', value: 30
                 },
                 {
-                    text: 'All', value: this.state.accounts.length
+                    text: 'All', value: accounts.length
                 }
             ]
         };
@@ -50,14 +44,13 @@ class AccountList extends React.Component {
             onSelect: this.onRowSelect
         };
 
-
         return (
             <div className="box">
                 <div className="box-header with-border">
                     <h5 className="box-title">Search Result</h5>
                 </div>
                 <div className="box-body">
-                    <BootstrapTable data={this.state.accounts} options={options} pagination selectRow={selectRowProp}>
+                    <BootstrapTable data={accounts} options={options} pagination selectRow={selectRowProp}>
                         <TableHeaderColumn dataField='id' isKey hidden>ID</TableHeaderColumn>
                         <TableHeaderColumn dataField='loginId' dataSort={true}>Login ID</TableHeaderColumn>
                         <TableHeaderColumn dataField='name' dataSort={true}>Name</TableHeaderColumn>
