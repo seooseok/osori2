@@ -2,6 +2,7 @@ import React from 'react'
 import ContentNav from '../components/ContentNav'
 import {AccountDetail, AccountList, AccountSearch} from './'
 import {findAll} from '../../actions/account/account.list';
+import {findOne} from "../../actions/account/account.detail";
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -10,9 +11,9 @@ import './account.css'
 class Account extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
+        /*this.state = {
             selectedAccount: undefined
-        }
+        }*/
     }
 
     handleChangeSearchFilters = (condition) => {
@@ -25,9 +26,19 @@ class Account extends React.Component {
 
     handleClickAccount = (selectedAccount) => {
         console.debug('selected account: %s ', JSON.stringify(selectedAccount));
-        this.setState({
+
+        let url = selectedAccount.links.find(item => {
+            return item.rel === 'detail'
+        }).href;
+
+        if (url === undefined)
+            console.err('can\'t find detail url. links: ', JSON.stringify(selectedAccount.links));
+
+        this.props.findOne(url)
+
+        /*this.setState({
             selectedAccount
-        })
+        })*/
     };
 
     render() {
@@ -42,7 +53,7 @@ class Account extends React.Component {
                             <AccountList onClickAccount={this.handleClickAccount}/>
                         </div>
                         <div className={"col-md-3"}>
-                            <AccountDetail account={this.state.selectedAccount}/>
+                            <AccountDetail/>
                         </div>
                     </div>
 
@@ -53,6 +64,6 @@ class Account extends React.Component {
 }
 
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = (dispatch) => bindActionCreators({findAll}, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({findAll, findOne}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account)
