@@ -8,7 +8,8 @@ export default (state = initial, action) => {
     switch (action.type) {
         case ACCOUNT_DETAIL_FIND:
             return {
-                ...state
+                ...state,
+                payload: undefined
             };
         case ACCOUNT_DETAIL_FOUND:
             return {

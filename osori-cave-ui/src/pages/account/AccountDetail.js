@@ -2,12 +2,12 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Form, Text} from 'react-form';
 
+//FIXME: Form을 아예 re render 하는 방법을 모르겠다.
 class AccountDetail extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            isSelected: false,
             detail: {}
         };
     }
@@ -21,7 +21,6 @@ class AccountDetail extends React.Component {
         console.debug("componentWillReceiveProps: " + JSON.stringify(nextProps));
         if (nextProps.payload !== undefined) {
             this.setState({
-                isSelected: true,
                 detail: nextProps.payload
             });
         }
@@ -29,7 +28,7 @@ class AccountDetail extends React.Component {
 
     render() {
         let panel;
-        if (!this.state.isSelected) {
+        if (this.props.payload === undefined) {
             panel = (
                 <div>
                     <div className="callout callout-info">
