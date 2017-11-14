@@ -9,12 +9,6 @@ import {connect} from 'react-redux'
 import './account.css'
 
 class Account extends React.Component {
-    constructor(props) {
-        super(props);
-        /*this.state = {
-            selectedAccount: undefined
-        }*/
-    }
 
     handleChangeSearchFilters = (condition) => {
         console.debug('search condition: %s', JSON.stringify(condition));
@@ -35,14 +29,9 @@ class Account extends React.Component {
             console.err('can\'t find detail url. links: ', JSON.stringify(selectedAccount.links));
 
         this.props.findOne(url)
-
-        /*this.setState({
-            selectedAccount
-        })*/
     };
 
     render() {
-
         return (
             <div>
                 <ContentNav category="Users" name="Account" description="Set personal information for the user"/>

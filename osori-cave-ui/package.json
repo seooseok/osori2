@@ -13,7 +13,7 @@
     "react-bootstrap-daterangepicker": "^3.4.1",
     "react-bootstrap-table": "^4.1.1",
     "react-dom": "^16.0.0",
-    "react-form": "^2.8.1",
+    "react-form": "^2.9.0",
     "react-moment": "^0.6.5",
     "react-scripts": "1.0.14",
     "redux-logger": "^3.0.6",

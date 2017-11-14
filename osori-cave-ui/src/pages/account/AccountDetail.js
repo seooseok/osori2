@@ -1,24 +1,39 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import {Form, Text} from 'react-form';
 
 class AccountDetail extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
-            account: this.props.account
-        }
+            isSelected: false,
+            detail: {}
+        };
+
+        this.testData = {name: '2323'}
     }
 
     handleSubmit = (e) => {
         console.debug(e)
+
     };
 
+    componentWillReceiveProps(nextProps) {
+        console.debug("componentWillReceiveProps: " + JSON.stringify(nextProps));
+        if (nextProps.payload !== undefined) {
+            this.setState({
+                isSelected: true,
+                detail: nextProps.payload
+            });
+            this.testData.name = nextProps.payload.name
+        }
+    }
+
     render() {
-
-        let accountPanel;
-
-        if (this.props.account === undefined) {
-            accountPanel = (
+        let panel;
+        if (!this.state.isSelected) {
+            panel = (
                 <div>
                     <div className="callout callout-info">
                         <h4>Please select a row in the search results</h4>
@@ -27,30 +42,35 @@ class AccountDetail extends React.Component {
                 </div>
             )
         } else {
-            accountPanel = (
-                <Form onSubmit={this.handleSubmit} defaultValues={this.props.account}>
+            panel = (
+                <Form onSubmit={this.handleSubmit} defaultValues={this.state.detail}>
                     {
                         formApi => (
                             <form onSubmit={formApi.submitForm} id="modifyProfile">
                                 <div className="form-group">
                                     <div className="input-group">
                                         <span className="input-group-addon"><i className="fa fa-laptop"/></span>
-                                        <Text className="form-control" field="loginId" disabled/>
+                                        <div className="form-control" disabled>
+                                            {this.state.detail.loginId}
+                                        </div>
                                     </div>
                                     <br/>
                                     <div className="input-group">
                                         <span className="input-group-addon"><i className="fa fa-user-o"/></span>
-                                        <Text className="form-control" field="name" placeholder="Enter Name"/>
+                                        <Text className="form-control" field="name" placeholder="Enter Name"
+                                              autoComplete='name'/>
                                     </div>
                                     <br/>
                                     <div className="input-group">
                                         <span className="input-group-addon"><i className="fa fa-envelope"/></span>
-                                        <Text className="form-control" field="email" placeholder="Enter email"/>
+                                        <Text className="form-control" field="email" placeholder="Enter email"
+                                              autoComplete='email'/>
                                     </div>
                                     <br/>
                                     <div className="input-group">
                                         <span className="input-group-addon"><i className="fa fa-phone"/></span>
-                                        <Text className="form-control" field="phone" placeholder="Enter phone"/>
+                                        <Text className="form-control" field="phone" placeholder="Enter phone"
+                                              autoComplete='tel'/>
                                     </div>
                                     <br/>
                                     <div className="input-group">
@@ -79,19 +99,27 @@ class AccountDetail extends React.Component {
                 </Form>
             )
         }
-
         return (
             <div className="box">
                 <div className="box-header with-border">
                     <h5 className="box-title"><i className="fa fa-fw fa-pencil-square-o"/> Account Profile</h5>
                 </div>
                 <div className="box-body">
-                    {accountPanel}
+                    {panel}
                 </div>
             </div>
         )
     }
 }
 
-export default AccountDetail
+
+let mapStateToProps = (state) => {
+    return {
+        payload: state.accountDetail.payload
+    };
+};
+
+export default connect(mapStateToProps, null)(AccountDetail)
+
+
 
