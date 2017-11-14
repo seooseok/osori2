@@ -10,8 +10,6 @@ class AccountDetail extends React.Component {
             isSelected: false,
             detail: {}
         };
-
-        this.testData = {name: '2323'}
     }
 
     handleSubmit = (e) => {
