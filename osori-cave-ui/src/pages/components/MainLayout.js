@@ -55,6 +55,6 @@ const MainLayout = ({component: Component, ...rest}) => {
             }
         />
     )
-}
+};
 
 export default MainLayout

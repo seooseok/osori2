@@ -21,11 +21,11 @@ import registerServiceWorker from './registerServiceWorker';
 import configureStore from './store/configureStore'
 import createBrowserHistory from 'history/createBrowserHistory'
 
-const history = createBrowserHistory()
+const history = createBrowserHistory();
 
 const store = configureStore({
     foo: 'bar'
-})
+});
 
 
 ReactDOM.render(
