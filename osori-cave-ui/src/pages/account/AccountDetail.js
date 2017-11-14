@@ -24,7 +24,6 @@ class AccountDetail extends React.Component {
                 isSelected: true,
                 detail: nextProps.payload
             });
-            this.testData.name = nextProps.payload.name
         }
     }
 
