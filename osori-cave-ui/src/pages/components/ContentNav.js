@@ -10,7 +10,7 @@ class ContentNav extends React.Component {
                         <small>{this.props.description}</small>
                     </h1>
                     <ol className="breadcrumb">
-                        <li><a href="#"><i className="fa fa-television"></i> {this.props.category} </a></li>
+                        <li><i className="fa fa-television"></i> {this.props.category}</li>
                         <li className="active">{this.props.name}</li>
                     </ol>
                 </section>
@@ -21,7 +21,7 @@ class ContentNav extends React.Component {
 
 ContentNav.defaultProps = {
     description: ''
-}
+};
 
 
 

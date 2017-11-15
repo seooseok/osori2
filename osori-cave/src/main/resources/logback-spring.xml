@@ -1,0 +1,32 @@
+<configuration>
+
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <springProfile name="default">
+
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%d{MM-dd HH:mm:ss} [%thread] %.-1level %logger{36} - %msg%n</pattern>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+        </root>
+
+        <!-- real time trace -->
+        <logger name="TRACE" level="trace" additivity="false">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+        <!-- application exception -->
+        <logger name="APP_ERROR" level="info" additivity="false">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+        <!-- slow logic -->
+        <logger name="SLOW_LOGIC" level="info" additivity="false">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+
+    </springProfile>
+
+</configuration>

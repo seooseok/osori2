@@ -1,7 +1,8 @@
 import React from 'react'
-import {Button, FormControl, FormGroup, InputGroup} from 'react-bootstrap'
 import {IconInputRangeDate} from '../../container/input'
 import Moment from 'moment'
+import {Form, Select, Text} from 'react-form';
+import {connect} from 'react-redux'
 
 class AccountSearchComponent extends React.Component {
     constructor(props) {
@@ -12,16 +13,9 @@ class AccountSearchComponent extends React.Component {
         }
     }
 
-    handleRangeEvent = (startDate, endDate) => {
-        this.setState({
-            startDate,
-            endDate
-        });
-        console.debug('search range date is ' + startDate + ', ' + endDate)
-    };
-
-    handleButton = (e) => {
-        console.debug('button click')
+    handleSubmit = (formData) => {
+        this.state = formData;
+        this.props.onChangeSearchFilters(this.state)
     };
 
     render() {
@@ -31,39 +25,51 @@ class AccountSearchComponent extends React.Component {
                     <h5 className="box-title">Search for Users</h5>
                 </div>
                 <div className="box-body">
-                    <FormGroup>
-                        <div className="col-md-2">
-                            <InputGroup>
-                                <InputGroup.Addon><i className="fa fa-laptop"/></InputGroup.Addon>
-                                <FormControl type="text" placeholder="Login ID"/>
-                            </InputGroup>
-                        </div>
-                        <div className="col-md-2">
-                            <InputGroup>
-                                <InputGroup.Addon><i className="fa fa-user-o"/></InputGroup.Addon>
-                                <FormControl type="text" placeholder="Name"/>
-                            </InputGroup>
-                        </div>
-                        <div className="col-md-3">
-                            <IconInputRangeDate startDate={this.state.startDate} endDate={this.state.endDate}
-                                                onChange={this.handleRangeEvent}/>
-                        </div>
-                        <div className="col-md-2">
-                            <FormControl componentClass="select"
-                                         defaultValue={this.props.accountStatusSelector.selected}>
-                                {this.props.accountStatusSelector.options.map((option) => {
-                                    return (
-                                        <option key={option.value} value={option.value}>{option.name}</option>
-                                    );
-                                })}
-                            </FormControl>
-                        </div>
-                        <div className="col-md-2 pull-right">
-                            <div className="pull-right">
-                                <Button onClick={this.handleButton} bsStyle="primary">Search</Button>
-                            </div>
-                        </div>
-                    </FormGroup>
+                    <Form onSubmit={this.handleSubmit}
+                          defaultValues={
+                              {
+                                  startDate: this.state.startDate.format("YYYY-MM-DD"),
+                                  endDate: this.state.endDate.format("YYYY-MM-DD")
+                              }
+                          }>
+                        {
+                            formApi => (
+                                <form onSubmit={formApi.submitForm} id="search">
+                                    <div className="form-group">
+                                        <div className="col-md-2">
+                                            <div className="input-group">
+                                                <span className="input-group-addon"><i className="fa fa-laptop"/></span>
+                                                <Text className="form-control" field="loginId" placeholder="Login ID"/>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-2">
+                                            <div className="input-group">
+                                                <span className="input-group-addon"><i className="fa fa-user-o"/></span>
+                                                <Text className="form-control" field="name" placeholder="Name"/>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-3">
+                                            <IconInputRangeDate startDate={this.state.startDate}
+                                                                endDate={this.state.endDate}
+                                                                onChange={(startDate, endDate) => {
+                                                                    formApi.setValue('startDate', startDate);
+                                                                    formApi.setValue('endDate', endDate);
+                                                                }}/>
+                                        </div>
+                                        <div className="col-md-2">
+                                            <Select className="form-control" field="status"
+                                                    options={this.props.statusSelector.options}/>
+                                        </div>
+                                        <div className="col-md-2 pull-right">
+                                            <div className="pull-right">
+                                                <button type="submit" className="btn btn-block btn-primary">Search
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            )}
+                    </Form>
                 </div>
             </div>
         )
@@ -71,16 +77,17 @@ class AccountSearchComponent extends React.Component {
 }
 
 AccountSearchComponent.defaultProps = {
-    accountStatusSelector: {
-        selected: 'All Status',
+    statusSelector: {
         options: [
-            {name: 'All Status', value: ''},
-            {name: 'Allow', value: 'ALLOW'},
-            {name: 'Reject', value: 'REJECT'},
-            {name: 'Wait', value: 'WAIT'},
-            {name: 'Expire', value: 'EXPIRE'}
+            {label: 'All Status', value: ''},
+            {label: 'Allow', value: 'ALLOW'},
+            {label: 'Reject', value: 'REJECT'},
+            {label: 'Wait', value: 'WAIT'},
+            {label: 'Expire', value: 'EXPIRE'}
         ]
     }
 };
 
-export default AccountSearchComponent
+const mapStateToProps = (state) => ({});
+
+export default connect(mapStateToProps, null)(AccountSearchComponent)

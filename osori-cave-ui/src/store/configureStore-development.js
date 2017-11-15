@@ -7,14 +7,14 @@ import * as reducers from '../reducers'
 const logger = createLogger({
     level: 'info',
     collapsed: true
-})
+});
 
 const rootReducer = combineReducers({
     ...reducers
-})
+});
 
 const configureStore = () => {
     return createStore(rootReducer, applyMiddleware(thunk, logger))
-}
+};
 
 export default configureStore

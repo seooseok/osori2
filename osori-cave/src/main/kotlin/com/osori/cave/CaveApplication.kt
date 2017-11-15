@@ -1,7 +1,7 @@
 package com.osori.cave
 
-import com.osori.cave.user.PersonalInformation
-import com.osori.cave.user.UserService
+import com.osori.cave.domain.user.PersonalInformation
+import com.osori.cave.domain.user.UserService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication

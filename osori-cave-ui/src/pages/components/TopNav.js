@@ -3,7 +3,7 @@ import React from 'react'
 class TopNav extends React.Component {
 
     static pushMenu() {
-        var holdTransition = document.getElementById('root').childNodes[0]
+        var holdTransition = document.getElementById('root').childNodes[0];
 
         if (holdTransition.clientWidth > 768) {
             if (holdTransition.className.indexOf('sidebar-collapse') === -1) {
