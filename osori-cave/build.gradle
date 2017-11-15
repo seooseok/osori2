@@ -63,6 +63,9 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-envers'
     compile group: 'org.hibernate', name: 'hibernate-java8'
 
+    compile files('libs/spring-trace-core-1.0.2.jar')
+    compile files('libs/spring-trace-web-1.0.2.jar')
+
     runtime group: 'com.h2database', name: 'h2', version: '1.4.196'
 
     testCompile group: 'com.nhaarman', name: 'mockito-kotlin', version: '1.5.0'

@@ -42,12 +42,15 @@ class UserService
         }
     }
 
-    fun modify(id: Long, name: String?, information: PersonalInformation?): Long {
+    fun modify(id: Long, name: String?, information: PersonalInformation?, status: User.Status?): Long {
         val user = repository.findOne(id)
         name?.let { user.name = name }
+        status?.let { user.status = it }
+
         if (information != null && information.isEmpty().not()) {
             user.information = Crypto(cryptoKey).enc(information.toJson())
         }
+
         return save(user)
     }
 
