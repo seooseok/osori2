@@ -1,9 +1,9 @@
 package com.osori.cave.utils
 
-import com.osori.cave.navigation.controller.MenuNodeResource
-import com.osori.cave.navigation.infrastructure.UriPart
-import com.osori.cave.permission.controller.PermissionResource
-import com.osori.cave.permission.infrastructure.Permission
+import com.osori.cave.domain.navigation.controller.MenuNodeResource
+import com.osori.cave.domain.navigation.infrastructure.UriPart
+import com.osori.cave.domain.permission.controller.PermissionResource
+import com.osori.cave.domain.permission.infrastructure.Permission
 
 
 fun UriPart.toResource(): MenuNodeResource {

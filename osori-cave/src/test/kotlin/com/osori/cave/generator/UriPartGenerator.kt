@@ -1,8 +1,8 @@
 package com.osori.cave.generator
 
-import com.osori.cave.navigation.infrastructure.UriPart
-import com.osori.cave.navigation.infrastructure.UriPart.DepthType.FUNC
-import com.osori.cave.navigation.infrastructure.UriPart.DepthType.MENU
+import com.osori.cave.domain.navigation.infrastructure.UriPart
+import com.osori.cave.domain.navigation.infrastructure.UriPart.DepthType.FUNC
+import com.osori.cave.domain.navigation.infrastructure.UriPart.DepthType.MENU
 import org.springframework.web.bind.annotation.RequestMethod.DELETE
 import org.springframework.web.bind.annotation.RequestMethod.GET
 import org.springframework.web.bind.annotation.RequestMethod.POST
