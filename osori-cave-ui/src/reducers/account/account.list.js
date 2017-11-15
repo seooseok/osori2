@@ -1,4 +1,4 @@
-import {ACCOUNTS_SEARCH, ACCOUNTS_SEARCHED} from "../actions/account/actionTypes";
+import {ACCOUNTS_SEARCH, ACCOUNTS_SEARCHED} from "../../actions/account/actionTypes";
 
 const initial = {
     payload: undefined

@@ -19,6 +19,8 @@ data class UserResource(var loginId: String) : ResourceSupport() {
     var position: String? = null
     @JsonView(UserView.Detail::class)
     var department: String? = null
+    @JsonView(UserView.Detail::class)
+    var comment: String? = null
 
     var created: String? = null
     var status: String? = null

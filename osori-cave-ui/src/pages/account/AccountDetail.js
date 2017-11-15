@@ -1,6 +1,8 @@
 import React from 'react'
+import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {Form, Text} from 'react-form';
+import {modifyOne} from "../../actions/account/account.modify";
 
 //FIXME: Form을 아예 re render 하는 방법을 모르겠다.
 class AccountDetail extends React.Component {
@@ -12,8 +14,17 @@ class AccountDetail extends React.Component {
         };
     }
 
-    handleSubmit = (e) => {
-        console.debug(e)
+    handleSubmit = (formData) => {
+        console.debug('modify account: %s ', JSON.stringify(formData));
+
+        let url = this.state.detail.links.find(item => {
+            return item.rel === 'self'
+        }).href;
+
+        if (url === undefined)
+            console.err('can\'t find detail url. links: ', JSON.stringify(this.state.detail.links));
+
+        this.props.modifyOne(url, formData)
 
     };
 
@@ -84,7 +95,7 @@ class AccountDetail extends React.Component {
                                 </div>
                                 <br/>
                                 <div className="pull-left">
-                                    <button type="submit" className="btn btn-block btn-success">Search</button>
+                                    <button type="submit" className="btn btn-block btn-success">Modify</button>
                                 </div>
                                 <div className="pull-right">
                                     <button type="button" className="btn btn-block btn-danger">Expire</button>
@@ -114,8 +125,9 @@ let mapStateToProps = (state) => {
         payload: state.accountDetail.payload
     };
 };
+const mapDispatchToProps = (dispatch) => bindActionCreators({modifyOne}, dispatch);
 
-export default connect(mapStateToProps, null)(AccountDetail)
+export default connect(mapStateToProps, mapDispatchToProps)(AccountDetail)
 
 
 

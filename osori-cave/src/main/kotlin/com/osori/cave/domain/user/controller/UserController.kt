@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -52,19 +53,14 @@ class UserController
         return Resource(resource, linkTo(methodOn(this::class.java).findOneWithDetail(id)).withSelfRel())
     }
 
+
     @PutMapping("/user/{id}")
     fun modify(@PathVariable id: Long,
-               @RequestParam name: String,
-               @RequestParam status: String,
-               @RequestParam(required = false) email: String?,
-               @RequestParam(required = false) phone: String?,
-               @RequestParam(required = false) position: String?,
-               @RequestParam(required = false) department: String?,
-               @RequestParam(required = false) comment: String?): Resource<String> {
+               @RequestBody resource: UserResource): Resource<String> {
 
-        val information = PersonalInformation(email, phone, position, department, comment)
+        val information = PersonalInformation(resource.email, resource.phone, resource.position, resource.department, resource.comment)
 
-        userService.modify(id, name, information, User.Status.valueOf(status))
+        userService.modify(id, resource.name, information, User.Status.valueOf(resource.status!!))
 
         return Resource("success", linkTo(methodOn(this::class.java).findOneWithDetail(id)).withSelfRel())
     }

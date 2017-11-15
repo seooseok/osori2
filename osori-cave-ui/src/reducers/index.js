@@ -1,5 +1,5 @@
-import accountList from './account.list'
-import accountDetail from './account.detail'
+import accountList from './account/account.list'
+import accountDetail from './account/account.detail'
 
 export {accountList, accountDetail}
 
