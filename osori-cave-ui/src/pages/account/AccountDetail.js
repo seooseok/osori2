@@ -95,9 +95,9 @@ class AccountDetail extends React.Component {
                     )
                 }
             </Form>
-        )
+        );
 
-        if (this.props.payload == undefined && !this.props.isFetching) {
+        if (this.props.payload === undefined && !this.props.isFetching) {
             panel = (
                 <div>
                     <div className="callout callout-info">
@@ -109,43 +109,43 @@ class AccountDetail extends React.Component {
         }
 
         let overlay;
-        if (this.props.payload == undefined && this.props.isFetching) {
+        if (this.props.payload === undefined && this.props.isFetching) {
             panel = (
                 <form>
                     <div className="form-group">
                         <div className="input-group">
                             <span className="input-group-addon"><i className="fa fa-laptop"/></span>
-                            <div className="form-control"></div>
+                            <div className="form-control"/>
                         </div>
                         <br/>
                         <div className="input-group">
                             <span className="input-group-addon"><i className="fa fa-user-o"/></span>
-                            <div className="form-control"></div>
+                            <div className="form-control"/>
                         </div>
                         <br/>
                         <div className="input-group">
                             <span className="input-group-addon"><i className="fa fa-envelope"/></span>
-                            <div className="form-control"></div>
+                            <div className="form-control"/>
                         </div>
                         <br/>
                         <div className="input-group">
                             <span className="input-group-addon"><i className="fa fa-phone"/></span>
-                            <div className="form-control"></div>
+                            <div className="form-control"/>
                         </div>
                         <br/>
                         <div className="input-group">
                             <span className="input-group-addon"><i className="fa fa-building"/></span>
-                            <div className="form-control"></div>
+                            <div className="form-control"/>
                         </div>
                         <br/>
                         <div className="input-group">
                             <span className="input-group-addon"><i className="fa fa-sitemap"/></span>
-                            <div className="form-control"></div>
+                            <div className="form-control"/>
                         </div>
                         <br/>
                         <div className="input-group">
                             <span className="input-group-addon"><i className="fa fa-comment"/></span>
-                            <div className="form-control"></div>
+                            <div className="form-control"/>
                         </div>
                         <br/>
                     </div>
@@ -158,12 +158,6 @@ class AccountDetail extends React.Component {
                     </div>
                 </form>
             );
-
-            overlay = (
-                <div className="overlay">
-                    <i className="fa fa-refresh fa-spin"></i>
-                </div>
-            )
         }
 
         return (
@@ -174,7 +168,12 @@ class AccountDetail extends React.Component {
                 <div className="box-body">
                     {panel}
                 </div>
-                {overlay}
+                {
+                    this.props.isFetching &&
+                    <div className="overlay">
+                        <i className="fa fa-refresh fa-spin"></i>
+                    </div>
+                }
             </div>
         )
     }

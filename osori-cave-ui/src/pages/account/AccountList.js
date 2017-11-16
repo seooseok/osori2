@@ -58,13 +58,21 @@ class AccountList extends React.Component {
                         <TableHeaderColumn dataField='status' dataSort={true}>Status</TableHeaderColumn>
                     </BootstrapTable>
                 </div>
+                {
+                    this.props.isFetching &&
+                    <div className="overlay">
+                        <i className="fa fa-refresh fa-spin"></i>
+                    </div>
+                }
             </div>
+
         )
     }
 }
 
 let mapStateToProps = (state) => {
     return {
+        isFetching: state.accountList.isFetching,
         payload: state.accountList.payload
     };
 };
