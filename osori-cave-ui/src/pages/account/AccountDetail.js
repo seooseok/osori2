@@ -108,7 +108,6 @@ class AccountDetail extends React.Component {
             )
         }
 
-        let overlay;
         if (this.props.payload === undefined && this.props.isFetching) {
             panel = (
                 <form>
