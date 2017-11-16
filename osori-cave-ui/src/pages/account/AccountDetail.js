@@ -38,8 +38,66 @@ class AccountDetail extends React.Component {
     }
 
     render() {
-        let panel;
-        if (this.props.payload === undefined) {
+
+        let panel = (
+            <Form onSubmit={this.handleSubmit} defaultValues={this.state.detail}>
+                {
+                    formApi => (
+                        <form onSubmit={formApi.submitForm} id="modifyProfile">
+                            <div className="form-group">
+                                <div className="input-group">
+                                    <span className="input-group-addon"><i className="fa fa-laptop"/></span>
+                                    <div className="form-control" disabled> {this.state.detail.loginId} </div>
+                                </div>
+                                <br/>
+                                <div className="input-group">
+                                    <span className="input-group-addon"><i className="fa fa-user-o"/></span>
+                                    <Text className="form-control" field="name" placeholder="Enter Name"
+                                          autoComplete='name'/>
+                                </div>
+                                <br/>
+                                <div className="input-group">
+                                    <span className="input-group-addon"><i className="fa fa-envelope"/></span>
+                                    <Text className="form-control" field="email" placeholder="Enter email"
+                                          autoComplete='email'/>
+                                </div>
+                                <br/>
+                                <div className="input-group">
+                                    <span className="input-group-addon"><i className="fa fa-phone"/></span>
+                                    <Text className="form-control" field="phone" placeholder="Enter phone"
+                                          autoComplete='tel'/>
+                                </div>
+                                <br/>
+                                <div className="input-group">
+                                    <span className="input-group-addon"><i className="fa fa-building"/></span>
+                                    <Text className="form-control" field="department" placeholder="Enter department"/>
+                                </div>
+                                <br/>
+                                <div className="input-group">
+                                    <span className="input-group-addon"><i className="fa fa-sitemap"/></span>
+                                    <Text className="form-control" field="position" placeholder="Enter position"/>
+                                </div>
+                                <br/>
+                                <div className="input-group">
+                                    <span className="input-group-addon"><i className="fa fa-comment"/></span>
+                                    <Text className="form-control" field="comment" placeholder="Enter something else"/>
+                                </div>
+                                <br/>
+                            </div>
+                            <br/>
+                            <div className="pull-left">
+                                <button type="submit" className="btn btn-block btn-success">Modify</button>
+                            </div>
+                            <div className="pull-right">
+                                <button type="button" className="btn btn-block btn-danger">Expire</button>
+                            </div>
+                        </form>
+                    )
+                }
+            </Form>
+        )
+
+        if (this.props.payload == undefined && !this.props.isFetching) {
             panel = (
                 <div>
                     <div className="callout callout-info">
@@ -48,64 +106,66 @@ class AccountDetail extends React.Component {
                     </div>
                 </div>
             )
-        } else {
+        }
+
+        let overlay;
+        if (this.props.payload == undefined && this.props.isFetching) {
             panel = (
-                <Form onSubmit={this.handleSubmit} defaultValues={this.state.detail}>
-                    {
-                        formApi => (
-                            <form onSubmit={formApi.submitForm} id="modifyProfile">
-                                <div className="form-group">
-                                    <div className="input-group">
-                                        <span className="input-group-addon"><i className="fa fa-laptop"/></span>
-                                        <div className="form-control" disabled>
-                                            {this.state.detail.loginId}
-                                        </div>
-                                    </div>
-                                    <br/>
-                                    <div className="input-group">
-                                        <span className="input-group-addon"><i className="fa fa-user-o"/></span>
-                                        <Text className="form-control" field="name" placeholder="Enter Name"
-                                              autoComplete='name'/>
-                                    </div>
-                                    <br/>
-                                    <div className="input-group">
-                                        <span className="input-group-addon"><i className="fa fa-envelope"/></span>
-                                        <Text className="form-control" field="email" placeholder="Enter email"
-                                              autoComplete='email'/>
-                                    </div>
-                                    <br/>
-                                    <div className="input-group">
-                                        <span className="input-group-addon"><i className="fa fa-phone"/></span>
-                                        <Text className="form-control" field="phone" placeholder="Enter phone"
-                                              autoComplete='tel'/>
-                                    </div>
-                                    <br/>
-                                    <div className="input-group">
-                                        <span className="input-group-addon"><i className="fa fa-building"/></span>
-                                        <Text className="form-control" field="department"
-                                              placeholder="Enter department"/>
-                                    </div>
-                                    <br/>
-                                    <div className="input-group">
-                                        <span className="input-group-addon"><i className="fa fa-comment"/></span>
-                                        <Text className="form-control" field="comment"
-                                              placeholder="Enter something else"/>
-                                    </div>
-                                    <br/>
-                                </div>
-                                <br/>
-                                <div className="pull-left">
-                                    <button type="submit" className="btn btn-block btn-success">Modify</button>
-                                </div>
-                                <div className="pull-right">
-                                    <button type="button" className="btn btn-block btn-danger">Expire</button>
-                                </div>
-                            </form>
-                        )
-                    }
-                </Form>
+                <form>
+                    <div className="form-group">
+                        <div className="input-group">
+                            <span className="input-group-addon"><i className="fa fa-laptop"/></span>
+                            <div className="form-control"></div>
+                        </div>
+                        <br/>
+                        <div className="input-group">
+                            <span className="input-group-addon"><i className="fa fa-user-o"/></span>
+                            <div className="form-control"></div>
+                        </div>
+                        <br/>
+                        <div className="input-group">
+                            <span className="input-group-addon"><i className="fa fa-envelope"/></span>
+                            <div className="form-control"></div>
+                        </div>
+                        <br/>
+                        <div className="input-group">
+                            <span className="input-group-addon"><i className="fa fa-phone"/></span>
+                            <div className="form-control"></div>
+                        </div>
+                        <br/>
+                        <div className="input-group">
+                            <span className="input-group-addon"><i className="fa fa-building"/></span>
+                            <div className="form-control"></div>
+                        </div>
+                        <br/>
+                        <div className="input-group">
+                            <span className="input-group-addon"><i className="fa fa-sitemap"/></span>
+                            <div className="form-control"></div>
+                        </div>
+                        <br/>
+                        <div className="input-group">
+                            <span className="input-group-addon"><i className="fa fa-comment"/></span>
+                            <div className="form-control"></div>
+                        </div>
+                        <br/>
+                    </div>
+                    <br/>
+                    <div className="pull-left">
+                        <button type="submit" className="btn btn-block btn-success" disabled>Modify</button>
+                    </div>
+                    <div className="pull-right">
+                        <button type="button" className="btn btn-block btn-danger" disabled>Expire</button>
+                    </div>
+                </form>
+            );
+
+            overlay = (
+                <div className="overlay">
+                    <i className="fa fa-refresh fa-spin"></i>
+                </div>
             )
         }
+
         return (
             <div className="box">
                 <div className="box-header with-border">
@@ -114,6 +174,7 @@ class AccountDetail extends React.Component {
                 <div className="box-body">
                     {panel}
                 </div>
+                {overlay}
             </div>
         )
     }
@@ -122,6 +183,7 @@ class AccountDetail extends React.Component {
 
 let mapStateToProps = (state) => {
     return {
+        isFetching: state.accountDetail.isFetching,
         payload: state.accountDetail.payload
     };
 };
