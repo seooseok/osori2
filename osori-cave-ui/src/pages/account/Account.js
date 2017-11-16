@@ -42,7 +42,7 @@ class Account extends React.Component {
                             <AccountList onClickAccount={this.handleClickAccount}/>
                         </div>
                         <div className={"col-md-3"}>
-                            <AccountDetail ref="accountDetail"/>
+                            <AccountDetail/>
                         </div>
                     </div>
 
