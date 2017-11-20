@@ -4,50 +4,38 @@ import {connect} from 'react-redux'
 import {Form, Text} from 'react-form';
 import {modifyOne} from "../../actions/account/account.modify";
 
-//FIXME: Form을 아예 re render 하는 방법을 모르겠다.
-class AccountDetail extends React.Component {
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            detail: {}
-        };
-    }
+class AccountDetail extends React.Component {
 
     handleSubmit = (formData) => {
         console.debug('modify account: %s ', JSON.stringify(formData));
 
-        let url = this.state.detail.links.find(item => {
+        let url = this.props.detail.links.find(item => {
             return item.rel === 'self'
         }).href;
 
-        if (url === undefined)
-            console.err('can\'t find detail url. links: ', JSON.stringify(this.state.detail.links));
+        if (url === undefined) {
+            console.err('can\'t find detail url. links: ', JSON.stringify(this.props.detail.links));
+        }
 
-        this.props.modifyOne(url, formData)
+        this.props.modifyOne(url, formData);
 
+        this.props.onChangeAccountDetail(formData)
     };
 
-    componentWillReceiveProps(nextProps) {
-        console.debug("componentWillReceiveProps: " + JSON.stringify(nextProps));
-        if (nextProps.payload !== undefined) {
-            this.setState({
-                detail: nextProps.payload
-            });
-        }
-    }
 
     render() {
 
         let panel = (
-            <Form onSubmit={this.handleSubmit} defaultValues={this.state.detail}>
+            <Form onSubmit={this.handleSubmit} defaultValues={this.props.detail}>
                 {
                     formApi => (
-                        <form onSubmit={formApi.submitForm} id="modifyProfile">
+                        <form onSubmit={formApi.submitForm}>
                             <div className="form-group">
+
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="fa fa-laptop"/></span>
-                                    <div className="form-control" disabled> {this.state.detail.loginId} </div>
+                                    <div className="form-control" disabled> {this.props.detail.loginId} </div>
                                 </div>
                                 <br/>
                                 <div className="input-group">
@@ -97,66 +85,70 @@ class AccountDetail extends React.Component {
             </Form>
         );
 
-        if (this.props.payload === undefined && !this.props.isFetching) {
-            panel = (
-                <div>
-                    <div className="callout callout-info">
-                        <h4>Please select a row in the search results</h4>
-                        <p>Shows the encrypted personal information of the account.</p>
-                    </div>
-                </div>
-            )
-        }
+        let noSelectPanel = (
+            <div className="callout callout-info">
+                <h4>Please select a row in the search results</h4>
+                <p>Shows the encrypted personal information of the account.</p>
+            </div>
+        );
 
-        if (this.props.payload === undefined && this.props.isFetching) {
-            panel = (
-                <form>
-                    <div className="form-group">
-                        <div className="input-group">
-                            <span className="input-group-addon"><i className="fa fa-laptop"/></span>
-                            <div className="form-control"/>
-                        </div>
-                        <br/>
-                        <div className="input-group">
-                            <span className="input-group-addon"><i className="fa fa-user-o"/></span>
-                            <div className="form-control"/>
-                        </div>
-                        <br/>
-                        <div className="input-group">
-                            <span className="input-group-addon"><i className="fa fa-envelope"/></span>
-                            <div className="form-control"/>
-                        </div>
-                        <br/>
-                        <div className="input-group">
-                            <span className="input-group-addon"><i className="fa fa-phone"/></span>
-                            <div className="form-control"/>
-                        </div>
-                        <br/>
-                        <div className="input-group">
-                            <span className="input-group-addon"><i className="fa fa-building"/></span>
-                            <div className="form-control"/>
-                        </div>
-                        <br/>
-                        <div className="input-group">
-                            <span className="input-group-addon"><i className="fa fa-sitemap"/></span>
-                            <div className="form-control"/>
-                        </div>
-                        <br/>
-                        <div className="input-group">
-                            <span className="input-group-addon"><i className="fa fa-comment"/></span>
-                            <div className="form-control"/>
-                        </div>
-                        <br/>
+        let loadingPanel = (
+            <form>
+                <div className="form-group">
+                    <div className="input-group">
+                        <span className="input-group-addon"><i className="fa fa-laptop"/></span>
+                        <div className="form-control"/>
                     </div>
                     <br/>
-                    <div className="pull-left">
-                        <button type="submit" className="btn btn-block btn-success" disabled>Modify</button>
+                    <div className="input-group">
+                        <span className="input-group-addon"><i className="fa fa-user-o"/></span>
+                        <div className="form-control"/>
                     </div>
-                    <div className="pull-right">
-                        <button type="button" className="btn btn-block btn-danger" disabled>Expire</button>
+                    <br/>
+                    <div className="input-group">
+                        <span className="input-group-addon"><i className="fa fa-envelope"/></span>
+                        <div className="form-control"/>
                     </div>
-                </form>
-            );
+                    <br/>
+                    <div className="input-group">
+                        <span className="input-group-addon"><i className="fa fa-phone"/></span>
+                        <div className="form-control"/>
+                    </div>
+                    <br/>
+                    <div className="input-group">
+                        <span className="input-group-addon"><i className="fa fa-building"/></span>
+                        <div className="form-control"/>
+                    </div>
+                    <br/>
+                    <div className="input-group">
+                        <span className="input-group-addon"><i className="fa fa-sitemap"/></span>
+                        <div className="form-control"/>
+                    </div>
+                    <br/>
+                    <div className="input-group">
+                        <span className="input-group-addon"><i className="fa fa-comment"/></span>
+                        <div className="form-control"/>
+                    </div>
+                    <br/>
+                </div>
+                <br/>
+                <div className="pull-left">
+                    <button type="submit" className="btn btn-block btn-success" disabled>Modify</button>
+                </div>
+                <div className="pull-right">
+                    <button type="button" className="btn btn-block btn-danger" disabled>Expire</button>
+                </div>
+            </form>
+        );
+
+
+        if (this.props.detail === undefined && !this.props.isFetching) {
+            panel = noSelectPanel
+        }
+
+        //FiXME: duplicate code
+        if (this.props.detail === undefined && this.props.isFetching) {
+            panel = loadingPanel
         }
 
         return (
@@ -182,7 +174,7 @@ class AccountDetail extends React.Component {
 let mapStateToProps = (state) => {
     return {
         isFetching: state.accountDetail.isFetching,
-        payload: state.accountDetail.payload
+        detail: state.accountDetail.payload
     };
 };
 const mapDispatchToProps = (dispatch) => bindActionCreators({modifyOne}, dispatch);
