@@ -43,7 +43,7 @@ class AccountList extends React.Component {
     };
 
     onChangeAccountDetail = (formData) => {
-        console.debug('change account detail: %s ', JSON.stringify(formData));
+        console.debug('change account detail: %s', JSON.stringify(formData));
         let targetRow = this.state.accounts.find(row => {
             return row.id === formData.id
         });
@@ -54,9 +54,12 @@ class AccountList extends React.Component {
         })
     };
 
-    onExpireAccountDetail = (formData) => {
-
-    }
+    onExpireAccountDetail = (id) => {
+        console.debug('expired account detail: %s', id);
+        this.setState({
+            accounts: this.state.accounts.filter((row) => row.id !== id)
+        })
+    };
 
 
     render() {

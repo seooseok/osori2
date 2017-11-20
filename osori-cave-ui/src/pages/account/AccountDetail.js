@@ -1,8 +1,9 @@
 import React from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {Form, Text} from 'react-form';
-import {modifyOne} from "../../actions/account/account.modify";
+import {Form, Text} from 'react-form'
+import {modifyOne} from '../../actions/account/account.modify'
+import {expireOne} from '../../actions/account/account.expire'
 
 
 class AccountDetail extends React.Component {
@@ -22,6 +23,21 @@ class AccountDetail extends React.Component {
 
         this.props.onChangeAccountDetail(formData)
     };
+
+    handleExpire = () => {
+        let url = this.props.detail.links.find(item => {
+            return item.rel === 'self'
+        }).href;
+
+        if (url === undefined) {
+            console.err('can\'t find detail url. links: ', JSON.stringify(this.props.detail.links));
+        }
+
+        this.props.expireOne(url)
+        this.props.onExpireAccountDetail(this.props.detail.id)
+    };
+
+
 
 
     render() {
@@ -77,7 +93,9 @@ class AccountDetail extends React.Component {
                                 <button type="submit" className="btn btn-block btn-success">Modify</button>
                             </div>
                             <div className="pull-right">
-                                <button type="button" className="btn btn-block btn-danger">Expire</button>
+                                <button type="button" onClick={this.handleExpire} className="btn btn-block btn-danger">
+                                    Expire
+                                </button>
                             </div>
                         </form>
                     )
@@ -177,7 +195,7 @@ let mapStateToProps = (state) => {
         detail: state.accountDetail.payload
     };
 };
-const mapDispatchToProps = (dispatch) => bindActionCreators({modifyOne}, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({modifyOne, expireOne}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountDetail)
 

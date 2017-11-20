@@ -1,4 +1,6 @@
 import {
+    ACCOUNT_DETAIL_EXPIRE,
+    ACCOUNT_DETAIL_EXPIRED,
     ACCOUNT_DETAIL_FIND,
     ACCOUNT_DETAIL_FOUND,
     ACCOUNT_DETAIL_MODIFIED,
@@ -34,6 +36,17 @@ export default (state = initial, action) => {
                 ...state,
                 isFetching: false
             };
+        case ACCOUNT_DETAIL_EXPIRE:
+            return {
+                ...state,
+                isFetching: true
+            };
+        case ACCOUNT_DETAIL_EXPIRED:
+            return {
+                ...state,
+                payload: undefined,
+                isFetching: false
+            }
         default:
             return state
     }
