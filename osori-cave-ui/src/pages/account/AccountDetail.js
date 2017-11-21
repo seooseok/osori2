@@ -172,7 +172,7 @@ class AccountDetail extends React.Component {
         }
 
         return (
-            <div className="box">
+            <div className="box box-info">
                 <div className="box-header with-border">
                     <h5 className="box-title"><i className="fa fa-fw fa-pencil-square-o"/> Account Profile</h5>
                 </div>

@@ -91,7 +91,7 @@ class AccountList extends React.Component {
         return (
             <div className="row">
                 <div className="col-md-9">
-                    <div className="box">
+                    <div className="box box-success">
                         <div className="box-header with-border">
                             <h5 className="box-title">Search Result</h5>
                         </div>
@@ -113,7 +113,7 @@ class AccountList extends React.Component {
                         }
                     </div>
                 </div>
-                <div className={"col-md-3"}>
+                <div className="col-md-3">
                     <AccountDetail onChangeAccountDetail={this.onChangeAccountDetail}
                                    onExpireAccountDetail={this.onExpireAccountDetail}/>
                 </div>
