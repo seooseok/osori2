@@ -48,6 +48,7 @@ class AccountList extends React.Component {
             return row.id === formData.id
         });
         targetRow.name = formData.name;
+        targetRow.status = formData.status;
 
         this.setState({
             accounts: this.state.accounts.map((row) => row.id === formData.id ? targetRow : row)

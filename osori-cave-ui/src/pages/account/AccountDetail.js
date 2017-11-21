@@ -1,7 +1,7 @@
 import React from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {Form, Text} from 'react-form'
+import {Form, Select, Text} from 'react-form'
 import {modifyOne} from '../../actions/account/account.modify'
 import {expireOne} from '../../actions/account/account.expire'
 
@@ -87,6 +87,8 @@ class AccountDetail extends React.Component {
                                     <Text className="form-control" field="comment" placeholder="Enter something else"/>
                                 </div>
                                 <br/>
+                                <Select className="form-control" field="status"
+                                        options={statusOptions}/>
                             </div>
                             <br/>
                             <div className="pull-left">
@@ -187,6 +189,12 @@ class AccountDetail extends React.Component {
         )
     }
 }
+
+const statusOptions = [
+    {label: 'Allow', value: 'ALLOW'},
+    {label: 'Reject', value: 'REJECT'},
+    {label: 'Wait', value: 'WAIT'}
+]
 
 
 let mapStateToProps = (state) => {

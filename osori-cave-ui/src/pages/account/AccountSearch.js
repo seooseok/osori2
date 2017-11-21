@@ -82,8 +82,7 @@ AccountSearchComponent.defaultProps = {
             {label: 'All Status', value: ''},
             {label: 'Allow', value: 'ALLOW'},
             {label: 'Reject', value: 'REJECT'},
-            {label: 'Wait', value: 'WAIT'},
-            {label: 'Expire', value: 'EXPIRE'}
+            {label: 'Wait', value: 'WAIT'}
         ]
     }
 };
