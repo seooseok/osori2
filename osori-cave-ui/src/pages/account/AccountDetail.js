@@ -33,7 +33,7 @@ class AccountDetail extends React.Component {
             console.err('can\'t find detail url. links: ', JSON.stringify(this.props.detail.links));
         }
 
-        this.props.expireOne(url)
+        this.props.expireOne(url);
         this.props.onExpireAccountDetail(this.props.detail.id)
     };
 

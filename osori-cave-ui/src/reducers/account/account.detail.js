@@ -46,7 +46,7 @@ export default (state = initial, action) => {
                 ...state,
                 payload: undefined,
                 isFetching: false
-            }
+            };
         default:
             return state
     }

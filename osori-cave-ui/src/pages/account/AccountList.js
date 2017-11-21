@@ -61,7 +61,6 @@ class AccountList extends React.Component {
         })
     };
 
-
     render() {
 
         const options = {
