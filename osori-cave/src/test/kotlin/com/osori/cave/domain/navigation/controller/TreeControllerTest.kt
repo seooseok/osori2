@@ -3,7 +3,6 @@ package com.osori.cave.domain.navigation.controller
 import com.osori.cave.IntegrationTestSupporter
 import com.osori.cave.domain.navigation.MenuTreeService
 import com.osori.cave.domain.navigation.infrastructure.UriPart.DepthType.FIELD
-import com.osori.cave.domain.navigation.infrastructure.UriPart.DepthType.MENU
 import com.osori.cave.domain.navigation.infrastructure.UriPartRepository
 import com.osori.cave.generator.UriPartGenerator
 import io.kotlintest.matchers.shouldBe

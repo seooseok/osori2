@@ -54,7 +54,7 @@ class UriPart(var name: String,
 
 
     enum class DepthType {
-        NAVI, MENU, FUNC, FIELD
+        NAVI, FUNC, FIELD
     }
 
     fun setByParent(parentUriPart: UriPart) {

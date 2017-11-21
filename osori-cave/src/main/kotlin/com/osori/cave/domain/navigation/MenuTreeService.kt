@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 class MenuTreeService
 @Autowired constructor(private val repository: UriPartRepository) {
 
-    fun create(menuNode: MenuNodeResource) {
+    fun create(menuNode: MenuNodeResource): Long {
         val uriPart = UriPart(menuNode.name, menuNode.resource, menuNode.depthType, menuNode.methodType).apply {
             sorting = menuNode.sorting
             viewId = menuNode.viewId
@@ -27,7 +27,7 @@ class MenuTreeService
             uriPart.setByParent(parentUriPart)
         }
 
-        save(uriPart)
+        return save(uriPart)
     }
 
     fun findNode(nodeId: Long): MenuNodeResource {
@@ -73,7 +73,7 @@ class MenuTreeService
         root?.let { it.uriParts.map { u -> orphanRemove(u) } }
     }
 
-    private fun save(uriPart: UriPart) = repository.save(uriPart)
+    private fun save(uriPart: UriPart): Long = repository.save(uriPart).id!!
 
     private fun orphanRemove(uriPart: UriPart) {
         uriPart.status = false
@@ -82,9 +82,7 @@ class MenuTreeService
         }
     }
 
-    private fun findAll(): List<UriPart> {
-        return repository.findByTypeAndStatusTrue(UriPartType.SERVICE)
-    }
+    private fun findAll(): List<UriPart> = repository.findByTypeAndStatusTrue(UriPartType.SERVICE)
 
     private fun findRoot(): UriPart? {
         return repository.findByTypeAndParentUriPartIsNull(UriPartType.SERVICE) ?: throw IllegalStateException("can't reset tree")
