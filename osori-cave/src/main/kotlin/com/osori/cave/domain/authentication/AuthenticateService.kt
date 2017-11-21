@@ -6,6 +6,4 @@ import org.springframework.transaction.annotation.Transactional
 
 @Transactional
 @Service
-class AuthenticateService {
-
-}
+class AuthenticateService

@@ -11,4 +11,4 @@ import org.springframework.transaction.annotation.Transactional
 @ExtendWith(SpringExtension::class)
 @ComponentScan
 @SpringBootTest(classes = arrayOf(CaveApplication::class))
-open class IntegrationTestSupporter
+class IntegrationTestSupporter
