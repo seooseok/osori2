@@ -36,7 +36,7 @@ class CaveApplication {
         menuTreeService.create(MenuNodeResource("Show User Info", "/user/{id}", FUNC, GET).apply { parentId = accountId })
         menuTreeService.create(MenuNodeResource("Modify User", "/user/{id}", FUNC, PUT).apply { parentId = accountId })
         menuTreeService.create(MenuNodeResource("Expire User", "/user/{id}", FUNC, DELETE).apply { parentId = accountId })
-        val navigationId = menuTreeService.create(MenuNodeResource("Navigation", "/navigation", NAVI, GET))
+        val navigationId = menuTreeService.create(MenuNodeResource("Navigation", "/navigation", NAVI, GET).apply { parentId = rootId })
         menuTreeService.create(MenuNodeResource("Show Url Tree", "/nodes", FUNC, GET).apply { parentId = navigationId })
     }
 
