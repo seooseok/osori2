@@ -1,32 +1,118 @@
 import React from 'react'
 import ContentNav from '../components/ContentNav'
+import SortableTree, {addNodeUnderParent, getTreeFromFlatData, removeNodeAtPath} from 'react-sortable-tree'
 
 import './navigation.css'
 
+const getNodeKey = ({treeIndex}) => treeIndex;
+
 class Navigation extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            treeData: getTreeFromFlatData({
+                flatData: this.props.treeData.map(node => ({
+                    ...node,
+                    title: node.name,
+                    subtitle: node.fullUri
+                })),
+                getKey: node => node.id,
+                getParentKey: node => node.parentId,
+                rootKey: null
+            }),
+        };
+    }
+
+    addChild = (path) => {
+        this.setState(state => ({
+            treeData: addNodeUnderParent({
+                treeData: state.treeData,
+                parentKey: path[path.length - 1],
+                expandParent: true,
+                getNodeKey,
+                newNode: {
+                    title: 'test',
+                },
+            }).treeData,
+        }))
+    };
+
+    removeChild = (node, path) => {
+        this.setState(state => ({
+            treeData: removeNodeAtPath({
+                treeData: state.treeData,
+                path,
+                getNodeKey,
+            }),
+        }))
+    };
+
     render() {
         return (
             <div>
                 <ContentNav category="Navigation" name="Navigation Configuration"
                             description="Manage URLs to verify permissions by tree structure"/>
                 <section className="content">
-                    <div className="col-md-7">
-                        <div class="box box-info">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">URL Tree Management</h3>
-                            </div>
-                            <div class="box-body">
-                                The great content goes here
-                            </div>
+                    <div className="box box-info">
+                        <div className="box-header with-border">
+                            <h3 className="box-title">URL Tree Management</h3>
                         </div>
-                    </div>
-                    <div className="col-md-5">
-                        <div class="box box-success">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Blank Box</h3>
-                            </div>
-                            <div class="box-body">
-                                The great content goes here
+                        <div className="box-body">
+                            <div style={{height: 500}}>
+                                <SortableTree
+                                    treeData={this.state.treeData}
+                                    onChange={treeData => this.setState({treeData})}
+                                    generateNodeProps={({node, path}) => {
+
+                                        let labelColor = '';
+                                        switch (node.methodType) {
+                                            case 'GET': {
+                                                labelColor = 'label-primary';
+                                                break;
+                                            }
+                                            case 'POST': {
+                                                labelColor = 'label-success';
+                                                break;
+                                            }
+                                            case 'PUT': {
+                                                labelColor = 'label-warning';
+                                                break;
+                                            }
+                                            case 'DELETE': {
+                                                labelColor = 'label-danger';
+                                                break;
+                                            }
+                                        }
+
+                                        return ({
+                                            buttons: [
+                                                <span className={"label " + labelColor}>{node.methodType}</span>
+                                                ,
+                                                <div className="btn-group">
+                                                    <button type="button" className="btn btn-info btn-xs">Detail
+                                                    </button>
+                                                    <button type="button"
+                                                            className="btn btn-info btn-xs dropdown-toggle"
+                                                            data-toggle="dropdown" aria-expanded="false">
+                                                        <span className="caret"></span>
+                                                        <span className="sr-only">Toggle Dropdown</span>
+                                                    </button>
+                                                    <ul className="dropdown-menu" role="menu">
+                                                        <li><a href="#" onClick={(e) => {
+                                                            e.preventDefault();
+                                                            this.addChild(path)
+                                                        }}>Add Child</a></li>
+                                                        <li><a href="#" onClick={(e) => {
+                                                            e.preventDefault();
+                                                            this.removeChild(node, path)
+                                                        }}>Remove</a></li>
+                                                    </ul>
+                                                </div>
+                                            ]
+                                        })
+                                    }}
+                                />
                             </div>
                         </div>
                     </div>
@@ -118,7 +204,7 @@ Navigation.defaultProps = {
             "depthType": "NAVI",
             "methodType": "GET",
             "id": 7,
-            "parentId": null,
+            "parentId": 1,
             "viewId": null,
             "viewParentId": null,
             "fullUri": "/navigation",

@@ -11,8 +11,9 @@ import './assets/Ionicons/css/ionicons.min.css'
 import './assets/lte/css/AdminLTE.min.css'
 import './assets/lte/css/skins/_all-skins.min.css'
 import './index.css';
-
+//Extend js for app
 import 'jquery/src/jquery'
+import 'adminlte-reactjs/public/bootstrap/js/bootstrap.min'
 import 'adminlte-reactjs/public/dist/js/app'
 //Default js for app
 import App from './pages/App';
