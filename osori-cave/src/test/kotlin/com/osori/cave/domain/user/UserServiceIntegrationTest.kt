@@ -1,6 +1,7 @@
 package com.osori.cave.domain.user
 
 import com.osori.cave.IntegrationTestSupporter
+import com.osori.cave.domain.user.infrastructure.User
 import io.kotlintest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -46,7 +47,7 @@ internal class UserServiceIntegrationTest : IntegrationTestSupporter() {
         userService.create(loginId, "서오석", information)
         val userResource = userService.findOne(loginId)
 
-        userService.modify(userResource.id!!, "서오석", PersonalInformation(email))
+        userService.modify(userResource.id!!, "서오석", PersonalInformation(email), User.Status.WAIT)
 
         //Then
         val modifiedUserResource = userService.findOne(loginId)

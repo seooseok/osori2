@@ -1,0 +1,12 @@
+.modal {
+    display: block;
+}
+
+.span-http-method {
+    font-size: 14px;
+    font-weight: 700;
+    min-width: 80px;
+    padding: 6px 15px;
+    text-align: center;
+    border-radius: 3px;
+}

@@ -31,11 +31,6 @@ class UriPart(var name: String,
     var id: Long? = null
         private set
 
-    var sorting: Int = 0
-
-    var viewId: Long? = null
-    var viewParentId: Long? = null
-
     var type: UriPartType = UriPartType.SERVICE
 
     var status = true
@@ -54,7 +49,7 @@ class UriPart(var name: String,
 
 
     enum class DepthType {
-        NAVI, FUNC, FIELD
+        NAVI, FUNC
     }
 
     fun setByParent(parentUriPart: UriPart) {

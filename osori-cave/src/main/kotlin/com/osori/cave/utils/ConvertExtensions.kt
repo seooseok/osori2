@@ -9,9 +9,6 @@ import com.osori.cave.domain.permission.infrastructure.Permission
 fun UriPart.toResource(): MenuNodeResource {
     val menuNode = MenuNodeResource(this.name, this.resource, this.depthType, this.methodType)
     menuNode.id = this.id
-    menuNode.sorting = this.sorting
-    menuNode.viewId = this.viewId
-    menuNode.viewParentId = this.viewParentId
 
     menuNode.fullUri = getFullUri(this)
     if (this.parentUriPart != null)

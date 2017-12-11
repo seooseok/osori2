@@ -1,6 +1,7 @@
 package com.osori.cave.domain.navigation.controller
 
 import com.osori.cave.domain.navigation.MenuTreeService
+import com.osori.cave.domain.navigation.infrastructure.UriPart
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -8,6 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod.DELETE
+import org.springframework.web.bind.annotation.RequestMethod.GET
+import org.springframework.web.bind.annotation.RequestMethod.POST
+import org.springframework.web.bind.annotation.RequestMethod.PUT
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -20,32 +25,47 @@ class TreeController
         return menuTreeService.findNodes()
     }
 
-    @PostMapping("/node")
-    fun createNode(menuNode: MenuNodeResource) {
-        menuTreeService.create(menuNode)
+    @PostMapping("/children")
+    fun addChildren(privilegeUrl: PrivilegeUrlResource) {
+        privilegeUrl.validate()
+        val depthType = UriPart.DepthType.valueOf(privilegeUrl.depthType)
+
+        menuTreeService.create(MenuNodeResource(privilegeUrl.getTitle, privilegeUrl.uriPart, depthType, GET))
+
+        privilegeUrl.postTitle?.let {
+            menuTreeService.create(MenuNodeResource(privilegeUrl.postTitle!!, privilegeUrl.uriPart, depthType, POST))
+        }
+
+        privilegeUrl.putTitle?.let {
+            menuTreeService.create(MenuNodeResource(privilegeUrl.putTitle!!, privilegeUrl.uriPart, depthType, PUT))
+        }
+
+        privilegeUrl.deleteTitle?.let {
+            menuTreeService.create(MenuNodeResource(privilegeUrl.deleteTitle!!, privilegeUrl.uriPart, depthType, DELETE))
+        }
     }
 
-    @PutMapping("/node/{id}")
-    fun modifyNode(@PathVariable id: Long, menuNode: MenuNodeResource) {
+    @PutMapping("/children/{id}")
+    fun modifyChildren(@PathVariable id: Long, menuNode: MenuNodeResource) {
         menuNode.apply { this.id = id }
         menuTreeService.modifyNode(menuNode)
     }
 
-    @DeleteMapping("/node/{id}")
-    fun removeNode(@PathVariable id: Long) {
+    @DeleteMapping("/children/{id}")
+    fun removeChildren(@PathVariable id: Long) {
         menuTreeService.removeNode(id)
     }
+}
 
-    @Deprecated("delete 구현이 힘들어서 이렇게 하지 말자.")
-    @PostMapping("")
-    fun saveTree(menuNodes: List<MenuNodeResource>) {
+data class PrivilegeUrlResource(val depthType: String,
+                                val uriPart: String,
+                                var getTitle: String,
+                                var postTitle: String? = null,
+                                var putTitle: String? = null,
+                                var deleteTitle: String? = null)
 
-        menuNodes.forEach { menuNode ->
-            if (menuNode.id == null)
-                menuTreeService.create(menuNode)
-            else
-                menuTreeService.modifyNode(menuNode)
-        }
-    }
-
+private fun PrivilegeUrlResource.validate() {
+    if (this.depthType.isEmpty()) throw IllegalArgumentException("privilege type is empty")
+    if (this.uriPart.isEmpty()) throw IllegalArgumentException("uri is empty")
+    if (this.getTitle.isEmpty()) throw IllegalArgumentException("GET api title is empty")
 }

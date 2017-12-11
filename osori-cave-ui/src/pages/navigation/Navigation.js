@@ -1,6 +1,7 @@
 import React from 'react'
 import ContentNav from '../components/ContentNav'
 import SortableTree, {addNodeUnderParent, getTreeFromFlatData, removeNodeAtPath} from 'react-sortable-tree'
+import AddChildModal from './AddChildModal'
 
 import './navigation.css'
 
@@ -11,6 +12,7 @@ class Navigation extends React.Component {
         super(props);
 
         this.state = {
+            isOpenAddModal: true,
             treeData: getTreeFromFlatData({
                 flatData: this.props.treeData.map(node => ({
                     ...node,
@@ -23,6 +25,12 @@ class Navigation extends React.Component {
             }),
         };
     }
+
+    toggleAddModal = (path) => {
+        this.setState({
+            isOpenAddModal: !this.state.isOpenAddModal
+        })
+    };
 
     addChild = (path) => {
         this.setState(state => ({
@@ -87,8 +95,9 @@ class Navigation extends React.Component {
 
                                         return ({
                                             buttons: [
-                                                <span className={"label " + labelColor}>{node.methodType}</span>
-                                                ,
+                                                <span
+                                                    className="label label-default">{node.depthType && node.depthType.substring(0, 1)}</span>,
+                                                <span className={"label " + labelColor}>{node.methodType}</span>,
                                                 <div className="btn-group">
                                                     <button type="button" className="btn btn-info btn-xs">Detail
                                                     </button>
@@ -99,14 +108,23 @@ class Navigation extends React.Component {
                                                         <span className="sr-only">Toggle Dropdown</span>
                                                     </button>
                                                     <ul className="dropdown-menu" role="menu">
-                                                        <li><a href="#" onClick={(e) => {
-                                                            e.preventDefault();
-                                                            this.addChild(path)
-                                                        }}>Add Child</a></li>
-                                                        <li><a href="#" onClick={(e) => {
-                                                            e.preventDefault();
-                                                            this.removeChild(node, path)
-                                                        }}>Remove</a></li>
+                                                        <li>
+                                                            <a href="#"
+                                                               onClick={(e) => {
+                                                                   e.preventDefault();
+                                                                   this.toggleAddModal(path)
+                                                               }}>Add Child
+                                                            </a>
+                                                        </li>
+                                                        <li className="divider"></li>
+                                                        <li>
+                                                            <a href="#"
+                                                               onClick={(e) => {
+                                                                   e.preventDefault();
+                                                                   this.removeChild(node, path)
+                                                               }}>Remove
+                                                            </a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             ]
@@ -117,6 +135,7 @@ class Navigation extends React.Component {
                         </div>
                     </div>
                 </section>
+                <AddChildModal show={this.state.isOpenAddModal} onClose={this.toggleAddModal}/>
             </div>
         )
     }

@@ -13,9 +13,5 @@ data class MenuNodeResource(
     var id: Long? = null
     var parentId: Long? = null
 
-    var viewId: Long? = null
-    var viewParentId: Long? = null
-
     var fullUri: String? = null
-    var sorting: Int = 0
 }
