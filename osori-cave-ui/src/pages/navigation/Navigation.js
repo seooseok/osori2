@@ -20,7 +20,7 @@ class Navigation extends React.Component {
         this.props.fetch();
 
         this.state = {
-            isOpenAddModal: true,
+            isOpenAddModal: false,
             treeData: [],
         };
     }
@@ -43,24 +43,88 @@ class Navigation extends React.Component {
         }
     }
 
-    toggleAddModal = (path) => {
+    toggleAddModal = (baseUri, path) => {
         this.setState({
-            isOpenAddModal: !this.state.isOpenAddModal
+            isOpenAddModal: !this.state.isOpenAddModal,
+            modalData: {
+                baseUri: baseUri,
+                nodePath: path
+            }
         })
     };
 
-    addChild = (path) => {
-        this.setState(state => ({
-            treeData: addNodeUnderParent({
-                treeData: state.treeData,
-                parentKey: path[path.length - 1],
-                expandParent: true,
-                getNodeKey,
-                newNode: {
-                    title: 'test',
-                },
-            }).treeData,
-        }))
+    addChild = (formData, modalData) => {
+        console.debug('add child modal form', formData);
+        let path = modalData.nodePath;
+
+        if (formData.getTitle) {
+            this.setState(state => ({
+                treeData: addNodeUnderParent({
+                    treeData: state.treeData,
+                    parentKey: path[path.length - 1],
+                    expandParent: true,
+                    getNodeKey,
+                    newNode: {
+                        title: formData.getTitle,
+                        subtitle: modalData.baseUri + formData.resource,
+                        methodType: 'GET',
+                        depthType: formData.depthType
+                    },
+                }).treeData,
+            }))
+        }
+
+        if (formData.putTitle) {
+            this.setState(state => ({
+                treeData: addNodeUnderParent({
+                    treeData: state.treeData,
+                    parentKey: path[path.length - 1],
+                    expandParent: true,
+                    getNodeKey,
+                    newNode: {
+                        title: formData.putTitle,
+                        subtitle: modalData.baseUri + formData.resource,
+                        methodType: 'PUT',
+                        depthType: formData.depthType
+                    },
+                }).treeData,
+            }))
+        }
+
+        if (formData.postTitle) {
+            this.setState(state => ({
+                treeData: addNodeUnderParent({
+                    treeData: state.treeData,
+                    parentKey: path[path.length - 1],
+                    expandParent: true,
+                    getNodeKey,
+                    newNode: {
+                        title: formData.postTitle,
+                        subtitle: modalData.baseUri + formData.resource,
+                        methodType: 'POST',
+                        depthType: formData.depthType
+                    },
+                }).treeData,
+            }))
+        }
+
+        if (formData.deleteTitle) {
+            this.setState(state => ({
+                treeData: addNodeUnderParent({
+                    treeData: state.treeData,
+                    parentKey: path[path.length - 1],
+                    expandParent: true,
+                    getNodeKey,
+                    newNode: {
+                        title: formData.deleteTitle,
+                        subtitle: modalData.baseUri + formData.resource,
+                        methodType: 'DELETE',
+                        depthType: formData.depthType
+                    },
+                }).treeData,
+            }))
+        }
+
     };
 
     removeChild = (node, path) => {
@@ -131,7 +195,7 @@ class Navigation extends React.Component {
                                                         <li>
                                                             <a onClick={(e) => {
                                                                    e.preventDefault();
-                                                                   this.toggleAddModal(path)
+                                                                this.toggleAddModal(node.fullUri, path)
                                                                }}>Add Child
                                                             </a>
                                                         </li>
@@ -153,7 +217,10 @@ class Navigation extends React.Component {
                         </div>
                     </div>
                 </section>
-                <AddChildModal show={this.state.isOpenAddModal} onClose={this.toggleAddModal}/>
+                <AddChildModal show={this.state.isOpenAddModal}
+                               modalData={this.state.modalData}
+                               onAddChild={this.addChild}
+                               onClose={this.toggleAddModal}/>
             </div>
         )
     }

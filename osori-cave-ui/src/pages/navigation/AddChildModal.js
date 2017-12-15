@@ -25,8 +25,8 @@ class AddChildModal extends React.Component {
 
     handleSubmit = (formData) => {
         console.debug('add child: %s ', JSON.stringify(formData));
-
-        this.props.onClose()
+        this.props.onAddChild(formData, this.props.modalData);
+        this.props.onClose();
     };
 
     onClickUriTypeRadio = (e) => {
@@ -105,11 +105,13 @@ class AddChildModal extends React.Component {
                                                 <div className="form-group">
                                                     <label className="col-sm-3 control-label">Uri</label>
                                                     <div className="col-sm-9">
-                                                        <Text className="form-control" field="uriPart"
-                                                              placeholder="Enter uri" autoComplete='uriPart'/>
+                                                        <Text className="form-control" field="resource"
+                                                              placeholder="Enter uri" autoComplete='resource'/>
                                                         <p className="text-muted">
-                                                            <small><strong>Full Url:</strong></small>
-                                                            /account/user/:id
+                                                            <small>
+                                                                <strong>Full
+                                                                    Url</strong>: {this.props.modalData.baseUri}{formApi.values.resource}
+                                                            </small>
                                                         </p>
                                                     </div>
                                                 </div>
