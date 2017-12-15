@@ -1,24 +1,22 @@
-import {ACCOUNTS_SEARCH, ACCOUNTS_SEARCHED} from './actionTypes'
+import {NAVIGATION_FIND, NAVIGATION_FOUND} from './actionTypes'
 import api from '../../http/api'
 
 const request = () => ({
-    type: ACCOUNTS_SEARCH
+    type: NAVIGATION_FIND
 });
 
 const receive = payload => ({
-    type: ACCOUNTS_SEARCHED,
+    type: NAVIGATION_FOUND,
     payload
 });
 
-export const findAll = (params) => {
+export const fetch = () => {
     return (dispatch) => {
         dispatch(request());
-        api.get(`/account/users`, {params: params})
+        api.get(`/navigation-trees`, {})
             .then(resp => dispatch(receive(resp.data)))
             .catch(err => {
                 console.log(err)
             })
     }
 };
-
-

@@ -1,7 +1,13 @@
 import React from 'react'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 import ContentNav from '../components/ContentNav'
 import SortableTree, {addNodeUnderParent, getTreeFromFlatData, removeNodeAtPath} from 'react-sortable-tree'
-import AddChildModal from './AddChildModal'
+
+import {AddChildModal} from '.'
+
+import {fetch} from '../../actions/navigation/navigation.list'
+
 
 import './navigation.css'
 
@@ -11,19 +17,30 @@ class Navigation extends React.Component {
     constructor(props) {
         super(props);
 
+        this.props.fetch();
+
         this.state = {
             isOpenAddModal: true,
-            treeData: getTreeFromFlatData({
-                flatData: this.props.treeData.map(node => ({
-                    ...node,
-                    title: node.name,
-                    subtitle: node.fullUri
-                })),
-                getKey: node => node.id,
-                getParentKey: node => node.parentId,
-                rootKey: null
-            }),
+            treeData: [],
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.debug("componentWillReceiveProps: " + JSON.stringify(nextProps));
+        if (nextProps.payload !== undefined) {
+            this.setState({
+                treeData: getTreeFromFlatData({
+                    flatData: nextProps.payload.map(node => ({
+                        ...node,
+                        title: node.name,
+                        subtitle: node.fullUri
+                    })),
+                    getKey: node => node.id,
+                    getParentKey: node => node.parentId,
+                    rootKey: null
+                })
+            });
+        }
     }
 
     toggleAddModal = (path) => {
@@ -91,6 +108,9 @@ class Navigation extends React.Component {
                                                 labelColor = 'label-danger';
                                                 break;
                                             }
+                                            default: {
+                                                labelColor = 'label-info'
+                                            }
                                         }
 
                                         return ({
@@ -109,8 +129,7 @@ class Navigation extends React.Component {
                                                     </button>
                                                     <ul className="dropdown-menu" role="menu">
                                                         <li>
-                                                            <a href="#"
-                                                               onClick={(e) => {
+                                                            <a onClick={(e) => {
                                                                    e.preventDefault();
                                                                    this.toggleAddModal(path)
                                                                }}>Add Child
@@ -118,8 +137,7 @@ class Navigation extends React.Component {
                                                         </li>
                                                         <li className="divider"></li>
                                                         <li>
-                                                            <a href="#"
-                                                               onClick={(e) => {
+                                                            <a onClick={(e) => {
                                                                    e.preventDefault();
                                                                    this.removeChild(node, path)
                                                                }}>Remove
@@ -141,105 +159,12 @@ class Navigation extends React.Component {
     }
 }
 
-export default Navigation
+const mapStateToProps = (state) => ({
+    isFetching: state.navigationList.isFetching,
+    payload: state.navigationList.payload
+});
 
-Navigation.defaultProps = {
-    treeData: [
-        {
-            "name": "Home",
-            "resource": "",
-            "depthType": "NAVI",
-            "methodType": "GET",
-            "id": 1,
-            "parentId": null,
-            "viewId": null,
-            "viewParentId": null,
-            "fullUri": "",
-            "sorting": 0
-        },
-        {
-            "name": "Account",
-            "resource": "/account",
-            "depthType": "NAVI",
-            "methodType": "GET",
-            "id": 2,
-            "parentId": 1,
-            "viewId": null,
-            "viewParentId": null,
-            "fullUri": "/account",
-            "sorting": 0
-        },
-        {
-            "name": "Show Users",
-            "resource": "/users",
-            "depthType": "FUNC",
-            "methodType": "GET",
-            "id": 3,
-            "parentId": 2,
-            "viewId": null,
-            "viewParentId": null,
-            "fullUri": "/account/users",
-            "sorting": 0
-        },
-        {
-            "name": "Show User Info",
-            "resource": "/user/{id}",
-            "depthType": "FUNC",
-            "methodType": "GET",
-            "id": 4,
-            "parentId": 2,
-            "viewId": null,
-            "viewParentId": null,
-            "fullUri": "/account/user/{id}",
-            "sorting": 0
-        },
-        {
-            "name": "Modify User",
-            "resource": "/user/{id}",
-            "depthType": "FUNC",
-            "methodType": "PUT",
-            "id": 5,
-            "parentId": 2,
-            "viewId": null,
-            "viewParentId": null,
-            "fullUri": "/account/user/{id}",
-            "sorting": 0
-        },
-        {
-            "name": "Expire User",
-            "resource": "/user/{id}",
-            "depthType": "FUNC",
-            "methodType": "DELETE",
-            "id": 6,
-            "parentId": 2,
-            "viewId": null,
-            "viewParentId": null,
-            "fullUri": "/account/user/{id}",
-            "sorting": 0
-        },
-        {
-            "name": "Navigation",
-            "resource": "/navigation",
-            "depthType": "NAVI",
-            "methodType": "GET",
-            "id": 7,
-            "parentId": 1,
-            "viewId": null,
-            "viewParentId": null,
-            "fullUri": "/navigation",
-            "sorting": 0
-        },
-        {
-            "name": "Show Url Tree",
-            "resource": "/nodes",
-            "depthType": "FUNC",
-            "methodType": "GET",
-            "id": 8,
-            "parentId": 7,
-            "viewId": null,
-            "viewParentId": null,
-            "fullUri": "/navigation/nodes",
-            "sorting": 0
-        }
-    ]
-};
+const mapDispatchToProps = (dispatch) => bindActionCreators({fetch}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navigation)
+
