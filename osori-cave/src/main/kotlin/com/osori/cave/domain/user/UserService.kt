@@ -5,7 +5,6 @@ import au.com.console.jpaspecificationdsl.between
 import au.com.console.jpaspecificationdsl.equal
 import au.com.console.jpaspecificationdsl.isNull
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.osori.cave.domain.user.controller.UserResource
 import com.osori.cave.domain.user.infrastructure.User
 import com.osori.cave.domain.user.infrastructure.UserRepository
 import com.osori.cave.utils.Crypto
@@ -54,26 +53,24 @@ class UserService
         return save(user)
     }
 
-    fun findOne(loginId: String): UserResource {
+    fun findOne(loginId: String): Pair<User, PersonalInformation?> {
         val user = this.findByLoginId(loginId)
 
         val information = this.getPersonalInformation(user)
 
-        return user.toResource(information)
+        return Pair(user, information)
     }
 
-    fun findOne(id: Long): UserResource {
+    fun findOne(id: Long): Pair<User, PersonalInformation?> {
         val user = repository.findOne(id)
 
         val information = this.getPersonalInformation(user)
 
-        return user.toResource(information)
+        return Pair(user, information)
     }
 
-    fun findUsers(userSearchCondition: UserSearchCondition): List<UserResource> {
-        val users = this.search(userSearchCondition)
-
-        return users.map { it -> it.toResource() }
+    fun findUsers(userSearchCondition: UserSearchCondition): List<User> {
+        return this.search(userSearchCondition)
     }
 
     fun expireUser(id: Long) {

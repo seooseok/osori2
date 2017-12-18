@@ -61,11 +61,6 @@ class MenuTreeService
         uriPart.status = false
     }
 
-    fun resetTree() {
-        val root = findRoot()
-        root?.let { it.uriParts.map { u -> orphanRemove(u) } }
-    }
-
     private fun save(uriPart: UriPart): Long = repository.save(uriPart).id!!
 
     private fun orphanRemove(uriPart: UriPart) {
@@ -76,10 +71,6 @@ class MenuTreeService
     }
 
     private fun findAll(): List<UriPart> = repository.findByTypeAndStatusTrue(UriPartType.SERVICE)
-
-    private fun findRoot(): UriPart? {
-        return repository.findByTypeAndParentUriPartIsNull(UriPartType.SERVICE) ?: throw IllegalStateException("can't reset tree")
-    }
 
     fun moveNode(nodeId: Long, parentNodeId: Long) {
         val uriPart = repository.findOne(nodeId)

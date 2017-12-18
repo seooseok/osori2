@@ -19,8 +19,8 @@ internal class UserServiceIntegrationTest : IntegrationTestSupporter() {
         //When
         userService.create(loginId = loginId, name = "서오석")
         //Then
-        val userResource = userService.findOne(loginId)
-        userResource.loginId shouldBe loginId
+        val user = userService.findOne(loginId).first
+        user.loginId shouldBe loginId
     }
 
     @Test
@@ -32,9 +32,9 @@ internal class UserServiceIntegrationTest : IntegrationTestSupporter() {
         //When
         userService.create(loginId, "서오석", information)
         //Then
-        val userResource = userService.findOne(loginId)
-        userResource.loginId shouldBe loginId
-        userResource.email shouldBe email
+        val (user, savedInformation) = userService.findOne(loginId)
+        user.loginId shouldBe loginId
+        savedInformation!!.email shouldBe email
     }
 
     @Test
@@ -45,16 +45,16 @@ internal class UserServiceIntegrationTest : IntegrationTestSupporter() {
         val information = PersonalInformation(email = "elijah17@gmail.com", phone = "010-1234-1234")
         //When
         userService.create(loginId, "서오석", information)
-        val userResource = userService.findOne(loginId)
+        val user = userService.findOne(loginId).first
 
-        userService.modify(userResource.id!!, "서오석", PersonalInformation(email), User.Status.WAIT)
+        userService.modify(user.id!!, "서오석", PersonalInformation(email), User.Status.WAIT)
 
         //Then
-        val modifiedUserResource = userService.findOne(loginId)
+        val (modifiedUser, modifiedIUInformation) = userService.findOne(loginId)
 
-        modifiedUserResource.loginId shouldBe loginId
-        modifiedUserResource.email shouldBe email
-        modifiedUserResource.phone shouldBe null
+        modifiedUser.loginId shouldBe loginId
+        modifiedIUInformation!!.email shouldBe email
+        modifiedIUInformation!!.phone shouldBe null
     }
 
     @Test
@@ -67,7 +67,7 @@ internal class UserServiceIntegrationTest : IntegrationTestSupporter() {
         userService.create(loginId, "서오석", information)
 
         //When
-        val users = userService.findUsers(UserSearchCondition(LocalDate.now(), LocalDate.now()))
+        val users = userService.findUsers(UserSearchCondition(LocalDate.now(), LocalDate.now(), loginId))
 
         users[0].loginId shouldBe loginId
 

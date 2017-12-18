@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod.GET
 import org.springframework.web.bind.annotation.RequestMethod.POST
 import org.springframework.web.bind.annotation.RequestMethod.PUT
 import org.springframework.web.bind.annotation.RestController
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/navigation-trees")
-class TreeController
+class NavigationTreeController
 @Autowired constructor(private val menuTreeService: MenuTreeService) {
 
     @GetMapping("")
@@ -26,20 +27,19 @@ class TreeController
     }
 
     @PostMapping("/children")
-    fun addChildren(privilegeUrl: PrivilegeUrlResource) {
+    fun addChildren(@Valid privilegeUrl: PrivilegeUrlResource) {
         privilegeUrl.validate()
         val depthType = UriPart.DepthType.valueOf(privilegeUrl.depthType)
 
-        menuTreeService.create(MenuNodeResource(privilegeUrl.getTitle, privilegeUrl.uriPart, depthType, GET))
-
+        privilegeUrl.getTitle?.let {
+            menuTreeService.create(MenuNodeResource(privilegeUrl.getTitle!!, privilegeUrl.uriPart, depthType, GET))
+        }
         privilegeUrl.postTitle?.let {
             menuTreeService.create(MenuNodeResource(privilegeUrl.postTitle!!, privilegeUrl.uriPart, depthType, POST))
         }
-
         privilegeUrl.putTitle?.let {
             menuTreeService.create(MenuNodeResource(privilegeUrl.putTitle!!, privilegeUrl.uriPart, depthType, PUT))
         }
-
         privilegeUrl.deleteTitle?.let {
             menuTreeService.create(MenuNodeResource(privilegeUrl.deleteTitle!!, privilegeUrl.uriPart, depthType, DELETE))
         }
@@ -57,15 +57,9 @@ class TreeController
     }
 }
 
-data class PrivilegeUrlResource(val depthType: String,
-                                val uriPart: String,
-                                var getTitle: String,
-                                var postTitle: String? = null,
-                                var putTitle: String? = null,
-                                var deleteTitle: String? = null)
-
 private fun PrivilegeUrlResource.validate() {
-    if (this.depthType.isEmpty()) throw IllegalArgumentException("privilege type is empty")
-    if (this.uriPart.isEmpty()) throw IllegalArgumentException("uri is empty")
-    if (this.getTitle.isEmpty()) throw IllegalArgumentException("GET api title is empty")
+    if (this.getTitle == null
+            && this.postTitle == null
+            && this.putTitle == null
+            && this.deleteTitle == null) throw IllegalArgumentException("At least one title must be entered. (GET,POST,PUT,DELETE)")
 }

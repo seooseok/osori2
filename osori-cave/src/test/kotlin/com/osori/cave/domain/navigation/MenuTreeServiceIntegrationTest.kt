@@ -1,12 +1,15 @@
 package com.osori.cave.domain.navigation
 
 import com.osori.cave.IntegrationTestSupporter
+import com.osori.cave.domain.navigation.controller.MenuNodeResource
+import com.osori.cave.domain.navigation.infrastructure.UriPart
 import com.osori.cave.domain.navigation.infrastructure.UriPartRepository
 import com.osori.cave.generator.UriPartGenerator
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldEqual
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.RequestMethod
 
 internal class MenuTreeServiceIntegrationTest : IntegrationTestSupporter() {
     @Autowired
@@ -30,15 +33,16 @@ internal class MenuTreeServiceIntegrationTest : IntegrationTestSupporter() {
     }
 
     @Test
-    fun resetTree() {
+    fun createTree() {
         //Given
-        val rootUriPart = UriPartGenerator().createTree()
-        repository.save(rootUriPart)
+        val menuNode = MenuNodeResource("new menu", "/menu", UriPart.DepthType.NAVI, RequestMethod.GET)
         //When
-        menuTreeService.resetTree()
+        val id = menuTreeService.create(menuNode)
+        //Then
+        val savedNode = menuTreeService.findNode(id)
 
-        menuTreeService.findNodes().size shouldBe 1
-
+        menuNode.name shouldBe savedNode.name
+        menuNode.resource shouldBe savedNode.resource
     }
 
     @Test
@@ -47,8 +51,8 @@ internal class MenuTreeServiceIntegrationTest : IntegrationTestSupporter() {
         val rootUriPart = UriPartGenerator().createTree()
         repository.save(rootUriPart)
         //When
-        val part = rootUriPart.uriParts[0].uriParts[0]
-        val targetParentPart = rootUriPart.uriParts[1]
+        val part = rootUriPart.uriParts.flatMap { it.uriParts }[0]
+        val targetParentPart = rootUriPart.uriParts[0]
 
         menuTreeService.moveNode(part.id!!, targetParentPart.id!!)
         //Then
