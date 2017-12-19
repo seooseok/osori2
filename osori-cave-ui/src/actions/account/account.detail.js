@@ -12,6 +12,7 @@ const receive = payload => ({
 
 
 export const findOne = (url) => {
+    console.debug("findOne req: %s", url);
     return (dispatch) => {
         dispatch(request());
         Axios.get(url)

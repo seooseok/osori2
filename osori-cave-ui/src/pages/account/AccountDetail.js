@@ -20,8 +20,6 @@ class AccountDetail extends React.Component {
         }
 
         this.props.modifyOne(url, formData);
-
-        this.props.onChangeAccountDetail(formData)
     };
 
     handleExpire = () => {
@@ -34,11 +32,7 @@ class AccountDetail extends React.Component {
         }
 
         this.props.expireOne(url);
-        this.props.onExpireAccountDetail(this.props.detail.id)
     };
-
-
-
 
     render() {
 

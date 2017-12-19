@@ -60,20 +60,20 @@ class UserController
 
     @PutMapping("/user/{id}")
     fun modify(@PathVariable id: Long,
-               @RequestBody resource: UserResource): Resource<String> {
+               @RequestBody resource: UserResource): Resource<Long> {
 
         val information = PersonalInformation(resource.email, resource.phone, resource.position, resource.department, resource.comment)
 
         userService.modify(id, resource.name, information, User.Status.valueOf(resource.status!!))
 
-        return Resource("success", linkTo(methodOn(this::class.java).findOneWithDetail(id)).withSelfRel())
+        return Resource(id, linkTo(methodOn(this::class.java).findOneWithDetail(id)).withSelfRel())
     }
 
     @DeleteMapping("/user/{id}")
-    fun remove(@PathVariable id: Long): Resource<String> {
+    fun remove(@PathVariable id: Long): Resource<Long> {
         userService.expireUser(id)
 
-        return Resource("success", linkTo(methodOn(this::class.java)
+        return Resource(id, linkTo(methodOn(this::class.java)
                 .search(LocalDate.now().minusWeeks(1), LocalDate.now())).withRel("before"))
     }
 

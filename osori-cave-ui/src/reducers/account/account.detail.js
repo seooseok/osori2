@@ -1,10 +1,6 @@
 import {
-    ACCOUNT_DETAIL_EXPIRE,
-    ACCOUNT_DETAIL_EXPIRED,
-    ACCOUNT_DETAIL_FIND,
-    ACCOUNT_DETAIL_FOUND,
-    ACCOUNT_DETAIL_MODIFIED,
-    ACCOUNT_DETAIL_MODIFY
+    ACCOUNT_DETAIL_EXPIRE, ACCOUNT_DETAIL_EXPIRED, ACCOUNT_DETAIL_FIND, ACCOUNT_DETAIL_FOUND,
+    ACCOUNT_DETAIL_MODIFIED
 } from "../../actions/account/actionTypes";
 
 const initial = {
@@ -26,15 +22,9 @@ export default (state = initial, action) => {
                 payload: action.payload,
                 isFetching: false
             };
-        case ACCOUNT_DETAIL_MODIFY:
-            return {
-                ...state,
-                isFetching: true
-            };
         case ACCOUNT_DETAIL_MODIFIED:
             return {
                 ...state,
-                isFetching: false
             };
         case ACCOUNT_DETAIL_EXPIRE:
             return {
