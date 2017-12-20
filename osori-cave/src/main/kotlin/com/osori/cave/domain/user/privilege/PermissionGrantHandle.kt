@@ -22,7 +22,6 @@ class PermissionGrantHandle
         permissions.forEach(user::remove)
     }
 
-
     override fun addGrant(user: User, permissionId: Long) {
         val permission = findPermission(permissionId)
         user.addBy(permission)

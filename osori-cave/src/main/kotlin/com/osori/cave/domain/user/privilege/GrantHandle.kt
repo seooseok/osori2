@@ -2,7 +2,6 @@ package com.osori.cave.domain.user.privilege
 
 import com.osori.cave.domain.user.infrastructure.User
 
-
 interface GrantHandle {
 
     fun addGrant(user: User, targetId: Long)
@@ -15,5 +14,3 @@ interface GrantHandle {
 
     fun resetGrant(user: User)
 }
-
-

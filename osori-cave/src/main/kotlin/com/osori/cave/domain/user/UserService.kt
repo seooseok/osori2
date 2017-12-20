@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional
 import java.lang.IllegalArgumentException
 import java.time.LocalDate
 
-
 @Transactional
 @Service
 class UserService
@@ -24,7 +23,6 @@ class UserService
 
     @Value(value = "\${cave.crypto.key}")
     private lateinit var cryptoKey: String
-
 
     fun create(loginId: String, name: String? = null, information: PersonalInformation? = null): Long {
         val user = User(loginId, name)
@@ -98,7 +96,6 @@ class UserService
     private fun save(user: User): Long = repository.save(user).id ?: throw IllegalStateException("can't save user!")
 }
 
-
 data class UserSearchCondition(
         val startDate: LocalDate,
         val endDate: LocalDate,
@@ -113,4 +110,3 @@ private fun UserSearchCondition.toSpecifications(): Specifications<User> {
             User::created.between(startDate, endDate),
             User::expired.isNull())
 }
-

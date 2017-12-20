@@ -36,7 +36,6 @@ class PersonalGrantHandle
         user.getUriParts().forEach(user::remove)
     }
 
-
     private fun findByUriPart(uriPartId: Long): UriPart {
         return uriPartRepository.findOne(uriPartId) ?: throw IllegalArgumentException("not found uri part ($uriPartId)")
     }
@@ -44,5 +43,4 @@ class PersonalGrantHandle
     private fun findByUriParts(menuNodeIdGroup: List<Long>): List<UriPart> {
         return uriPartRepository.findByTypeAndIdInAndStatusTrue(SERVICE, menuNodeIdGroup)
     }
-
 }
