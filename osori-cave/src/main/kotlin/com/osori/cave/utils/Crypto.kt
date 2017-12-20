@@ -7,12 +7,10 @@ import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
-
 /**
  * Be sure to use a SecureRandom!
  */
 val secureRandom = SecureRandom()
-
 
 class Crypto(private val key: String) {
 
