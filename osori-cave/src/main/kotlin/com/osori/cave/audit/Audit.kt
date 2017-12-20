@@ -10,7 +10,6 @@ import java.time.LocalDate
 import javax.persistence.EntityListeners
 import javax.persistence.MappedSuperclass
 
-
 @MappedSuperclass
 @EntityListeners(value = AuditingEntityListener::class)
 abstract class Auditor {
@@ -35,13 +34,10 @@ abstract class AuditCU : Auditor() {
 @EntityListeners(value = AuditingEntityListener::class)
 abstract class AuditCUD : AuditCU() {
     @Audited
-    var expired: LocalDate? = null     //만료일
+    var expired: LocalDate? = null //만료일
         private set
 
     fun expire() {
         this.expired = LocalDate.now()
     }
 }
-
-
-

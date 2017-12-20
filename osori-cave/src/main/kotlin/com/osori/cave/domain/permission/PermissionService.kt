@@ -74,5 +74,4 @@ class PermissionService
     private fun findByUriParts(menuNodeIdGroup: List<Long>): List<UriPart> {
         return uriPartRepository.findByTypeAndIdInAndStatusTrue(SERVICE, menuNodeIdGroup)
     }
-
 }

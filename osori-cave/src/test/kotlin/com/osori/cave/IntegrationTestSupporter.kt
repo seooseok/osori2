@@ -6,7 +6,6 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.transaction.annotation.Transactional
 
-
 @Transactional
 @ExtendWith(SpringExtension::class)
 @ComponentScan

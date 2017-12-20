@@ -15,7 +15,6 @@ import javax.persistence.Id
 import javax.persistence.OneToMany
 import javax.persistence.Table
 
-
 @Entity
 @Table(name = "PERMISSION")
 class Permission(var name: String) {
@@ -68,6 +67,4 @@ class Permission(var name: String) {
     fun getUsers(): List<User> {
         return userPermissionGrants.map { g -> g.user }
     }
-
-
 }

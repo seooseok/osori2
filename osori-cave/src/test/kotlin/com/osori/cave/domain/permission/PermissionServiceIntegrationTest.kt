@@ -1,7 +1,7 @@
 package com.osori.cave.domain.permission
 
 import com.osori.cave.IntegrationTestSupporter
-import com.osori.cave.domain.navigation.MenuTreeService
+import com.osori.cave.domain.navigation.NavigationTreeService
 import com.osori.cave.domain.navigation.infrastructure.UriPartRepository
 import com.osori.cave.generator.UriPartGenerator
 import io.kotlintest.matchers.shouldBe
@@ -14,14 +14,14 @@ internal class PermissionServiceIntegrationTest : IntegrationTestSupporter() {
     @Autowired
     private lateinit var permissionService: PermissionService
     @Autowired
-    private lateinit var menuTreeService: MenuTreeService
+    private lateinit var navigationTreeService: NavigationTreeService
 
     @Test
     fun create() {
         //Given
         val name = "sample permission"
         uriPartRepository.save(UriPartGenerator().createTree())
-        val nodes = menuTreeService.findNodes()
+        val nodes = navigationTreeService.findNodes()
 
         //When
         permissionService.create(name, nodes.map { n -> n.id!! })
@@ -31,7 +31,6 @@ internal class PermissionServiceIntegrationTest : IntegrationTestSupporter() {
 
         permissions.size shouldBe 1
         permissions[0].name shouldBe name
-
     }
 
     @Test
@@ -40,7 +39,7 @@ internal class PermissionServiceIntegrationTest : IntegrationTestSupporter() {
         val name = "sample permission"
 
         uriPartRepository.save(UriPartGenerator().createTree())
-        val nodes = menuTreeService.findNodes()
+        val nodes = navigationTreeService.findNodes()
 
         permissionService.create(name, listOf(nodes[0].id!!))
 
@@ -60,5 +59,4 @@ internal class PermissionServiceIntegrationTest : IntegrationTestSupporter() {
     @Test
     fun removeMenuNodes() {
     }
-
 }

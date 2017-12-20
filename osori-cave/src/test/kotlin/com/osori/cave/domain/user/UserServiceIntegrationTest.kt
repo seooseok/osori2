@@ -70,7 +70,5 @@ internal class UserServiceIntegrationTest : IntegrationTestSupporter() {
         val users = userService.findUsers(UserSearchCondition(LocalDate.now(), LocalDate.now(), loginId))
 
         users[0].loginId shouldBe loginId
-
     }
-
 }

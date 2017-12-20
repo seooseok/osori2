@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod.GET
 import org.springframework.web.bind.annotation.RequestMethod.POST
 import org.springframework.web.bind.annotation.RequestMethod.PUT
 
-
 class UriPartGenerator {
 
     fun createTree(): UriPart {
