@@ -47,7 +47,6 @@ class UriPart(var name: String,
     @OneToMany(mappedBy = "uriPart", fetch = LAZY, cascade = arrayOf(PERSIST, MERGE, REFRESH, DETACH))
     var permissionUriPartMappings: MutableList<PermissionUriPartMapping> = arrayListOf()
 
-
     enum class DepthType {
         NAVI, FUNC
     }
@@ -72,6 +71,3 @@ class UriPart(var name: String,
 enum class UriPartType {
     CAVE, SERVICE
 }
-
-
-

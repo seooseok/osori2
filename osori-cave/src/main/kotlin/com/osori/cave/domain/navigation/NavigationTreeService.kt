@@ -1,63 +1,55 @@
 package com.osori.cave.domain.navigation
 
-import com.osori.cave.domain.navigation.controller.MenuNodeResource
 import com.osori.cave.domain.navigation.infrastructure.UriPart
 import com.osori.cave.domain.navigation.infrastructure.UriPartRepository
 import com.osori.cave.domain.navigation.infrastructure.UriPartType
 import com.osori.cave.domain.user.infrastructure.User
-import com.osori.cave.utils.toResource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.bind.annotation.RequestMethod
 
 @Transactional
 @Service
-class MenuTreeService
+class NavigationTreeService
 @Autowired constructor(private val repository: UriPartRepository) {
 
-    fun create(menuNode: MenuNodeResource): Long {
-        val uriPart = UriPart(menuNode.name, menuNode.resource, menuNode.depthType, menuNode.methodType)
+    fun create(name: String, resource: String, depthType: UriPart.DepthType, methodType: RequestMethod, parentId: Long? = null): Long {
+        val uriPart = UriPart(name, resource, depthType, methodType)
 
-        menuNode.parentId?.let {
-            val parentUriPart = repository.findOne(menuNode.parentId)
+        parentId?.let {
+            val parentUriPart = repository.findOne(parentId)
             uriPart.setByParent(parentUriPart)
         }
 
         return save(uriPart)
     }
 
-    fun findNode(nodeId: Long): MenuNodeResource {
-        val uriPart = repository.findOne(nodeId)
-        return uriPart.toResource()
+    fun findNode(nodeId: Long): UriPart {
+        return repository.findOne(nodeId)
     }
 
-    fun findNodes(): List<MenuNodeResource> {
-        val uriParts = findAll()
-        return uriParts.map { u -> u.toResource() }
+    fun findNodes(): List<UriPart> {
+        return findAll()
     }
 
-    fun findNodes(user: User): List<MenuNodeResource> {
-        return user.getUriParts().map { u -> u.toResource() }
+    fun findNodes(user: User): List<UriPart> {
+        return user.getUriParts()
     }
 
-    fun modifyNode(menuNodeResource: MenuNodeResource) {
-        val uriPart = repository.findOne(menuNodeResource.id).apply {
-            name = menuNodeResource.name
-            resource = menuNodeResource.resource
-            methodType = menuNodeResource.methodType
-            depthType = menuNodeResource.depthType
-        }
-
-        menuNodeResource.parentId?.let {
-            val parentUriPart = repository.findOne(it)
-            uriPart.setByParent(parentUriPart)
+    fun modifyNode(id: Long, name: String, resource: String, depthType: UriPart.DepthType, methodType: RequestMethod) {
+        val uriPart = repository.findOne(id).apply {
+            this.name = name
+            this.resource = resource
+            this.depthType = depthType
+            this.methodType = methodType
         }
     }
 
     fun removeNode(nodeId: Long) {
         val uriPart = repository.findOne(nodeId)
         if (uriPart.parentUriPart == null)
-            throw IllegalStateException("${nodeId} is root node. root node. can't remove")
+            throw IllegalStateException("$nodeId is root node. root node. can't remove")
         uriPart.status = false
     }
 
@@ -77,5 +69,4 @@ class MenuTreeService
         val parentUriPart = repository.findOne(parentNodeId)
         uriPart.setByParent(parentUriPart)
     }
-
 }

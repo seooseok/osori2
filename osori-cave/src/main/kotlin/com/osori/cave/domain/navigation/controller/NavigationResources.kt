@@ -5,11 +5,14 @@ import org.hibernate.validator.constraints.NotEmpty
 import org.springframework.hateoas.ResourceSupport
 import org.springframework.web.bind.annotation.RequestMethod
 
-
-data class MenuNodeResource(
+data class NodeResource(
+        @NotEmpty
         var name: String,
+        @NotEmpty
         var resource: String,
+        @NotEmpty
         var depthType: UriPart.DepthType,
+        @NotEmpty
         var methodType: RequestMethod
 ) : ResourceSupport() {
     var id: Long? = null
@@ -18,14 +21,3 @@ data class MenuNodeResource(
     var fullUri: String? = null
 }
 
-data class PrivilegeUrlResource(
-        @NotEmpty
-        val depthType: String,
-        @NotEmpty
-        val uriPart: String,
-
-        var getTitle: String? = null,
-        var postTitle: String? = null,
-        var putTitle: String? = null,
-        var deleteTitle: String? = null
-)
