@@ -16,7 +16,7 @@ class Navigation extends React.Component {
     constructor(props) {
         super(props);
 
-        this.props.fetch();
+        this.props.findAll();
 
         this.state = {
             isOpenAddModal: false,
@@ -28,7 +28,7 @@ class Navigation extends React.Component {
         if (nextProps.payload !== undefined) {
             this.setState({
                 treeData: getTreeFromFlatData({
-                    flatData: nextProps.payload.map(node => ({
+                    flatData: nextProps.payload.content.map(node => ({
                         ...node,
                         title: node.name,
                         subtitle: node.fullUri
@@ -49,70 +49,6 @@ class Navigation extends React.Component {
                 nodePath: path
             }
         })
-    };
-
-    addChild = (formData, modalData) => {
-        console.debug('add child modal form', formData);
-        let path = modalData.nodePath;
-
-        let newNodes = [];
-
-        if (formData.getTitle) {
-            this.setState(state => ({
-                treeData: addNodeUnderParent(this.newNode(state, path, formData, modalData, 'GET')).treeData,
-            }))
-        }
-
-        if (formData.putTitle) {
-            this.setState(state => ({
-                treeData: addNodeUnderParent(this.newNode(state, path, formData, modalData, 'PUT')).treeData,
-            }))
-        }
-
-        if (formData.postTitle) {
-            this.setState(state => ({
-                treeData: addNodeUnderParent(this.newNode(state, path, formData, modalData, 'POST')).treeData,
-            }))
-        }
-
-        if (formData.deleteTitle) {
-            this.setState(state => ({
-                treeData: addNodeUnderParent(this.newNode(state, path, formData, modalData, 'DELETE')).treeData,
-            }))
-        }
-    };
-
-    newNode = (state, path, formData, modalData, methodType) => {
-        let title = '';
-        switch (methodType) {
-            case 'POST':
-                title = formData.postTitle;
-                break;
-            case 'DELETE':
-                title = formData.deleteTitle;
-                break;
-            case 'PUT':
-                title = formData.putTitle;
-                break;
-            case 'GET':
-                title = formData.getTitle;
-                break;
-            default:
-                console.error("not support method type: %s", methodType)
-        }
-
-        return {
-            treeData: state.treeData,
-            parentKey: path[path.length - 1],
-            expandParent: true,
-            getNodeKey,
-            newNode: {
-                title: title,
-                subtitle: modalData.baseUri + formData.resource,
-                methodType: methodType,
-                depthType: formData.depthType
-            },
-        };
     };
 
     removeChild = (node, path) => {
