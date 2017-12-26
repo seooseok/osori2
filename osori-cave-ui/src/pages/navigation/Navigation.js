@@ -5,8 +5,7 @@ import ContentNav from '../components/ContentNav'
 import SortableTree, {addNodeUnderParent, getTreeFromFlatData, removeNodeAtPath} from 'react-sortable-tree'
 
 import {AddChildModal} from '.'
-
-import {fetch} from '../../actions/navigation/navigation.list'
+import {findAll} from '../../actions/navigation/navigation.list'
 
 
 import './navigation.css'
@@ -26,7 +25,6 @@ class Navigation extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.debug("componentWillReceiveProps: " + JSON.stringify(nextProps));
         if (nextProps.payload !== undefined) {
             this.setState({
                 treeData: getTreeFromFlatData({
@@ -43,11 +41,11 @@ class Navigation extends React.Component {
         }
     }
 
-    toggleAddModal = (baseUri, path) => {
+    toggleModalByAddChild = (parentNode, path) => {
         this.setState({
             isOpenAddModal: !this.state.isOpenAddModal,
             modalData: {
-                baseUri: baseUri,
+                parentNode: parentNode,
                 nodePath: path
             }
         })
@@ -57,74 +55,64 @@ class Navigation extends React.Component {
         console.debug('add child modal form', formData);
         let path = modalData.nodePath;
 
+        let newNodes = [];
+
         if (formData.getTitle) {
             this.setState(state => ({
-                treeData: addNodeUnderParent({
-                    treeData: state.treeData,
-                    parentKey: path[path.length - 1],
-                    expandParent: true,
-                    getNodeKey,
-                    newNode: {
-                        title: formData.getTitle,
-                        subtitle: modalData.baseUri + formData.resource,
-                        methodType: 'GET',
-                        depthType: formData.depthType
-                    },
-                }).treeData,
+                treeData: addNodeUnderParent(this.newNode(state, path, formData, modalData, 'GET')).treeData,
             }))
         }
 
         if (formData.putTitle) {
             this.setState(state => ({
-                treeData: addNodeUnderParent({
-                    treeData: state.treeData,
-                    parentKey: path[path.length - 1],
-                    expandParent: true,
-                    getNodeKey,
-                    newNode: {
-                        title: formData.putTitle,
-                        subtitle: modalData.baseUri + formData.resource,
-                        methodType: 'PUT',
-                        depthType: formData.depthType
-                    },
-                }).treeData,
+                treeData: addNodeUnderParent(this.newNode(state, path, formData, modalData, 'PUT')).treeData,
             }))
         }
 
         if (formData.postTitle) {
             this.setState(state => ({
-                treeData: addNodeUnderParent({
-                    treeData: state.treeData,
-                    parentKey: path[path.length - 1],
-                    expandParent: true,
-                    getNodeKey,
-                    newNode: {
-                        title: formData.postTitle,
-                        subtitle: modalData.baseUri + formData.resource,
-                        methodType: 'POST',
-                        depthType: formData.depthType
-                    },
-                }).treeData,
+                treeData: addNodeUnderParent(this.newNode(state, path, formData, modalData, 'POST')).treeData,
             }))
         }
 
         if (formData.deleteTitle) {
             this.setState(state => ({
-                treeData: addNodeUnderParent({
-                    treeData: state.treeData,
-                    parentKey: path[path.length - 1],
-                    expandParent: true,
-                    getNodeKey,
-                    newNode: {
-                        title: formData.deleteTitle,
-                        subtitle: modalData.baseUri + formData.resource,
-                        methodType: 'DELETE',
-                        depthType: formData.depthType
-                    },
-                }).treeData,
+                treeData: addNodeUnderParent(this.newNode(state, path, formData, modalData, 'DELETE')).treeData,
             }))
         }
+    };
 
+    newNode = (state, path, formData, modalData, methodType) => {
+        let title = '';
+        switch (methodType) {
+            case 'POST':
+                title = formData.postTitle;
+                break;
+            case 'DELETE':
+                title = formData.deleteTitle;
+                break;
+            case 'PUT':
+                title = formData.putTitle;
+                break;
+            case 'GET':
+                title = formData.getTitle;
+                break;
+            default:
+                console.error("not support method type: %s", methodType)
+        }
+
+        return {
+            treeData: state.treeData,
+            parentKey: path[path.length - 1],
+            expandParent: true,
+            getNodeKey,
+            newNode: {
+                title: title,
+                subtitle: modalData.baseUri + formData.resource,
+                methodType: methodType,
+                depthType: formData.depthType
+            },
+        };
     };
 
     removeChild = (node, path) => {
@@ -156,25 +144,20 @@ class Navigation extends React.Component {
 
                                         let labelColor = '';
                                         switch (node.methodType) {
-                                            case 'GET': {
+                                            case 'GET':
                                                 labelColor = 'label-primary';
                                                 break;
-                                            }
-                                            case 'POST': {
+                                            case 'POST':
                                                 labelColor = 'label-success';
                                                 break;
-                                            }
-                                            case 'PUT': {
+                                            case 'PUT':
                                                 labelColor = 'label-warning';
                                                 break;
-                                            }
-                                            case 'DELETE': {
+                                            case 'DELETE':
                                                 labelColor = 'label-danger';
                                                 break;
-                                            }
-                                            default: {
+                                            default:
                                                 labelColor = 'label-info'
-                                            }
                                         }
 
                                         return ({
@@ -195,7 +178,7 @@ class Navigation extends React.Component {
                                                         <li>
                                                             <a onClick={(e) => {
                                                                    e.preventDefault();
-                                                                this.toggleAddModal(node.fullUri, path)
+                                                                this.toggleModalByAddChild(node, path)
                                                                }}>Add Child
                                                             </a>
                                                         </li>
@@ -219,8 +202,7 @@ class Navigation extends React.Component {
                 </section>
                 <AddChildModal show={this.state.isOpenAddModal}
                                modalData={this.state.modalData}
-                               onAddChild={this.addChild}
-                               onClose={this.toggleAddModal}/>
+                               onClose={this.toggleModalByAddChild}/>
             </div>
         )
     }
@@ -231,7 +213,7 @@ const mapStateToProps = (state) => ({
     payload: state.navigationList.payload
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({fetch}, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({findAll}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navigation)
 

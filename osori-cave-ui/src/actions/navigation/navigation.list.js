@@ -10,7 +10,7 @@ const receive = payload => ({
     payload
 });
 
-export const fetch = () => {
+export const findAll = () => {
     return (dispatch) => {
         dispatch(request());
         api.get(`/navigation-trees`, {})

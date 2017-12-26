@@ -110,7 +110,7 @@ class AddChildModal extends React.Component {
                                                         <p className="text-muted">
                                                             <small>
                                                                 <strong>Full
-                                                                    Url</strong>: {this.props.modalData.baseUri}{formApi.values.resource}
+                                                                    Url</strong>: {this.props.modalData.parentNode.fullUri}{formApi.values.resource}
                                                             </small>
                                                         </p>
                                                     </div>
