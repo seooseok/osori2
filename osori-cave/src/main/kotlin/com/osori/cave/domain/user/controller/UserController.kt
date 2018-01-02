@@ -5,6 +5,7 @@ import com.osori.cave.domain.user.PersonalInformation
 import com.osori.cave.domain.user.UserSearchCondition
 import com.osori.cave.domain.user.UserService
 import com.osori.cave.domain.user.infrastructure.User
+import com.osori.cave.domain.user.toResource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.hateoas.Resource
@@ -26,7 +27,6 @@ import java.time.LocalDate
 class UserController
 @Autowired constructor(private val userService: UserService) {
 
-
     @JsonView(UserView.Base::class)
     @GetMapping("/users")
     fun search(@DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam startDate: LocalDate,
@@ -40,6 +40,7 @@ class UserController
         status?.let { enumStatus = User.Status.valueOf(it.toUpperCase()) }
 
         val resources = userService.findUsers(UserSearchCondition(startDate, endDate, loginId, name, enumStatus))
+                .map { it.toResource() }
 
         resources.forEach { it.add(linkTo(methodOn(this::class.java).findOneWithDetail(it.id!!)).withRel("detail")) }
 
@@ -49,28 +50,28 @@ class UserController
     @JsonView(UserView.Detail::class)
     @GetMapping("/user/{id}")
     fun findOneWithDetail(@PathVariable id: Long): Resource<UserResource> {
-        val resource = userService.findOne(id)
+        val (user, information) = userService.findOne(id)
+        val resource = user.toResource(information)
+
         return Resource(resource, linkTo(methodOn(this::class.java).findOneWithDetail(id)).withSelfRel())
     }
 
-
     @PutMapping("/user/{id}")
     fun modify(@PathVariable id: Long,
-               @RequestBody resource: UserResource): Resource<String> {
+               @RequestBody resource: UserResource): Resource<Long> {
 
         val information = PersonalInformation(resource.email, resource.phone, resource.position, resource.department, resource.comment)
 
         userService.modify(id, resource.name, information, User.Status.valueOf(resource.status!!))
 
-        return Resource("success", linkTo(methodOn(this::class.java).findOneWithDetail(id)).withSelfRel())
+        return Resource(id, linkTo(methodOn(this::class.java).findOneWithDetail(id)).withSelfRel())
     }
 
     @DeleteMapping("/user/{id}")
-    fun remove(@PathVariable id: Long): Resource<String> {
+    fun remove(@PathVariable id: Long): Resource<Long> {
         userService.expireUser(id)
 
-        return Resource("success", linkTo(methodOn(this::class.java)
+        return Resource(id, linkTo(methodOn(this::class.java)
                 .search(LocalDate.now().minusWeeks(1), LocalDate.now())).withRel("before"))
     }
-
 }

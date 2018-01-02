@@ -10,8 +10,8 @@ const receive = payload => ({
     payload
 });
 
-
 export const findAll = (params) => {
+    console.debug("findAll req: %s", JSON.stringify(params));
     return (dispatch) => {
         dispatch(request());
         api.get(`/account/users`, {params: params})

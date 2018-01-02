@@ -5,7 +5,6 @@ import au.com.console.jpaspecificationdsl.between
 import au.com.console.jpaspecificationdsl.equal
 import au.com.console.jpaspecificationdsl.isNull
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.osori.cave.domain.user.controller.UserResource
 import com.osori.cave.domain.user.infrastructure.User
 import com.osori.cave.domain.user.infrastructure.UserRepository
 import com.osori.cave.utils.Crypto
@@ -17,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional
 import java.lang.IllegalArgumentException
 import java.time.LocalDate
 
-
 @Transactional
 @Service
 class UserService
@@ -25,7 +23,6 @@ class UserService
 
     @Value(value = "\${cave.crypto.key}")
     private lateinit var cryptoKey: String
-
 
     fun create(loginId: String, name: String? = null, information: PersonalInformation? = null): Long {
         val user = User(loginId, name)
@@ -54,26 +51,24 @@ class UserService
         return save(user)
     }
 
-    fun findOne(loginId: String): UserResource {
+    fun findOne(loginId: String): Pair<User, PersonalInformation?> {
         val user = this.findByLoginId(loginId)
 
         val information = this.getPersonalInformation(user)
 
-        return user.toResource(information)
+        return Pair(user, information)
     }
 
-    fun findOne(id: Long): UserResource {
+    fun findOne(id: Long): Pair<User, PersonalInformation?> {
         val user = repository.findOne(id)
 
         val information = this.getPersonalInformation(user)
 
-        return user.toResource(information)
+        return Pair(user, information)
     }
 
-    fun findUsers(userSearchCondition: UserSearchCondition): List<UserResource> {
-        val users = this.search(userSearchCondition)
-
-        return users.map { it -> it.toResource() }
+    fun findUsers(userSearchCondition: UserSearchCondition): List<User> {
+        return this.search(userSearchCondition)
     }
 
     fun expireUser(id: Long) {
@@ -101,7 +96,6 @@ class UserService
     private fun save(user: User): Long = repository.save(user).id ?: throw IllegalStateException("can't save user!")
 }
 
-
 data class UserSearchCondition(
         val startDate: LocalDate,
         val endDate: LocalDate,
@@ -116,4 +110,3 @@ private fun UserSearchCondition.toSpecifications(): Specifications<User> {
             User::created.between(startDate, endDate),
             User::expired.isNull())
 }
-

@@ -6,7 +6,6 @@ import com.osori.cave.domain.user.controller.UserResource
 import com.osori.cave.domain.user.infrastructure.User
 import com.osori.cave.utils.toResource
 
-
 fun User.toResource(): UserResource {
     val user = UserResource(this.loginId)
     user.id = this.id

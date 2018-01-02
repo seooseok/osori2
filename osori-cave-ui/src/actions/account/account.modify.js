@@ -5,16 +5,19 @@ const request = () => ({
     type: ACCOUNT_DETAIL_MODIFY
 });
 
-const receive = payload => ({
-    type: ACCOUNT_DETAIL_MODIFIED
+const receive = (params, payload) => ({
+    type: ACCOUNT_DETAIL_MODIFIED,
+    params: params,
+    payload: payload
 });
 
 
-export const modifyOne = (url, json) => {
+export const modifyOne = (url, params) => {
+    console.debug("modifyOne req: %s", JSON.stringify(params));
     return (dispatch) => {
         dispatch(request());
-        Axios.put(url, json, {headers: {'Content-Type': 'application/json'}})
-            .then(resp => dispatch(receive(resp.data)))
+        Axios.put(url, params, {headers: {'Content-Type': 'application/json'}})
+            .then(resp => dispatch(receive(params, resp.data)))
             .catch(err => {
                 console.log(err)
             })

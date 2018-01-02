@@ -31,11 +31,6 @@ class UriPart(var name: String,
     var id: Long? = null
         private set
 
-    var sorting: Int = 0
-
-    var viewId: Long? = null
-    var viewParentId: Long? = null
-
     var type: UriPartType = UriPartType.SERVICE
 
     var status = true
@@ -52,9 +47,8 @@ class UriPart(var name: String,
     @OneToMany(mappedBy = "uriPart", fetch = LAZY, cascade = arrayOf(PERSIST, MERGE, REFRESH, DETACH))
     var permissionUriPartMappings: MutableList<PermissionUriPartMapping> = arrayListOf()
 
-
     enum class DepthType {
-        NAVI, MENU, FUNC, FIELD
+        NAVI, FUNC
     }
 
     fun setByParent(parentUriPart: UriPart) {
@@ -77,6 +71,3 @@ class UriPart(var name: String,
 enum class UriPartType {
     CAVE, SERVICE
 }
-
-
-

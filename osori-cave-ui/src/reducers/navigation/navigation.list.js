@@ -1,0 +1,32 @@
+import {NAVIGATION_ADDED_ALL, NAVIGATION_FIND, NAVIGATION_FOUND} from "../../actions/navigation/actionTypes"
+
+const initial = {
+    isFetching: false,
+    payload: undefined
+};
+
+export default (state = initial, action) => {
+    switch (action.type) {
+        case NAVIGATION_FIND:
+            return {
+                ...state,
+                isFetching: true
+            };
+        case NAVIGATION_FOUND:
+            return {
+                ...state,
+                isFetching: false,
+                payload: action.payload
+            };
+        case NAVIGATION_ADDED_ALL:
+            state.payload.content = state.payload.content.concat(action.payload.content);
+
+            console.log(state.payload.content);
+            return {
+                ...state,
+                isFetching: false
+            };
+        default:
+            return state
+    }
+}

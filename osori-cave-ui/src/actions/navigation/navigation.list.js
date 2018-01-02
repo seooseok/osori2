@@ -1,21 +1,19 @@
-import {ACCOUNT_DETAIL_FIND, ACCOUNT_DETAIL_FOUND} from "./actionTypes";
-import Axios from 'axios'
+import {NAVIGATION_FIND, NAVIGATION_FOUND} from './actionTypes'
+import api from '../../http/api'
 
 const request = () => ({
-    type: ACCOUNT_DETAIL_FIND
+    type: NAVIGATION_FIND
 });
 
 const receive = payload => ({
-    type: ACCOUNT_DETAIL_FOUND,
+    type: NAVIGATION_FOUND,
     payload
 });
 
-
-export const findOne = (url) => {
-    console.debug("findOne req: %s", url);
+export const findAll = () => {
     return (dispatch) => {
         dispatch(request());
-        Axios.get(url)
+        api.get(`/navigation-tree/nodes`, {})
             .then(resp => dispatch(receive(resp.data)))
             .catch(err => {
                 console.log(err)

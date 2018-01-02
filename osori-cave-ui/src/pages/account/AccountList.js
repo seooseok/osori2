@@ -12,19 +12,6 @@ import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css'
 class AccountList extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            accounts: []
-        };
-    }
-
-    componentWillReceiveProps(nextProps) {
-        console.debug("componentWillReceiveProps: " + JSON.stringify(nextProps));
-        if (nextProps.payload !== undefined) {
-            this.setState({
-                accounts: nextProps.payload.content
-            });
-        }
     }
 
     onRowSelect = (row, isSelected, e) => {
@@ -42,28 +29,7 @@ class AccountList extends React.Component {
         }
     };
 
-    onChangeAccountDetail = (formData) => {
-        console.debug('change account detail: %s', JSON.stringify(formData));
-        let targetRow = this.state.accounts.find(row => {
-            return row.id === formData.id
-        });
-        targetRow.name = formData.name;
-        targetRow.status = formData.status;
-
-        this.setState({
-            accounts: this.state.accounts.map((row) => row.id === formData.id ? targetRow : row)
-        })
-    };
-
-    onExpireAccountDetail = (id) => {
-        console.debug('expired account detail: %s', id);
-        this.setState({
-            accounts: this.state.accounts.filter((row) => row.id !== id)
-        })
-    };
-
     render() {
-
         const options = {
             noDataText: 'No User Account',
             sizePerPage: 15,
@@ -75,7 +41,7 @@ class AccountList extends React.Component {
                     text: '30', value: 30
                 },
                 {
-                    text: 'All', value: this.state.accounts.length
+                    text: 'All', value: this.props.accounts.length
                 }
             ]
         };
@@ -91,12 +57,12 @@ class AccountList extends React.Component {
         return (
             <div className="row">
                 <div className="col-md-9">
-                    <div className="box">
+                    <div className="box box-success">
                         <div className="box-header with-border">
                             <h5 className="box-title">Search Result</h5>
                         </div>
                         <div className="box-body">
-                            <BootstrapTable data={this.state.accounts} options={options} pagination
+                            <BootstrapTable data={this.props.accounts} options={options} pagination
                                             selectRow={selectRowProp}>
                                 <TableHeaderColumn dataField='id' isKey hidden>ID</TableHeaderColumn>
                                 <TableHeaderColumn dataField='loginId' dataSort={true}>Login ID</TableHeaderColumn>
@@ -113,9 +79,8 @@ class AccountList extends React.Component {
                         }
                     </div>
                 </div>
-                <div className={"col-md-3"}>
-                    <AccountDetail onChangeAccountDetail={this.onChangeAccountDetail}
-                                   onExpireAccountDetail={this.onExpireAccountDetail}/>
+                <div className="col-md-3">
+                    <AccountDetail onChangeAccountDetail={this.onChangeAccountDetail}/>
                 </div>
             </div>
         )
@@ -123,9 +88,13 @@ class AccountList extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+    let accounts = [];
+    if (state.accountList.payload !== undefined)
+        accounts = state.accountList.payload.content;
+
     return {
         isFetching: state.accountList.isFetching,
-        payload: state.accountList.payload
+        accounts
     };
 };
 

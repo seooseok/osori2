@@ -1,17 +1,13 @@
 package com.osori.cave.utils
 
-import com.osori.cave.domain.navigation.controller.MenuNodeResource
+import com.osori.cave.domain.navigation.controller.NodeResource
 import com.osori.cave.domain.navigation.infrastructure.UriPart
 import com.osori.cave.domain.permission.controller.PermissionResource
 import com.osori.cave.domain.permission.infrastructure.Permission
 
-
-fun UriPart.toResource(): MenuNodeResource {
-    val menuNode = MenuNodeResource(this.name, this.resource, this.depthType, this.methodType)
+fun UriPart.toResource(): NodeResource {
+    val menuNode = NodeResource(this.name, this.resource, this.depthType, this.methodType)
     menuNode.id = this.id
-    menuNode.sorting = this.sorting
-    menuNode.viewId = this.viewId
-    menuNode.viewParentId = this.viewParentId
 
     menuNode.fullUri = getFullUri(this)
     if (this.parentUriPart != null)
@@ -35,6 +31,3 @@ fun Permission.toResource(): PermissionResource {
 
     return resource
 }
-
-
-

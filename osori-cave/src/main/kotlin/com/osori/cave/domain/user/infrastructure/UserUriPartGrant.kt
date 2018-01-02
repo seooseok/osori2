@@ -8,7 +8,6 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
 
-
 @Entity
 @Table(name = "URI_PART_GRANT")
 class UserUriPartGrant(user: User, uriPart: UriPart) {

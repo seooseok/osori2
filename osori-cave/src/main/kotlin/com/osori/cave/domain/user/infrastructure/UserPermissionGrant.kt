@@ -8,7 +8,6 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
 
-
 @Entity
 @Table(name = "USER_PERMISSION_GRANT")
 class UserPermissionGrant {
@@ -38,5 +37,3 @@ class UserPermissionGrant {
     var permission: Permission
         private set
 }
-
-

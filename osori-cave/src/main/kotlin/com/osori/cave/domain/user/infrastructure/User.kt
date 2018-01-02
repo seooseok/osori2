@@ -40,7 +40,6 @@ class User(var loginId: String,
     var userUriPartGrants: MutableList<UserUriPartGrant> = arrayListOf()
         private set
 
-
     fun addBy(permission: Permission) {
         val permissions = this.getPermissions()
         if (permissions.contains(permission).not()) {
@@ -83,5 +82,3 @@ class User(var loginId: String,
         ALLOW, REJECT, WAIT, EXPIRE
     }
 }
-
-
