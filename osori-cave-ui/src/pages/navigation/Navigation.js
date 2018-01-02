@@ -4,8 +4,9 @@ import {connect} from 'react-redux'
 import ContentNav from '../components/ContentNav'
 import SortableTree, {addNodeUnderParent, getTreeFromFlatData, removeNodeAtPath} from 'react-sortable-tree'
 
-import {AddChildModal} from '.'
-import {findAll} from '../../actions/navigation/navigation.list'
+import {AddChildModal} from "."
+import {findAll} from "../../actions/navigation/navigation.list";
+import {remove} from "../../actions/navigation/navigation.remove";
 
 
 import './navigation.css'
@@ -125,6 +126,16 @@ class Navigation extends React.Component {
     };
 
     removeChild = (node, path) => {
+        let url = node.links.find(item => {
+            return item.rel === 'self'
+        }).href;
+
+        if (url === undefined) {
+            console.err('can\'t find remove url. links: ', JSON.stringify(this.props.detail.links));
+        }
+
+        this.props.remove(url);
+
         this.setState(state => ({
             treeData: removeNodeAtPath({
                 treeData: state.treeData,
@@ -223,7 +234,7 @@ const mapStateToProps = (state) => ({
     payload: state.navigationList.payload
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({findAll}, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({findAll, remove}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navigation)
 

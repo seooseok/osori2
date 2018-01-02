@@ -26,7 +26,7 @@ class NavigationTreeController
     fun findAllNodes(): Resources<NodeResource> {
         val resources = navigationTreeService.findNodes().map { it.toResource() }
 
-        resources.forEach { it.add(linkTo(methodOn(this::class.java).findNode(3)).withSelfRel()) }
+        resources.forEach { it.add(linkTo(methodOn(this::class.java).findNode(it.id!!)).withSelfRel()) }
 
         return Resources(resources, linkTo(methodOn(this::class.java).findAllNodes()).withSelfRel())
     }
