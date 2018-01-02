@@ -12,11 +12,11 @@ const receive = (params, payload) => ({
 });
 
 
-export const addChildren = (params) => {
+export const addAll = (params) => {
     console.debug("addChildren req: %s", JSON.stringify(params));
     return (dispatch) => {
         dispatch(request());
-        api.post(`/navigation-trees`, params)
+        api.post(`/navigation-tree/nodes`, params)
             .then(resp => dispatch(receive(params, resp.data)))
             .catch(err => {
                 console.log(err)

@@ -13,7 +13,7 @@ const receive = payload => ({
 export const findAll = () => {
     return (dispatch) => {
         dispatch(request());
-        api.get(`/navigation-trees`, {})
+        api.get(`/navigation-tree/nodes`, {})
             .then(resp => dispatch(receive(resp.data)))
             .catch(err => {
                 console.log(err)

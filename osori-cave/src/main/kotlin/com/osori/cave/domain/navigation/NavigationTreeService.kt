@@ -29,6 +29,10 @@ class NavigationTreeService
         return repository.findOne(nodeId)
     }
 
+    fun findNodes(ids: List<Long>): List<UriPart> {
+        return repository.findAll(ids)
+    }
+
     fun findNodes(): List<UriPart> {
         return findAll()
     }

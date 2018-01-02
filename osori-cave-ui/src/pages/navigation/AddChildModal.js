@@ -1,5 +1,9 @@
 import React from 'react'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
+
 import {Form, Radio, RadioGroup, Select, Text} from 'react-form'
+import {addAll} from "../../actions/navigation/navigation.add.all";
 
 import './addChildModal.css'
 
@@ -25,8 +29,52 @@ class AddChildModal extends React.Component {
 
     handleSubmit = (formData) => {
         console.debug('add child: %s ', JSON.stringify(formData));
-        this.props.onAddChild(formData, this.props.modalData);
+        let params = [];
+
+        if (formData.getTitle) {
+            params.push({
+                parentId: this.props.modalData.parentNode.id,
+                name: formData.getTitle,
+                resource: formData.resource,
+                depthType: formData.depthType,
+                methodType: 'GET'
+            })
+        }
+
+        if (formData.putTitle) {
+            params.push({
+                parentId: this.props.modalData.parentNode.id,
+                name: formData.putTitle,
+                resource: formData.resource,
+                depthType: formData.depthType,
+                methodType: 'PUT'
+            })
+        }
+
+        if (formData.postTitle) {
+            params.push({
+                parentId: this.props.modalData.parentNode.id,
+                name: formData.postTitle,
+                resource: formData.resource,
+                depthType: formData.depthType,
+                methodType: 'POST'
+            })
+        }
+
+        if (formData.deleteTitle) {
+            params.push({
+                parentId: this.props.modalData.parentNode.id,
+                name: formData.deleteTitle,
+                resource: formData.resource,
+                depthType: formData.depthType,
+                methodType: 'DELETE'
+            })
+        }
+
+        this.props.addAll(params);
+        this.props.onAdded(formData, this.props.modalData);
         this.props.onClose();
+
     };
 
     onClickUriTypeRadio = (e) => {
@@ -154,8 +202,9 @@ class AddChildModal extends React.Component {
 }
 
 
-export default AddChildModal
+const mapDispatchToProps = (dispatch) => bindActionCreators({addAll}, dispatch);
 
+export default connect(null, mapDispatchToProps)(AddChildModal)
 
 AddChildModal.defaultProps = {
     depthTypes: [
@@ -169,5 +218,3 @@ AddChildModal.defaultProps = {
         }
     ]
 };
-
-

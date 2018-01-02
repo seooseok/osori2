@@ -6,7 +6,7 @@ import com.osori.cave.domain.permission.controller.PermissionResource
 import org.springframework.hateoas.ResourceSupport
 
 class UserResource(var loginId: String) : ResourceSupport() {
-    @JsonView(UserView.Base::class)
+    @JsonView
     var id: Long? = null
     var name: String? = null
 

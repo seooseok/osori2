@@ -1,5 +1,6 @@
 package com.osori.cave.domain.navigation.controller
 
+import com.fasterxml.jackson.annotation.JsonView
 import com.osori.cave.domain.navigation.infrastructure.UriPart
 import org.hibernate.validator.constraints.NotEmpty
 import org.springframework.hateoas.ResourceSupport
@@ -15,7 +16,9 @@ data class NodeResource(
         @NotEmpty
         var methodType: RequestMethod
 ) : ResourceSupport() {
+    @JsonView
     var id: Long? = null
+
     var parentId: Long? = null
 
     var fullUri: String? = null

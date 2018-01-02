@@ -1,7 +1,4 @@
-import {
-    NAVIGATION_ADD_ALL, NAVIGATION_ADDED_ALL, NAVIGATION_FIND,
-    NAVIGATION_FOUND
-} from "../../actions/navigation/actionTypes"
+import {NAVIGATION_ADDED_ALL, NAVIGATION_FIND, NAVIGATION_FOUND} from "../../actions/navigation/actionTypes"
 
 const initial = {
     isFetching: false,
@@ -21,12 +18,10 @@ export default (state = initial, action) => {
                 isFetching: false,
                 payload: action.payload
             };
-        case NAVIGATION_ADD_ALL:
-            return {
-                ...state,
-                isFetching: true
-            };
         case NAVIGATION_ADDED_ALL:
+            state.payload.content = state.payload.content.concat(action.payload.content);
+
+            console.log(state.payload.content);
             return {
                 ...state,
                 isFetching: false
