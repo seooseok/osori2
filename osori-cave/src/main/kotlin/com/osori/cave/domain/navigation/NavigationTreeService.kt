@@ -54,7 +54,7 @@ class NavigationTreeService
         val uriPart = repository.findOne(nodeId)
         if (uriPart.parentUriPart == null)
             throw IllegalStateException("$nodeId is root node. root node. can't remove")
-        uriPart.status = false
+        this.orphanRemove(uriPart)
     }
 
     private fun save(uriPart: UriPart): Long = repository.save(uriPart).id!!

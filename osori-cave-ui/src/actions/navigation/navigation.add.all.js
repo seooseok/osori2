@@ -13,7 +13,7 @@ const receive = (params, payload) => ({
 
 
 export const addAll = (params) => {
-    console.debug("addChildren req: %s", JSON.stringify(params));
+    console.debug("addAll req: %s", JSON.stringify(params));
     return (dispatch) => {
         dispatch(request());
         api.post(`/navigation-tree/nodes`, params)
