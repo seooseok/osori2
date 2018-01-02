@@ -23,4 +23,3 @@ data class NodeResource(
 
     var fullUri: String? = null
 }
-

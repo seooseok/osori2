@@ -54,14 +54,13 @@ internal class UserServiceIntegrationTest : IntegrationTestSupporter() {
 
         modifiedUser.loginId shouldBe loginId
         modifiedIUInformation!!.email shouldBe email
-        modifiedIUInformation!!.phone shouldBe null
+        modifiedIUInformation.phone shouldBe null
     }
 
     @Test
     fun searchTest() {
         //Given
         val loginId = "5dolstory"
-        val email = "elijah17@daum.net"
         val information = PersonalInformation(email = "elijah17@gmail.com", phone = "010-1234-1234")
 
         userService.create(loginId, "서오석", information)

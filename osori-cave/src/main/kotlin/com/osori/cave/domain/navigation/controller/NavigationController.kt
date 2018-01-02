@@ -45,7 +45,6 @@ class NavigationTreeController
         return Resources(resources, linkTo(methodOn(this::class.java).findAllNodes()).withSelfRel())
     }
 
-
     @GetMapping("/node/{id}")
     fun findNode(@PathVariable id: Long): Resource<NodeResource> {
         val uriPart = navigationTreeService.findNode(id)
