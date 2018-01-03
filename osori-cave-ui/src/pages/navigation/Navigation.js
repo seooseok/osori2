@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import ContentNav from '../components/ContentNav'
 import SortableTree, {addNodeUnderParent, getTreeFromFlatData, removeNodeAtPath} from 'react-sortable-tree'
 
-import {AddChildModal} from "."
+import {NavigationModal} from "."
 import {findAll} from "../../actions/navigation/navigation.list";
 import {remove} from "../../actions/navigation/navigation.remove";
 
@@ -20,7 +20,7 @@ class Navigation extends React.Component {
         this.props.findAll();
 
         this.state = {
-            isOpenAddModal: false,
+            isOpenModal: false,
             treeData: [],
         };
     }
@@ -113,19 +113,39 @@ class Navigation extends React.Component {
                 }).treeData,
             }))
         }
+
+        this.onOffModal();
     };
 
-    toggleModalByAddChild = (parentNode, path) => {
+    onOffModal = () => {
         this.setState({
-            isOpenAddModal: !this.state.isOpenAddModal,
+            isOpenModal: !this.state.isOpenModal,
+        })
+    };
+
+    addChildren = (parentNode, path) => {
+        this.onOffModal();
+        this.setState({
             modalData: {
+                name: "New child privilege URL",
                 parentNode: parentNode,
                 nodePath: path
             }
         })
     };
 
-    removeChild = (node, path) => {
+    modifyChild = (parentNode, path) => {
+        this.onOffModal();
+        this.setState({
+            modalData: {
+                name: "Modify privilege URL",
+                parentNode: parentNode,
+                nodePath: path
+            }
+        })
+    };
+
+    remove = (node, path) => {
         let url = node.links.find(item => {
             return item.rel === 'self'
         }).href;
@@ -186,7 +206,11 @@ class Navigation extends React.Component {
                                                     className="label label-default">{node.depthType && node.depthType.substring(0, 1)}</span>,
                                                 <span className={"label " + labelColor}>{node.methodType}</span>,
                                                 <div className="btn-group">
-                                                    <button type="button" className="btn btn-info btn-xs">Detail
+                                                    <button type="button" className="btn btn-info btn-xs"
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                this.modifyChild(node, path)
+                                                            }}>Modify
                                                     </button>
                                                     <button type="button"
                                                             className="btn btn-info btn-xs dropdown-toggle"
@@ -198,7 +222,7 @@ class Navigation extends React.Component {
                                                         <li>
                                                             <a onClick={(e) => {
                                                                    e.preventDefault();
-                                                                this.toggleModalByAddChild(node, path)
+                                                                this.addChildren(node, path)
                                                                }}>Add Child
                                                             </a>
                                                         </li>
@@ -206,7 +230,7 @@ class Navigation extends React.Component {
                                                         <li>
                                                             <a onClick={(e) => {
                                                                    e.preventDefault();
-                                                                   this.removeChild(node, path)
+                                                                this.remove(node, path)
                                                                }}>Remove
                                                             </a>
                                                         </li>
@@ -220,10 +244,10 @@ class Navigation extends React.Component {
                         </div>
                     </div>
                 </section>
-                <AddChildModal show={this.state.isOpenAddModal}
-                               modalData={this.state.modalData}
-                               onAdded={this.onAdded}
-                               onClose={this.toggleModalByAddChild}/>
+                <NavigationModal show={this.state.isOpenModal}
+                                 modalData={this.state.modalData}
+                                 onAdded={this.onAdded}
+                                 onClose={this.onOffModal}/>
             </div>
         )
     }

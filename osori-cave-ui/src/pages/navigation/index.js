@@ -1,4 +1,5 @@
 import Navigation from './Navigation'
-import AddChildModal from './AddChildModal'
+import AddChildren from './AddChildren'
+import NavigationModal from './NavigationModal'
 
-export {Navigation, AddChildModal}
+export {Navigation, AddChildren, NavigationModal}
