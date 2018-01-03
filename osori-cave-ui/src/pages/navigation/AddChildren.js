@@ -103,12 +103,11 @@ class AddChildren extends React.Component {
 
     render() {
         return (
-            <div>
-                <div className="modal-body">
+            <div className="modal-body">
                     <Form onSubmit={this.handleSubmit} defaultValues={this.state.form}>
                         {
                             formApi => (
-                                <form onSubmit={formApi.submitForm} id="addChildForm">
+                                <form onSubmit={formApi.submitForm} id="saveForm">
                                     <div className="form-horizontal">
                                         <div className="form-group">
                                             <label className="col-sm-3 control-label">Privilege type</label>
@@ -173,13 +172,6 @@ class AddChildren extends React.Component {
                         }
                     </Form>
                 </div>
-                <div className="modal-footer">
-                    <button type="button" className="btn btn-default pull-left" onClick={this.props.onClose}>
-                        Close
-                    </button>
-                    <button type="submit" form="addChildForm" className="btn btn-success">Save</button>
-                </div>
-            </div>
         )
     }
 }

@@ -30,6 +30,12 @@ class NavigationModal extends React.Component {
                                      onAdded={this.props.onAdded}
                                      onClose={this.props.onClose}
                         />
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-default pull-left" onClick={this.props.onClose}>
+                                Close
+                            </button>
+                            <button type="submit" form="saveForm" className="btn btn-success">Save</button>
+                        </div>
                     </div>
                 </div>
             </div>
