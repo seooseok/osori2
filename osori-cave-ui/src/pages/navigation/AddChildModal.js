@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {Form, Radio, RadioGroup, Select, Text} from 'react-form'
 import {addAll} from "../../actions/navigation/navigation.add.all";
 
-import './addChildModal.css'
+import './navigationModal.css'
 
 class AddChildModal extends React.Component {
     constructor(props) {

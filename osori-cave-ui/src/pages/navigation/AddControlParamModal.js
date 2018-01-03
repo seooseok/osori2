@@ -1,7 +1,7 @@
 import React from 'react'
 import {Checkbox, Form, Radio, RadioGroup, Select, Text} from 'react-form'
 
-import './addChildModal.css'
+import './navigationModal.css'
 
 class AddChildModal extends React.Component {
     constructor(props) {
