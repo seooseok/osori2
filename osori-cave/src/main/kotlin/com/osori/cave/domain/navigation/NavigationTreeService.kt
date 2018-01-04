@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod
 class NavigationTreeService
 @Autowired constructor(private val repository: UriPartRepository) {
 
+    val uriPartType = UriPartType.SERVICE
+
     fun create(name: String, resource: String, depthType: UriPart.DepthType, methodType: RequestMethod, parentId: Long? = null): Long {
         val uriPart = UriPart(name, resource, depthType, methodType)
 
@@ -51,9 +53,12 @@ class NavigationTreeService
     }
 
     fun removeNode(nodeId: Long) {
+        val countOfLive = repository.countByTypeAndStatusTrue(uriPartType)
+
+        if (countOfLive < 2)
+            throw IllegalStateException("At least one root node must exist.")
+
         val uriPart = repository.findOne(nodeId)
-        if (uriPart.parentUriPart == null)
-            throw IllegalStateException("$nodeId is root node. root node. can't remove")
         this.orphanRemove(uriPart)
     }
 
@@ -66,7 +71,7 @@ class NavigationTreeService
         }
     }
 
-    private fun findAll(): List<UriPart> = repository.findByTypeAndStatusTrue(UriPartType.SERVICE)
+    private fun findAll(): List<UriPart> = repository.findByTypeAndStatusTrue(uriPartType)
 
     fun moveNode(nodeId: Long, parentNodeId: Long) {
         val uriPart = repository.findOne(nodeId)

@@ -59,12 +59,12 @@ class NavigationTreeController
     }
 
     @PutMapping("/node/{id}")
-    fun modifyChildren(@PathVariable id: Long, menuNode: NodeResource) {
-        menuNode.apply { this.id = id }
+    fun modifyNode(@PathVariable id: Long, @RequestBody @Valid node: NodeResource) {
+        navigationTreeService.modifyNode(node.id!!, node.name, node.resource, node.depthType, node.methodType)
     }
 
     @DeleteMapping("/node/{id}")
-    fun removeChildren(@PathVariable id: Long) {
+    fun removeNode(@PathVariable id: Long) {
         navigationTreeService.removeNode(id)
     }
 }
