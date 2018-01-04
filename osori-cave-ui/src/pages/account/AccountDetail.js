@@ -13,12 +13,12 @@ class AccountDetail extends React.Component {
     handleSubmit = (formData) => {
         console.debug('modify account: %s ', JSON.stringify(formData));
 
-        let url = hateoas.findUrl(row, 'self');
+        let url = hateoas.findUrl(this.props.detail, 'self');
         this.props.modifyOne(url, formData);
     };
 
     handleExpire = () => {
-        let url = hateoas.findUrl(row, 'self');
+        let url = hateoas.findUrl(this.props.detail, 'self');
         this.props.expireOne(url);
     };
 

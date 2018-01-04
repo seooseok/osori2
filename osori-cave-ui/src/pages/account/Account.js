@@ -1,6 +1,6 @@
 import React from 'react'
 import ContentNav from '../components/ContentNav'
-import {AccountList, AccountSearch} from './'
+import {AccountList, AccountSearch} from '.'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {findAll} from '../../actions/account/account.list'
