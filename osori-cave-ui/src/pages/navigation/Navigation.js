@@ -46,7 +46,7 @@ class Navigation extends React.Component {
     onAdded = (formData, modalData) => {
         let path = modalData.nodePath;
 
-        if (formData.getTitle) {
+        if (formData.getName) {
             this.setState(state => ({
                 treeData: addNodeUnderParent({
                     treeData: state.treeData,
@@ -54,7 +54,7 @@ class Navigation extends React.Component {
                     expandParent: true,
                     getNodeKey,
                     newNode: {
-                        title: formData.getTitle,
+                        title: formData.getName,
                         subtitle: modalData.parentNode.resource + formData.resource,
                         methodType: 'GET',
                         depthType: formData.depthType
@@ -63,7 +63,7 @@ class Navigation extends React.Component {
             }))
         }
 
-        if (formData.putTitle) {
+        if (formData.putName) {
             this.setState(state => ({
                 treeData: addNodeUnderParent({
                     treeData: state.treeData,
@@ -71,7 +71,7 @@ class Navigation extends React.Component {
                     expandParent: true,
                     getNodeKey,
                     newNode: {
-                        title: formData.putTitle,
+                        title: formData.putName,
                         subtitle: modalData.parentNode.resource + formData.resource,
                         methodType: 'PUT',
                         depthType: formData.depthType
@@ -80,7 +80,7 @@ class Navigation extends React.Component {
             }))
         }
 
-        if (formData.postTitle) {
+        if (formData.postName) {
             this.setState(state => ({
                 treeData: addNodeUnderParent({
                     treeData: state.treeData,
@@ -88,7 +88,7 @@ class Navigation extends React.Component {
                     expandParent: true,
                     getNodeKey,
                     newNode: {
-                        title: formData.postTitle,
+                        title: formData.postName,
                         subtitle: modalData.parentNode.resource + formData.resource,
                         methodType: 'POST',
                         depthType: formData.depthType
@@ -97,7 +97,7 @@ class Navigation extends React.Component {
             }))
         }
 
-        if (formData.deleteTitle) {
+        if (formData.deleteName) {
             this.setState(state => ({
                 treeData: addNodeUnderParent({
                     treeData: state.treeData,
@@ -105,7 +105,7 @@ class Navigation extends React.Component {
                     expandParent: true,
                     getNodeKey,
                     newNode: {
-                        title: formData.deleteTitle,
+                        title: formData.deleteName,
                         subtitle: modalData.parentNode.resource + formData.resource,
                         methodType: 'DELETE',
                         depthType: formData.depthType
@@ -117,29 +117,36 @@ class Navigation extends React.Component {
         this.onOffModal();
     };
 
+    onModified = (formData, modalData) => {
+
+    };
+
     onOffModal = () => {
         this.setState({
             isOpenModal: !this.state.isOpenModal,
         })
     };
 
+
     addChildren = (parentNode, path) => {
         this.onOffModal();
         this.setState({
             modalData: {
                 name: "New child privilege URL",
+                component: "AddChildrenForm",
                 parentNode: parentNode,
                 nodePath: path
             }
         })
     };
 
-    modifyChild = (parentNode, path) => {
+    modifyChild = (node, path) => {
         this.onOffModal();
         this.setState({
             modalData: {
                 name: "Modify privilege URL",
-                parentNode: parentNode,
+                component: "ModifyForm",
+                node: node,
                 nodePath: path
             }
         })
@@ -203,17 +210,17 @@ class Navigation extends React.Component {
                                         return ({
                                             buttons: [
                                                 <span
-                                                    className="label label-default">{node.depthType && node.depthType.substring(0, 1)}</span>,
+                                                    className="label label-info">{node.depthType && node.depthType.substring(0, 1)}</span>,
                                                 <span className={"label " + labelColor}>{node.methodType}</span>,
                                                 <div className="btn-group">
-                                                    <button type="button" className="btn btn-info btn-xs"
+                                                    <button type="button" className="btn btn-default btn-xs"
                                                             onClick={(e) => {
                                                                 e.preventDefault();
                                                                 this.modifyChild(node, path)
                                                             }}>Modify
                                                     </button>
                                                     <button type="button"
-                                                            className="btn btn-info btn-xs dropdown-toggle"
+                                                            className="btn btn-default btn-xs dropdown-toggle"
                                                             data-toggle="dropdown" aria-expanded="false">
                                                         <span className="caret"></span>
                                                         <span className="sr-only">Toggle Dropdown</span>
@@ -247,6 +254,7 @@ class Navigation extends React.Component {
                 <NavigationModal show={this.state.isOpenModal}
                                  modalData={this.state.modalData}
                                  onAdded={this.onAdded}
+                                 onModified={this.onModified}
                                  onClose={this.onOffModal}/>
             </div>
         )
