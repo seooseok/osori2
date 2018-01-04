@@ -5,6 +5,7 @@ import {bindActionCreators} from 'redux'
 import {findOne} from "../../actions/account/account.detail";
 import {AccountDetail} from './'
 
+import * as hateoas from "../../util/HateoasUtil";
 
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css'
 
@@ -18,13 +19,7 @@ class AccountList extends React.Component {
         if (isSelected) {
             console.debug('selected account: %s ', JSON.stringify(row));
 
-            let url = row.links.find(item => {
-                return item.rel === 'detail'
-            }).href;
-
-            if (url === undefined)
-                console.err('can\'t find detail url. links: ', JSON.stringify(row.links));
-
+            let url = hateoas.findUrl(row, 'detail');
             this.props.findOne(url)
         }
     };

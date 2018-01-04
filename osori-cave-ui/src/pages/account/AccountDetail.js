@@ -5,32 +5,20 @@ import {Form, Select, Text} from 'react-form'
 import {modifyOne} from '../../actions/account/account.modify'
 import {expireOne} from '../../actions/account/account.expire'
 
+import * as hateoas from "../../util/HateoasUtil";
+
 
 class AccountDetail extends React.Component {
 
     handleSubmit = (formData) => {
         console.debug('modify account: %s ', JSON.stringify(formData));
 
-        let url = this.props.detail.links.find(item => {
-            return item.rel === 'self'
-        }).href;
-
-        if (url === undefined) {
-            console.err('can\'t find detail url. links: ', JSON.stringify(this.props.detail.links));
-        }
-
+        let url = hateoas.findUrl(row, 'self');
         this.props.modifyOne(url, formData);
     };
 
     handleExpire = () => {
-        let url = this.props.detail.links.find(item => {
-            return item.rel === 'self'
-        }).href;
-
-        if (url === undefined) {
-            console.err('can\'t find detail url. links: ', JSON.stringify(this.props.detail.links));
-        }
-
+        let url = hateoas.findUrl(row, 'self');
         this.props.expireOne(url);
     };
 
