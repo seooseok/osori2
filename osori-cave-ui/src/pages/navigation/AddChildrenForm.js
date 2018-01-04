@@ -69,7 +69,7 @@ class AddChildrenForm extends React.Component {
         }
 
         this.props.addAll(params);
-        this.props.onAdded(formData, this.props.modalData);
+        this.props.onClose();
     };
 
     onClickUriTypeRadio = (e) => {

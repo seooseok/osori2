@@ -1,4 +1,5 @@
-export const findUrl = (data, rel) => {
+export const
+    findUrl = (data, rel) => {
     let url = data.links.find(item => {
         return item.rel === rel
     }).href;

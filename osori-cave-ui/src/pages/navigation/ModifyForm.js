@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {Form, Radio, RadioGroup, Select, Text} from 'react-form'
 
 import {modifyOne} from "../../actions/navigation/navigation.modify";
-import * as hateoas from "../../util/Utils";
+import * as hateoas from "../../util/HateoasUtil";
 
 class ModifyForm extends React.Component {
 
@@ -13,7 +13,7 @@ class ModifyForm extends React.Component {
         let url = hateoas.findUrl(formData, 'self');
 
         this.props.modifyOne(url, formData);
-        this.props.onModified(formData, this.props.modalData);
+        this.props.onClose();
     };
 
     render() {

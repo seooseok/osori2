@@ -27,9 +27,9 @@ class NavigationModal extends React.Component {
                         </div>
                         {
                             this.props.modalData.component === "AddChildrenForm" ?
-                                <AddChildrenForm modalData={this.props.modalData} onAdded={this.props.onAdded}/>
+                                <AddChildrenForm modalData={this.props.modalData} onClose={this.props.onClose}/>
                                 :
-                                <ModifyForm modalData={this.props.modalData} onModified={this.props.onModified}/>
+                                <ModifyForm modalData={this.props.modalData} onClose={this.props.onClose}/>
                         }
 
                         <div className="modal-footer">
