@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {Form, Radio, RadioGroup, Select, Text} from 'react-form'
 import {addAll} from "../../actions/navigation/navigation.add.all";
 
-class AddChildren extends React.Component {
+class AddChildrenForm extends React.Component {
     constructor(props) {
         super(props);
 
@@ -28,40 +28,40 @@ class AddChildren extends React.Component {
         console.debug('add child: %s ', JSON.stringify(formData));
         let params = [];
 
-        if (formData.getTitle) {
+        if (formData.getName) {
             params.push({
                 parentId: this.props.modalData.parentNode.id,
-                name: formData.getTitle,
+                name: formData.getName,
                 resource: formData.resource,
                 depthType: formData.depthType,
                 methodType: 'GET'
             })
         }
 
-        if (formData.putTitle) {
+        if (formData.putName) {
             params.push({
                 parentId: this.props.modalData.parentNode.id,
-                name: formData.putTitle,
+                name: formData.putName,
                 resource: formData.resource,
                 depthType: formData.depthType,
                 methodType: 'PUT'
             })
         }
 
-        if (formData.postTitle) {
+        if (formData.postName) {
             params.push({
                 parentId: this.props.modalData.parentNode.id,
-                name: formData.postTitle,
+                name: formData.postName,
                 resource: formData.resource,
                 depthType: formData.depthType,
                 methodType: 'POST'
             })
         }
 
-        if (formData.deleteTitle) {
+        if (formData.deleteName) {
             params.push({
                 parentId: this.props.modalData.parentNode.id,
-                name: formData.deleteTitle,
+                name: formData.deleteName,
                 resource: formData.resource,
                 depthType: formData.depthType,
                 methodType: 'DELETE'
@@ -69,7 +69,7 @@ class AddChildren extends React.Component {
         }
 
         this.props.addAll(params);
-        this.props.onAdded(formData, this.props.modalData);
+        this.props.onClose();
     };
 
     onClickUriTypeRadio = (e) => {
@@ -148,7 +148,7 @@ class AddChildren extends React.Component {
                                             </div>
                                         </div>
                                         <div className="form-group">
-                                            <label className="col-sm-3 control-label">API Title</label>
+                                            <label className="col-sm-3 control-label">API Name</label>
                                             <div className="col-sm-9">
                                                 {this.state.domControl.httpMethodInputs.map((httpMethod, i) => {
                                                     if (httpMethod.availInput) {
@@ -158,8 +158,8 @@ class AddChildren extends React.Component {
                                                                         <span
                                                                             className="input-group-addon span-http-method">{httpMethod.type.toUpperCase()}</span>
                                                                 <Text className="form-control input-sm"
-                                                                      field={httpMethod.type + "Title"}
-                                                                      placeholder="Enter API title"/>
+                                                                      field={httpMethod.type + "Name"}
+                                                                      placeholder="Enter API name"/>
                                                             </div>
                                                         )
                                                     }
@@ -179,9 +179,9 @@ class AddChildren extends React.Component {
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({addAll}, dispatch);
 
-export default connect(null, mapDispatchToProps)(AddChildren)
+export default connect(null, mapDispatchToProps)(AddChildrenForm)
 
-AddChildren.defaultProps = {
+AddChildrenForm.defaultProps = {
     depthTypes: [
         {
             name: 'navigation',

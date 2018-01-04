@@ -8,6 +8,8 @@ import {NavigationModal} from "."
 import {findAll} from "../../actions/navigation/navigation.list";
 import {remove} from "../../actions/navigation/navigation.remove";
 
+import * as hateoas from "../../util/HateoasUtil";
+
 
 import './navigation.css'
 
@@ -16,13 +18,14 @@ const getNodeKey = ({treeIndex}) => treeIndex;
 class Navigation extends React.Component {
     constructor(props) {
         super(props);
-
-        this.props.findAll();
-
         this.state = {
             isOpenModal: false,
             treeData: [],
         };
+    }
+
+    componentDidMount() {
+        this.props.findAll();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -32,7 +35,8 @@ class Navigation extends React.Component {
                     flatData: nextProps.payload.content.map(node => ({
                         ...node,
                         title: node.name,
-                        subtitle: node.fullUri
+                        subtitle: node.fullUri,
+                        expanded: true
                     })),
                     getKey: node => node.id,
                     getParentKey: node => node.parentId,
@@ -42,127 +46,40 @@ class Navigation extends React.Component {
         }
     }
 
-
-    onAdded = (formData, modalData) => {
-        let path = modalData.nodePath;
-
-        if (formData.getTitle) {
-            this.setState(state => ({
-                treeData: addNodeUnderParent({
-                    treeData: state.treeData,
-                    parentKey: path[path.length - 1],
-                    expandParent: true,
-                    getNodeKey,
-                    newNode: {
-                        title: formData.getTitle,
-                        subtitle: modalData.parentNode.resource + formData.resource,
-                        methodType: 'GET',
-                        depthType: formData.depthType
-                    },
-                }).treeData,
-            }))
-        }
-
-        if (formData.putTitle) {
-            this.setState(state => ({
-                treeData: addNodeUnderParent({
-                    treeData: state.treeData,
-                    parentKey: path[path.length - 1],
-                    expandParent: true,
-                    getNodeKey,
-                    newNode: {
-                        title: formData.putTitle,
-                        subtitle: modalData.parentNode.resource + formData.resource,
-                        methodType: 'PUT',
-                        depthType: formData.depthType
-                    },
-                }).treeData,
-            }))
-        }
-
-        if (formData.postTitle) {
-            this.setState(state => ({
-                treeData: addNodeUnderParent({
-                    treeData: state.treeData,
-                    parentKey: path[path.length - 1],
-                    expandParent: true,
-                    getNodeKey,
-                    newNode: {
-                        title: formData.postTitle,
-                        subtitle: modalData.parentNode.resource + formData.resource,
-                        methodType: 'POST',
-                        depthType: formData.depthType
-                    },
-                }).treeData,
-            }))
-        }
-
-        if (formData.deleteTitle) {
-            this.setState(state => ({
-                treeData: addNodeUnderParent({
-                    treeData: state.treeData,
-                    parentKey: path[path.length - 1],
-                    expandParent: true,
-                    getNodeKey,
-                    newNode: {
-                        title: formData.deleteTitle,
-                        subtitle: modalData.parentNode.resource + formData.resource,
-                        methodType: 'DELETE',
-                        depthType: formData.depthType
-                    },
-                }).treeData,
-            }))
-        }
-
-        this.onOffModal();
-    };
-
     onOffModal = () => {
         this.setState({
             isOpenModal: !this.state.isOpenModal,
         })
     };
 
+
     addChildren = (parentNode, path) => {
         this.onOffModal();
         this.setState({
             modalData: {
                 name: "New child privilege URL",
+                component: "AddChildrenForm",
                 parentNode: parentNode,
                 nodePath: path
             }
         })
     };
 
-    modifyChild = (parentNode, path) => {
+    modifyChild = (node, path) => {
         this.onOffModal();
         this.setState({
             modalData: {
                 name: "Modify privilege URL",
-                parentNode: parentNode,
+                component: "ModifyForm",
+                node: node,
                 nodePath: path
             }
         })
     };
 
     remove = (node, path) => {
-        let url = node.links.find(item => {
-            return item.rel === 'self'
-        }).href;
-
-        if (url === undefined) {
-            console.err('can\'t find remove url. links: ', JSON.stringify(this.props.detail.links));
-        }
-
+        let url = hateoas.findUrl(node, 'self');
         this.props.remove(url);
-
-        this.setState(state => ({
-            treeData: removeNodeAtPath({
-                treeData: state.treeData,
-                path,
-                getNodeKey,
-            }),
-        }))
     };
 
     render() {
@@ -171,83 +88,93 @@ class Navigation extends React.Component {
                 <ContentNav category="Navigation" name="Navigation Configuration"
                             description="Manage URLs to verify permissions by tree structure"/>
                 <section className="content">
-                    <div className="box box-info">
-                        <div className="box-header with-border">
-                            <h3 className="box-title">URL Tree Management</h3>
-                        </div>
-                        <div className="box-body">
-                            <div style={{height: 500}}>
-                                <SortableTree
-                                    treeData={this.state.treeData}
-                                    onChange={treeData => this.setState({treeData})}
-                                    generateNodeProps={({node, path}) => {
+                    <div className="row">
+                        <div className="col-md-8">
+                            <div className="box box-info">
+                                <div className="box-header with-border">
+                                    <h3 className="box-title">URL Tree Management</h3>
+                                </div>
+                                <div className="box-body" style={{height: 600}}>
+                                    <SortableTree
+                                        treeData={this.state.treeData}
+                                        onChange={treeData => this.setState({treeData})}
+                                        generateNodeProps={({node, path}) => {
 
-                                        let labelColor = '';
-                                        switch (node.methodType) {
-                                            case 'GET':
-                                                labelColor = 'label-primary';
-                                                break;
-                                            case 'POST':
-                                                labelColor = 'label-success';
-                                                break;
-                                            case 'PUT':
-                                                labelColor = 'label-warning';
-                                                break;
-                                            case 'DELETE':
-                                                labelColor = 'label-danger';
-                                                break;
-                                            default:
-                                                labelColor = 'label-info'
-                                        }
+                                            let labelColor = '';
+                                            switch (node.methodType) {
+                                                case 'GET':
+                                                    labelColor = 'label-primary';
+                                                    break;
+                                                case 'POST':
+                                                    labelColor = 'label-success';
+                                                    break;
+                                                case 'PUT':
+                                                    labelColor = 'label-warning';
+                                                    break;
+                                                case 'DELETE':
+                                                    labelColor = 'label-danger';
+                                                    break;
+                                                default:
+                                                    labelColor = 'label-info'
+                                            }
 
-                                        return ({
-                                            buttons: [
-                                                <span
-                                                    className="label label-default">{node.depthType && node.depthType.substring(0, 1)}</span>,
-                                                <span className={"label " + labelColor}>{node.methodType}</span>,
-                                                <div className="btn-group">
-                                                    <button type="button" className="btn btn-info btn-xs"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                this.modifyChild(node, path)
-                                                            }}>Modify
-                                                    </button>
-                                                    <button type="button"
-                                                            className="btn btn-info btn-xs dropdown-toggle"
-                                                            data-toggle="dropdown" aria-expanded="false">
-                                                        <span className="caret"></span>
-                                                        <span className="sr-only">Toggle Dropdown</span>
-                                                    </button>
-                                                    <ul className="dropdown-menu" role="menu">
-                                                        <li>
-                                                            <a onClick={(e) => {
-                                                                   e.preventDefault();
-                                                                this.addChildren(node, path)
-                                                               }}>Add Child
-                                                            </a>
-                                                        </li>
-                                                        <li className="divider"></li>
-                                                        <li>
-                                                            <a onClick={(e) => {
-                                                                   e.preventDefault();
-                                                                this.remove(node, path)
-                                                               }}>Remove
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            ]
-                                        })
-                                    }}
-                                />
+                                            return ({
+                                                buttons: [
+                                                    <span
+                                                        className="label label-info">{node.depthType && node.depthType.substring(0, 1)}</span>,
+                                                    <span className={"label " + labelColor}>{node.methodType}</span>,
+                                                    <div className="btn-group">
+                                                        <button type="button" className="btn btn-default btn-xs"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    this.modifyChild(node, path)
+                                                                }}>Modify
+                                                        </button>
+                                                        <button type="button"
+                                                                className="btn btn-default btn-xs dropdown-toggle"
+                                                                data-toggle="dropdown" aria-expanded="false">
+                                                            <span className="caret"></span>
+                                                            <span className="sr-only">Toggle Dropdown</span>
+                                                        </button>
+                                                        <ul className="dropdown-menu" role="menu">
+                                                            <li>
+                                                                <a onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    this.addChildren(node, path)
+                                                                }}>Add Child
+                                                                </a>
+                                                            </li>
+                                                            <li className="divider"></li>
+                                                            <li>
+                                                                <a onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    this.remove(node, path)
+                                                                }}>Remove
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                ]
+                                            })
+                                        }}
+                                    />
+                                    {
+                                        this.props.isFetching &&
+                                        <div className="overlay">
+                                            <i className="fa fa-refresh fa-spin"></i>
+                                        </div>
+                                    }
+                                </div>
                             </div>
+                            <NavigationModal show={this.state.isOpenModal}
+                                             modalData={this.state.modalData}
+                                             onClose={this.onOffModal}/>
+                        </div>
+                        <div className="col-md-6">
+
                         </div>
                     </div>
                 </section>
-                <NavigationModal show={this.state.isOpenModal}
-                                 modalData={this.state.modalData}
-                                 onAdded={this.onAdded}
-                                 onClose={this.onOffModal}/>
             </div>
         )
     }

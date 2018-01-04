@@ -1,16 +1,15 @@
 import Axios from 'axios'
-import {ACCOUNT_DETAIL_MODIFIED, ACCOUNT_DETAIL_MODIFY} from "./actionTypes";
+import {NAVIGATION_MODIFIED, NAVIGATION_MODIFY} from "./actionTypes";
 
 const request = () => ({
-    type: ACCOUNT_DETAIL_MODIFY
+    type: NAVIGATION_MODIFY
 });
 
 const receive = (params, payload) => ({
-    type: ACCOUNT_DETAIL_MODIFIED,
+    type: NAVIGATION_MODIFIED,
     params: params,
     payload: payload
 });
-
 
 export const modifyOne = (url, params) => {
     console.debug("modifyOne req: %s", JSON.stringify(params));

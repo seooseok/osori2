@@ -1,5 +1,6 @@
 import Navigation from './Navigation'
-import AddChildren from './AddChildren'
+import AddChildrenForm from './AddChildrenForm'
+import ModifyForm from './ModifyForm'
 import NavigationModal from './NavigationModal'
 
-export {Navigation, AddChildren, NavigationModal}
+export {Navigation, AddChildrenForm, NavigationModal, ModifyForm}

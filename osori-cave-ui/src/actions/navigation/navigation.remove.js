@@ -6,8 +6,9 @@ const request = () => ({
     type: NAVIGATION_REMOVE
 });
 
-const receive = () => ({
-    type: NAVIGATION_REMOVED
+const receive = (payload) => ({
+    type: NAVIGATION_REMOVED,
+    payload: payload
 });
 
 export const remove = (uri) => {

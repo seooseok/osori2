@@ -59,12 +59,17 @@ class NavigationTreeController
     }
 
     @PutMapping("/node/{id}")
-    fun modifyChildren(@PathVariable id: Long, menuNode: NodeResource) {
-        menuNode.apply { this.id = id }
+    fun modifyNode(@PathVariable id: Long, @RequestBody @Valid node: NodeResource): Resource<Long> {
+        navigationTreeService.modifyNode(node.id!!, node.name, node.resource, node.depthType, node.methodType)
+
+        return Resource(id, linkTo(methodOn(this::class.java).findNode(id)).withSelfRel())
     }
 
     @DeleteMapping("/node/{id}")
-    fun removeChildren(@PathVariable id: Long) {
+    fun removeNode(@PathVariable id: Long): Resource<Long> {
         navigationTreeService.removeNode(id)
+
+        return Resource(id, linkTo(methodOn(this::class.java)
+                .findAllNodes()).withRel("before"))
     }
 }
