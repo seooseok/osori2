@@ -2,7 +2,7 @@ import React from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
-import {Form, Radio, RadioGroup, Select, Text} from 'react-form'
+import {Form, Radio, RadioGroup, Text} from 'react-form'
 import {addAll} from "../../actions/navigation/navigation.add.all";
 
 class AddChildrenForm extends React.Component {
@@ -77,26 +77,42 @@ class AddChildrenForm extends React.Component {
 
         switch (choice) {
             case 'navigation': {
-                this.state.domControl = {
-                    httpMethodInputs: [
-                        {type: 'get', availInput: true},
-                        {type: 'post', availInput: false},
-                        {type: 'put', availInput: false},
-                        {type: 'delete', availInput: false}
-                    ]
-                };
+                this.setState({
+                    domControl: {
+                        httpMethodInputs: [
+                            {type: 'get', availInput: true},
+                            {type: 'post', availInput: false},
+                            {type: 'put', availInput: false},
+                            {type: 'delete', availInput: false}
+                        ]
+                    }
+                });
                 break;
             }
             case 'function': {
-                this.state.domControl = {
-                    httpMethodInputs: [
-                        {type: 'get', availInput: true},
-                        {type: 'post', availInput: true},
-                        {type: 'put', availInput: true},
-                        {type: 'delete', availInput: true}
-                    ]
-                };
+                this.setState({
+                    domControl: {
+                        httpMethodInputs: [
+                            {type: 'get', availInput: true},
+                            {type: 'post', availInput: true},
+                            {type: 'put', availInput: true},
+                            {type: 'delete', availInput: true}
+                        ]
+                    }
+                });
                 break;
+            }
+            default : {
+                this.setState({
+                    domControl: {
+                        httpMethodInputs: [
+                            {type: 'get', availInput: true},
+                            {type: 'post', availInput: false},
+                            {type: 'put', availInput: false},
+                            {type: 'delete', availInput: false}
+                        ]
+                    }
+                });
             }
         }
     };

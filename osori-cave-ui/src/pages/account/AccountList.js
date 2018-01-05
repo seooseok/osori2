@@ -8,9 +8,6 @@ import {findOne} from "../../actions/account/account.detail";
 import * as hateoas from "../../util/HateoasUtil";
 
 class AccountList extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     onRowSelect = (row, isSelected, e) => {
         if (isSelected) {

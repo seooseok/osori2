@@ -7,8 +7,6 @@ import {NavigationList, NavigationTree} from "."
 
 import './navigation.css'
 
-const getNodeKey = ({treeIndex}) => treeIndex;
-
 class Navigation extends React.Component {
     componentWillMount() {
         this.props.findAll();

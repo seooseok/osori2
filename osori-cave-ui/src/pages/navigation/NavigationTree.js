@@ -8,7 +8,6 @@ import {remove} from "../../actions/navigation/navigation.remove";
 
 import * as hateoas from "../../util/HateoasUtil";
 
-const getNodeKey = ({treeIndex}) => treeIndex;
 
 class NavigationTree extends React.Component {
 

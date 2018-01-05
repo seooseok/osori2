@@ -2,7 +2,7 @@ import React from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
-import {Form, Radio, RadioGroup, Select, Text} from 'react-form'
+import {Form, Radio, RadioGroup, Text} from 'react-form'
 
 import {modifyOne} from "../../actions/navigation/navigation.modify";
 import * as hateoas from "../../util/HateoasUtil";
