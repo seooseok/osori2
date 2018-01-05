@@ -1,14 +1,11 @@
 import React from 'react'
-import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {findOne} from "../../actions/account/account.detail";
+import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'
 import {AccountDetail} from './'
+import {findOne} from "../../actions/account/account.detail";
 
 import * as hateoas from "../../util/HateoasUtil";
-
-import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css'
-
 
 class AccountList extends React.Component {
     constructor(props) {
