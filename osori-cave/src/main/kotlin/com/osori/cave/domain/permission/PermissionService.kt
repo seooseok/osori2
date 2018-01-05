@@ -3,10 +3,8 @@ package com.osori.cave.domain.permission
 import com.osori.cave.domain.navigation.infrastructure.UriPart
 import com.osori.cave.domain.navigation.infrastructure.UriPartRepository
 import com.osori.cave.domain.navigation.infrastructure.UriPartType.SERVICE
-import com.osori.cave.domain.permission.controller.PermissionResource
 import com.osori.cave.domain.permission.infrastructure.Permission
 import com.osori.cave.domain.permission.infrastructure.PermissionRepository
-import com.osori.cave.utils.toResource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -17,17 +15,18 @@ class PermissionService
 @Autowired constructor(val permissionRepository: PermissionRepository,
                        val uriPartRepository: UriPartRepository) {
 
-    fun create(name: String, menuNodeIdGroup: List<Long>) {
+    fun create(name: String, menuNodeIdGroup: List<Long>): Long {
         val uriParts = this.findByUriParts(menuNodeIdGroup)
         val permission = Permission(name)
         uriParts.forEach { permission.addBy(it) }
 
-        save(permission)
+        return save(permission)
     }
 
-    fun modify(permissionId: Long, name: String) {
+    fun modify(permissionId: Long, name: String, menuNodeIdGroup: List<Long>) {
         val permission = findByPermission(permissionId)
         permission.name = name
+
     }
 
     fun addMenuNodes(permissionId: Long, menuNodeIdGroup: List<Long>) {
@@ -56,16 +55,15 @@ class PermissionService
         permission.status = true
     }
 
-    fun findAll(): List<PermissionResource> {
-        val permissions = permissionRepository.findByStatusIsTrue()
-        return permissions.map(Permission::toResource)
+    fun findAll(): List<Permission> {
+        return permissionRepository.findByStatusIsTrue()
     }
 
-    fun findOne(permissionId: Long): PermissionResource {
-        return findByPermission(permissionId).toResource()
+    fun findOne(permissionId: Long): Permission {
+        return findByPermission(permissionId)
     }
 
-    private fun save(permission: Permission) = permissionRepository.save(permission)
+    private fun save(permission: Permission): Long = permissionRepository.save(permission).id!!
 
     private fun findByPermission(permissionId: Long): Permission {
         return permissionRepository.findOne(permissionId) ?: throw IllegalStateException("not found permission($permissionId)")

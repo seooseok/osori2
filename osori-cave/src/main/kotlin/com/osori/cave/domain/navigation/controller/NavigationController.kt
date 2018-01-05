@@ -24,11 +24,11 @@ class NavigationController
 
     @GetMapping("/nodes")
     fun findAllNodes(): Resources<NodeResource> {
-        val resources = navigationTreeService.findNodes().map { it.toResource() }
+        val nodes = navigationTreeService.findNodes().map { it.toResource() }
 
-        resources.forEach { it.add(linkTo(methodOn(this::class.java).findNode(it.id!!)).withSelfRel()) }
+        nodes.forEach { it.add(linkTo(methodOn(this::class.java).findNode(it.id!!)).withSelfRel()) }
 
-        return Resources(resources, linkTo(methodOn(this::class.java).findAllNodes()).withSelfRel())
+        return Resources(nodes, linkTo(methodOn(this::class.java).findAllNodes()).withSelfRel())
     }
 
     @PostMapping("/nodes")
