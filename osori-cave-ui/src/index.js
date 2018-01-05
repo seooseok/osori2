@@ -15,6 +15,7 @@ import './index.css';
 import 'jquery/src/jquery'
 import 'adminlte-reactjs/public/bootstrap/js/bootstrap.min'
 import 'adminlte-reactjs/public/dist/js/app'
+import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css'
 //Default js for app
 import App from './pages/App';
 import registerServiceWorker from './registerServiceWorker';
