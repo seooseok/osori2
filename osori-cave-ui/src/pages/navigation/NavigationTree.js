@@ -75,13 +75,14 @@ class NavigationTree extends React.Component {
     };
 
     render() {
+        let treeHeight = window.innerHeight - 150;
         return (
             <div>
                 <div className="box box-info">
                     <div className="box-header with-border">
                         <h3 className="box-title">URL Tree Management</h3>
                     </div>
-                    <div className="box-body" style={{height: 600}}>
+                    <div className="box-body" style={{height: treeHeight}}>
                         <SortableTree
                             treeData={this.state.treeData}
                             onChange={treeData => this.setState({treeData})}
