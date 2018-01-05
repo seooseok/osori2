@@ -19,7 +19,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/navigation-tree")
-class NavigationTreeController
+class NavigationController
 @Autowired constructor(private val navigationTreeService: NavigationTreeService) {
 
     @GetMapping("/nodes")
