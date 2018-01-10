@@ -27,7 +27,7 @@ import java.time.LocalDate
 class UserController
 @Autowired constructor(private val userService: UserService) {
 
-    @JsonView(UserView.Base::class)
+    @JsonView(UserView.Users::class)
     @GetMapping("/users")
     fun search(@DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam startDate: LocalDate,
                @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam endDate: LocalDate,
@@ -47,7 +47,7 @@ class UserController
         return Resources(resources, linkTo(methodOn(this::class.java).search(startDate, endDate, loginId, name, status)).withSelfRel())
     }
 
-    @JsonView(UserView.Detail::class)
+    @JsonView(UserView.User::class)
     @GetMapping("/user/{id}")
     fun findOneWithDetail(@PathVariable id: Long): Resource<UserResource> {
         val (user, information) = userService.findOne(id)
