@@ -23,7 +23,7 @@ class PermissionService
         return save(permission)
     }
 
-    fun modify(permissionId: Long, name: String, menuNodeIdGroup: List<Long>) {
+    fun modify(permissionId: Long, name: String, menuNodeIdGroup: List<Long> = listOf()) {
         val permission = findByPermission(permissionId)
         permission.name = name
 

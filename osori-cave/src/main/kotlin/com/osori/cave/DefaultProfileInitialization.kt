@@ -3,12 +3,14 @@ package com.osori.cave
 import com.osori.cave.domain.navigation.NavigationTreeService
 import com.osori.cave.domain.navigation.infrastructure.UriPart.DepthType.FUNC
 import com.osori.cave.domain.navigation.infrastructure.UriPart.DepthType.NAVI
+import com.osori.cave.domain.permission.PermissionService
 import com.osori.cave.domain.user.PersonalInformation
 import com.osori.cave.domain.user.UserService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
+import org.springframework.core.annotation.Order
 import org.springframework.web.bind.annotation.RequestMethod.DELETE
 import org.springframework.web.bind.annotation.RequestMethod.GET
 import org.springframework.web.bind.annotation.RequestMethod.PUT
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod.PUT
 @Configuration
 class DefaultProfileInitialization {
 
+    @Order(1)
     @Profile("default")
     @Bean
     fun initUsers(userService: UserService): CommandLineRunner = CommandLineRunner {
@@ -24,6 +27,7 @@ class DefaultProfileInitialization {
         }
     }
 
+    @Order(2)
     @Profile("default")
     @Bean
     fun initNavigations(navigationTreeService: NavigationTreeService): CommandLineRunner = CommandLineRunner {
@@ -36,5 +40,13 @@ class DefaultProfileInitialization {
         navigationTreeService.create("Expire User", "/user/{id}", FUNC, DELETE, accountId)
         val navigationId = navigationTreeService.create("Navigation", "/navigation", NAVI, GET, rootId)
         navigationTreeService.create("Show Url Tree", "/nodes", FUNC, GET, navigationId)
+    }
+
+    @Order(3)
+    @Profile("default")
+    @Bean
+    fun initPermission(permissionService: PermissionService, navigationTreeService: NavigationTreeService): CommandLineRunner = CommandLineRunner {
+        val nodes = navigationTreeService.findNodes()
+        permissionService.create("Sample Permission", listOf(nodes.first().id!!, nodes.last().id!!))
     }
 }
