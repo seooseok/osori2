@@ -4,10 +4,10 @@ import au.com.console.jpaspecificationdsl.and
 import au.com.console.jpaspecificationdsl.between
 import au.com.console.jpaspecificationdsl.equal
 import au.com.console.jpaspecificationdsl.isNull
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.osori.cave.domain.user.infrastructure.User
 import com.osori.cave.domain.user.infrastructure.UserRepository
 import com.osori.cave.utils.Crypto
+import com.osori.cave.utils.Jackson
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.jpa.domain.Specifications
@@ -84,7 +84,7 @@ class UserService
     private fun getPersonalInformation(user: User): PersonalInformation? {
         return user.information?.let {
             val json = Crypto(cryptoKey).dec(it)
-            val mapper = jacksonObjectMapper()
+            val mapper = Jackson.getMapper()
             mapper.readValue(json, PersonalInformation::class.java)
         }
     }

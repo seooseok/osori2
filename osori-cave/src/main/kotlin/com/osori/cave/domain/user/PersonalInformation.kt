@@ -1,6 +1,6 @@
 package com.osori.cave.domain.user
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.osori.cave.utils.Jackson
 
 class PersonalInformation(var email: String? = null,
                           var phone: String? = null,
@@ -8,7 +8,7 @@ class PersonalInformation(var email: String? = null,
                           var department: String? = null,
                           var comment: String? = null) {
     fun toJson(): String {
-        val mapper = jacksonObjectMapper()
+        val mapper = Jackson.getMapper()
         return mapper.writeValueAsString(this)
     }
 }
