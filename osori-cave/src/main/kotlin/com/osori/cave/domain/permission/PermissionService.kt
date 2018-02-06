@@ -23,10 +23,15 @@ class PermissionService
         return save(permission)
     }
 
-    fun modify(permissionId: Long, name: String, menuNodeIdGroup: List<Long> = listOf()) {
+    fun modify(permissionId: Long, name: String, menuNodeIds: List<Long> = listOf()) {
         val permission = findByPermission(permissionId)
         permission.name = name
+        val existedIds = permission.permissionUriPartMappings.map { it.uriPart.id!! }
 
+        val addedIds = menuNodeIds.minus(existedIds)
+        addMenuNodes(permissionId, addedIds)
+        val removedIds = existedIds.minus(menuNodeIds)
+        removeMenuNodes(permissionId, removedIds)
     }
 
     fun addMenuNodes(permissionId: Long, menuNodeIdGroup: List<Long>) {

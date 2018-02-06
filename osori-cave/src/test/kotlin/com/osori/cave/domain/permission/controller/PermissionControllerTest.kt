@@ -43,4 +43,22 @@ internal class PermissionControllerTest : IntegrationTestSupporter() {
         //Then
         id shouldNotBe null
     }
+
+    @Test
+    fun `기 등록되어 있는 퍼미션의 URLPART에서 modify를 이용해 몇개를 제거한다`() {
+        //Given
+        val resource = controller.findAllGroups().content.toList()[0]
+        val sourceName = resource.name
+        resource.name = "modified name"
+        controller.modifyGroup(resource)
+    }
+
+}
+
+fun main(args: Array<String>) {
+    val sources = listOf(1, 2, 3, 4, 5)
+    val target = listOf(4, 5, 6, 7)
+    println(sources.dropLast(2))
+
+
 }
