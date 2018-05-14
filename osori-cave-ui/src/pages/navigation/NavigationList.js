@@ -29,6 +29,7 @@ class NavigationList extends React.Component {
                         <TableHeaderColumn width='30%' dataField='name' dataSort={true}>Name</TableHeaderColumn>
                         <TableHeaderColumn dataField='fullUri' tdStyle={{whiteSpace: 'normal'}}
                                            dataSort={true}>URI</TableHeaderColumn>
+                      <TableHeaderColumn dataField="methodType">Method</TableHeaderColumn>
                     </BootstrapTable>
                 </div>
                 {
